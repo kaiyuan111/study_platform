@@ -28,7 +28,7 @@ return array(
             'ipFilters'=>array('127.0.0.1','::1'),
         ),
          */
-		'test',
+		'main',
         ),
 
         // application components
@@ -52,7 +52,7 @@ return array(
             // ),
             // uncomment the following to use a MySQL database
             'db'=>array(
-                'connectionString' => 'mysql:host=10.16.15.79:3306;dbname=questionnaire',
+                'connectionString' => 'mysql:host=10.16.15.79:3306;dbname=study',
                 'emulatePrepare' => true,
                 'username' => 'open',
                 'password' => '8J6cn4A7f4SC2a7W',

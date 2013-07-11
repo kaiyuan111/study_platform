@@ -32,7 +32,10 @@ class Controller extends CController
     {
         $this->naireid = Yii::app()->request->getParam('naireid',rand(1000000,9999999));
         $this->expid = Yii::app()->request->getParam('expid',1);
+        // 登陆
+        // 权限限制
 
         return true;
     }
+
 }
