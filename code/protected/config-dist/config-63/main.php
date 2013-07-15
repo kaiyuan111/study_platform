@@ -16,6 +16,8 @@ return array(
     'import'=>array(
         'application.models.*',
         'application.components.*',
+        'application.modules.main.models.*',
+        'application.modules.main.models.user.*',
     ),
 
     'modules'=>array(
@@ -58,6 +60,7 @@ return array(
                 'password' => '8J6cn4A7f4SC2a7W',
                 'charset' => 'utf8',
             ),
+            /*
             'cache' => array(
                 'class' => 'application.extensions.CRedisCache',
                 'servers'=>array(
@@ -68,6 +71,7 @@ return array(
                 ),
                 'keyPrefix' => '',
             ),
+             */
             'errorHandler'=>array(
                 // use 'site/error' action to display errors
                 'errorAction'=>'site/error',
@@ -93,6 +97,5 @@ return array(
         // using Yii::app()->params['paramName']
         'params'=>array(
             // this is used in contact page
-            'adminEmail'=>'webmaster@example.com',
         ),
     );

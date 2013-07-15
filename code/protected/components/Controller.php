@@ -21,9 +21,9 @@ class Controller extends CController
         if(empty($userInfo)) $this->redirect('/main/user/login');
         $this->userid = $userInfo['uid'];
         // 权限限制
-        // if(!Privilege::hasPrivilege($userInfo['uid'],$_SERVER['REQUEST_URI'])) {
-            // return false;
-        // }
+        if(!Privilege::hasPrivilege($userInfo['uid'],$_SERVER['REQUEST_URI'])) {
+            return false;
+        }
 
         return true;
     }

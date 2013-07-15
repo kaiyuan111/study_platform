@@ -32,7 +32,7 @@ class InitSystem
      * 
      * @param mixed $uname 
      * @param mixed $pwd 
-     * @return uid
+     * @return bool
      */
     static public function initSupperUser($uname, $pwd)
     {
