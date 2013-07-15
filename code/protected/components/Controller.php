@@ -14,8 +14,8 @@ class Controller extends CController
     protected function beforeAction($action)
     {
         // 登陆
-        preg_match("/(^.*)\?/",$_SERVER['REQUEST_URI'],$matchs);
-        $requestUrl = $matchs[1];
+        preg_match("/(^.*?)\?|(^.*)/",$_SERVER['REQUEST_URI'],$matchs);
+        $requestUrl = empty($matchs[1]) ? $matchs[2] : $matchs[1];
         if($_SERVER['REQUEST_URI']=='/main/user/login' || $requestUrl=='/main/user/initsystem') {
             return true;
         }

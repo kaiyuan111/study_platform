@@ -63,7 +63,7 @@ class Privilege
      */
     static public function hasPrivilege($uid,$route)
     {
-        $menu = self::getMenu($uid);
+        $menu = self::getActions($uid);
         foreach($menu as $k=>$v) {
             if($route==$v['route']) return true;
         }

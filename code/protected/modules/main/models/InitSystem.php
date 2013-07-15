@@ -4,9 +4,9 @@ class InitSystem
 {
     static public function initActions()
     {
-        $action = new Action;
         $actions = include(Yii::app()->basePath.'/config-dist/actions.php');
         foreach($actions as $k=>$v) {
+            $action = new Action;
             $ret = $action->find('aname=:name',array(':name'=>$v['aname']));
             if(empty($ret)) {
                 $action->aname = $v['aname'];
