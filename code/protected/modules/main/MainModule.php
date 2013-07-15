@@ -11,6 +11,7 @@ class MainModule extends CWebModule
         $this->setImport(
             array(
                 'main.components.*',
+                'main.widgets.*',
                 'main.models.*',
                 'main.models.user.*'
             )

@@ -1,7 +1,7 @@
 
 <hr>
 <form method="post" action="/main/action/list">
-菜单名:<input type="text" name="name"/>
+路由名:<input type="text" name="name"/>
 <input type="submit" name="query" value="查询"/>
 <input type="submit" name="all" value="查询所有"/>
 </form>
@@ -11,8 +11,9 @@
     <thead class="center">
     <tr>
         <th width="3%" style='text-align:left'>id</th>
-        <th width="10%" style='text-align:left'>菜单名</th>
-        <th width="10%" style='text-align:left'>路由</th>
+        <th width="10%" style='text-align:left'>路由名</th>
+        <th width="10%" style='text-align:left'>路由信息</th>
+        <th width="10%" style='text-align:left'>是否菜单</th>
         <th width="5%" style='text-align:left'>操作</th>
     </tr>
     </thead>
@@ -40,6 +41,7 @@
                 + "<td class='td_id'><?php echo htmlspecialchars($e['aid']);?></td>"
                 + "<td class='td'><?php echo htmlspecialchars($e['aname']);?></td>"
                 + "<td class='td'><?php echo htmlspecialchars($e['route']);?></td>"
+                + "<td class='td'><?php echo htmlspecialchars($e['is_menu']);?></td>"
                 + "<td class='td'><button class='modify'>修改</button></td>"
                 + "</tr>";
             tbody.push(content);

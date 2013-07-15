@@ -5,6 +5,11 @@
     <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery-1.9.1.min.js"></script>
 </head>
 <body>
+    <p>
+    <a href='/main/user/login'>login</a>
+    <a href='/main/user/login'>logout</a>
+    </p>
+    <?php $this->widget('LeftMenu', array('userid' => $this->userid)); ?>
     <?php echo $content; ?>
 </body>
 </html>

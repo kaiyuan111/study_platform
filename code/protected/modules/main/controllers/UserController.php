@@ -9,13 +9,6 @@ class UserController extends Controller
         $this->redirect('/main/user/list');
     }
 
-    public function actionLogin()
-    {
-    }
-
-    public function actionLogout()
-    {
-    }
 
     public function actionList()
     {
@@ -77,4 +70,28 @@ class UserController extends Controller
 
         $this->render('edit',array('entity'=>$usrInfo,'roles'=>$roles,'label'=>$label));
     }
+
+    public function actionLogin()
+    {
+        $url = isset($_REQUEST['url']) ? $_REQUEST['url'] : '/';
+        if(isset($_REQUEST['login_sub'])&&!empty($_REQUEST['name'])&&!empty($_REQUEST['pwd'])) {
+            // 创建超极管理员
+            Login::logins($_REQUEST['name'],$_REQUEST['pwd']);
+            // var_dump($_REQUEST,$_SESSION);
+            $this->redirect($url);
+        }
+        // var_dump($_SESSION);
+        //unset($_SESSION['user']);
+        $this->render('login',array(
+            'url' => $url,
+        ));
+    }
+
+    public function actionLogout()
+    {
+        session_start();
+        unset($_SESSION['user']);
+        $this->redirect('/main/user/login');
+    }
+
 }

@@ -22,18 +22,30 @@ class Controller extends CController
      */
     public $breadcrumbs=array();
 
+    public $userid;
 
-    // 问卷id={rand}
-    protected $naireid;
-    // 实验id={1,2,3,4,5}
-    protected $expid;
-
-    protected function beforeAction()
+    private function initSystem()
     {
-        $this->naireid = Yii::app()->request->getParam('naireid',rand(1000000,9999999));
-        $this->expid = Yii::app()->request->getParam('expid',1);
+        // 初始化action
+        // 初始化超极管理员
+        InitSystem::makeSupperUser('superman','superman');
+    }
+
+    protected function beforeAction($action)
+    {
+        // 初始化系统
+        $this->initSystem();
         // 登陆
+        if($_SERVER['REQUEST_URI']=='/main/user/login') {
+            return true;
+        }
+        $userInfo = Login::getLoginInfo();
+        if(empty($userInfo)) $this->redirect('/main/user/login');
+        $this->userid = $userInfo['uid'];
         // 权限限制
+        // if(!Privilege::hasPrivilege($userInfo['uid'],$_SERVER['REQUEST_URI'])) {
+            // return false;
+        // }
 
         return true;
     }

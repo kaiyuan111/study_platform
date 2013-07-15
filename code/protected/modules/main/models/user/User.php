@@ -12,6 +12,15 @@ class User extends CActiveRecord
         return '`m-user`';
     }
 
+    /**
+     * getUserWithRole 
+     *
+     * 获取用户信息包含Role详情
+     * 
+     * @param string $condition 'unmae=:name' or 'uid=:id'
+     * @param array $params  绑定信息 array(':name'=>$name)
+     * @return void
+     */
     public function getUserWithRole($condition='',$params=array())
     {
         if(!empty($condition)) {
@@ -37,4 +46,30 @@ class User extends CActiveRecord
         return $rows;
     }
 
+    public function getUserWithAction($condition='',$params=array())
+    {
+        if(!empty($condition)) {
+            $sql = "
+                SELECT u.*,a.aid,a.aname,a.route,a.is_menu  
+                FROM `m-user` u 
+                INNER JOIN `m-role-action` ra ON u.rid=ra.rid
+                INNER JOIN `m-action` a ON ra.aid=a.aid
+                where {$condition};
+            ";
+        } else {
+            $sql = "
+                SELECT u.*,a.aid,a.aname,a.route,a.is_menu  
+                FROM `m-user` u 
+                INNER JOIN `m-role-action` ra ON u.rid=ra.rid
+                INNER JOIN `m-action` a ON ra.aid=a.aid
+            ";
+        }
+        $conn = Yii::app()->db;
+        $command = $conn->createCommand($sql);
+        foreach($params as $key=>$value) {
+            $command->bindParam($key,$value);
+        }
+        $rows = $command->queryAll();
+        return $rows;
+    }
 }

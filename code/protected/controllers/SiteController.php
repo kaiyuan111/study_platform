@@ -3,6 +3,12 @@
 class SiteController extends Controller
 {
 
+    public function actionInitSystem()
+    {
+        //todo 增加权限限制
+        InitSystem::initActions();
+        InitSystem::initSupperUser('superman','superman');
+    }
 
     /**
      * This is the default 'index' action that is invoked

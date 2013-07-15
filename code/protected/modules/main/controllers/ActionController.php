@@ -31,6 +31,7 @@ class ActionController extends Controller
             $_REQUEST[$k] = trim($v);
         }
 
+        $ismenu = isset($_REQUEST['is_menu'])&&$_REQUEST['is_menu']=='on';
         if(isset($_REQUEST['id'])&&$_REQUEST['id']!='') {
             // 修改
             $actionInfo = $action->find('aid=:id',array(':id'=>$_REQUEST['id']));
@@ -38,6 +39,7 @@ class ActionController extends Controller
                 $action->updateByPk($_REQUEST['id'],array(
                     'aname'=>$_REQUEST['name'],
                     'route'=>$_REQUEST['route'],
+                    'is_menu'=>$ismenu,
                 ));
                 $this->redirect('/main/action/list');
             }
@@ -50,7 +52,8 @@ class ActionController extends Controller
             }
             if(!empty($_REQUEST['modify'])) {
                 $action->aname = $_REQUEST['name'];
-                $action->route= $_REQUEST['route'];
+                $action->route = $_REQUEST['route'];
+                $action->is_menu = $ismenu;
                 $action->save();
                 $this->redirect('/main/action/list');
             }

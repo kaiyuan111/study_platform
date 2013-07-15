@@ -23,6 +23,7 @@ class RoleAction extends CActiveRecord
     public function findActions($rid)
     {
         $actions = $this->findAll('rid=:id',array(':id'=>$rid));
+        $ret = array();
         foreach($actions as $v) {
             $ret[] = $v['aid'];
         }

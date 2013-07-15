@@ -42,13 +42,14 @@ class Role extends CActiveRecord
      */
     public function saveRole(array $params)
     {
-        $this->rname = $_REQUEST['name'];
-        $role->save();
+        $this->rname = $params['name'];
+        $this->save();
 
+        $roleInfo = $this->find('rname=:name', array(':name'=>$params['name']));
         $roleaction = new RoleAction;
-        $roleaction->deleteAll('rid=:id',array(':id'=>$params['id']));
+        $roleaction->deleteAll('rid=:id',array(':id'=>$roleInfo['rid']));
         if(!empty($params['actions'])) {
-            $roleaction->saveActions($params['id'],$params['actions']);
+            $roleaction->saveActions($roleInfo['rid'],$params['actions']);
         }
     }
 
