@@ -14,14 +14,16 @@ class Controller extends CController
     protected function beforeAction($action)
     {
         // 登陆
-        if($_SERVER['REQUEST_URI']=='/main/user/login' || $_SERVER['REQUEST_URI']=='/main/user/initsystem') {
+        preg_match("/(^.*)\?/",$_SERVER['REQUEST_URI'],$matchs);
+        $requestUrl = $matchs[1];
+        if($_SERVER['REQUEST_URI']=='/main/user/login' || $requestUrl=='/main/user/initsystem') {
             return true;
         }
         $userInfo = Login::getLoginInfo();
         if(empty($userInfo)) $this->redirect('/main/user/login');
         $this->userid = $userInfo['uid'];
         // 权限限制
-        if(!Privilege::hasPrivilege($userInfo['uid'],$_SERVER['REQUEST_URI'])) {
+        if(!Privilege::hasPrivilege($userInfo['uid'],$requestUrl)) {
             return false;
         }
 
