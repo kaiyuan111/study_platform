@@ -1,11 +1,14 @@
+
 CREATE TABLE `m-action` (
   `aid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `aname` varchar(20) NOT NULL DEFAULT '',
   `route` varchar(100) NOT NULL DEFAULT '',
+  `is_menu` tinyint(1) NOT NULL DEFAULT '0',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`aid`),
   UNIQUE KEY `aname` (`aname`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8
+
 
 CREATE TABLE `m-role` (
   `rid` int(10) unsigned NOT NULL AUTO_INCREMENT,

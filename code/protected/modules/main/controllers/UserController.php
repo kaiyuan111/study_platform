@@ -4,6 +4,13 @@ class UserController extends Controller
 {
     public $layout = '/layouts/empty';
 
+    public function actionInitSystem()
+    {
+        //todo 增加权限限制
+        InitSystem::initActions();
+        InitSystem::initSupperUser('superman','superman');
+    }
+
     public function actionIndex()
     {
         $this->redirect('/main/user/list');

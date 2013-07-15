@@ -12,6 +12,7 @@ class Login
     static public function getLoginInfo()
     {
         session_start();
+        if(empty($_SESSION['user'])) return false;
         $user = explode('_',$_SESSION['user']);
         if(isset($user[0])) {
             $userInfo = User::model()->find('uid=:id',array(':id'=>$user[0]))->getAttributes();
