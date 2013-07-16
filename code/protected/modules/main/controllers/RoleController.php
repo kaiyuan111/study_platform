@@ -19,7 +19,12 @@ class RoleController extends Controller
             $roleInfos = $role->findAll();
         }
 
-        $this->render('list',array('entitys'=>$roleInfos));
+        // 过滤超极管理员
+        foreach($roleInfos as $role) {
+            if($role['rname']!='superman') $roles[] = $role;
+        }
+
+        $this->render('list',array('entitys'=>$roles));
     }
 
     public function actionGetRoleList()

@@ -27,7 +27,12 @@ class UserController extends Controller
             $usrInfos = $usr->getUserWithRole();
         }
 
-        $this->render('list',array('entitys'=>$usrInfos));
+        // 过滤超极管理员
+        foreach($usrInfos as $user) {
+            if($user['rname']!='superman') $users[] = $user;
+        }
+
+        $this->render('list',array('entitys'=>$users));
     }
 
     public function actionEdit()
@@ -41,7 +46,11 @@ class UserController extends Controller
         }
 
         // 获取role列表
-        $roles = $role->findAll(array('select'=>'rid,rname'));
+        $roleInfos = $role->findAll(array('select'=>'rid,rname'));
+        // 过滤超极管理员
+        foreach($roleInfos as $role) {
+            if($role['rname']!='superman') $roles[] = $role;
+        }
         // var_dump($_REQUEST);
         // exit;
 // 
@@ -96,8 +105,7 @@ class UserController extends Controller
 
     public function actionLogout()
     {
-        session_start();
-        unset($_SESSION['user']);
+        Login::logout();
         $this->redirect('/main/user/login');
     }
 

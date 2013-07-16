@@ -7,7 +7,7 @@
 <body>
     <p>
     <a href='/main/user/login'>login</a>
-    <a href='/main/user/login'>logout</a>
+    <a href='/main/user/logout'>logout</a>
     </p>
     <?php $this->widget('LeftMenu', array('userid' => $this->userid)); ?>
     <?php echo $content; ?>

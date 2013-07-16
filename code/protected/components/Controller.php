@@ -16,7 +16,9 @@ class Controller extends CController
         // 登陆
         preg_match("/(^.*?)\?|(^.*)/",$_SERVER['REQUEST_URI'],$matchs);
         $requestUrl = empty($matchs[1]) ? $matchs[2] : $matchs[1];
-        if($_SERVER['REQUEST_URI']=='/main/user/login' || $requestUrl=='/main/user/initsystem') {
+        if($_SERVER['REQUEST_URI']=='/main/user/logout' 
+            || $_SERVER['REQUEST_URI']=='/main/user/login' 
+            || $requestUrl=='/main/user/initsystem') {
             return true;
         }
         $userInfo = Login::getLoginInfo();
