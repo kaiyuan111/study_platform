@@ -50,7 +50,7 @@ class User extends CActiveRecord
     {
         if(!empty($condition)) {
             $sql = "
-                SELECT u.*,a.aid,a.aname,a.route,a.is_menu  
+                SELECT u.*,a.aid,a.aname,a.route,a.is_menu,a.logo,a.logo_click  
                 FROM `m-user` u 
                 INNER JOIN `m-role-action` ra ON u.rid=ra.rid
                 INNER JOIN `m-action` a ON ra.aid=a.aid
@@ -58,7 +58,7 @@ class User extends CActiveRecord
             ";
         } else {
             $sql = "
-                SELECT u.*,a.aid,a.aname,a.route,a.is_menu  
+                SELECT u.*,a.aid,a.aname,a.route,a.is_menu ,a.logo,a.logo_click 
                 FROM `m-user` u 
                 INNER JOIN `m-role-action` ra ON u.rid=ra.rid
                 INNER JOIN `m-action` a ON ra.aid=a.aid

@@ -46,6 +46,8 @@ class Privilege
                     'aname' => $v['aname'],
                     'route' => $v['route'],
                     'is_menu' => $v['is_menu'],
+                    'logo' => $v['logo'],
+                    'logo_click' => $v['logo_click'],
                 );
             }
         }

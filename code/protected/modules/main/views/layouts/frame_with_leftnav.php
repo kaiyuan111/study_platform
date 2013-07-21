@@ -13,25 +13,28 @@
         <span class="logo"><img src="/images/frame/logo.png" /></span>
         <span class="home"><a href="#"><img src="/images/frame/home.png" /></a><a href="/main/user/logout"><img src="/images/frame/out.png" /></a></span>
     </div>
-    
+
     <div class="content">
-    	<div class="Add_Class_left">
+        <div class="leftnav">
             <div class="Nav_1">老师,您好!</div>
             <div class="Nav_2">2013年6月18日<br />星期二&nbsp;&nbsp; 10：34:05</div>
+            <?php $this->widget('LeftMenu', array('userid' => $this->userid,'type'=>'logo')); ?>
+            <!--
             <ul>   
-            	<li><img src="/images/frame/kcgl.png" /></li>
-            	<li><img src="/images/frame/nrgl.png" /></li>
-            	<li class="move"><img src="/images/frame/cjxz.png" /></li>
-            	<li><img src="/images/frame/xzgl.png" /></li>
-            	<li><img src="/images/frame/cktl.png" /></li>
-            	<li><img src="/images/frame/ckzy.png" /></li>
-            	<li><img src="/images/frame/ckxx.png" /></li>
+                <li><img src="/images/frame/kcgl.png" /></li>
+                <li><img src="/images/frame/nrgl.png" /></li>
+                <li class="move"><img src="/images/frame/cjxz.png" /></li>
+                <li><img src="/images/frame/xzgl.png" /></li>
+                <li><img src="/images/frame/cktl.png" /></li>
+                <li><img src="/images/frame/ckzy.png" /></li>
+                <li><img src="/images/frame/ckxx.png" /></li>
             </ul>
+            -->
         </div>
         <div class='main'>
             <?php echo $content; ?>
         </div>
-     </div>
+     </div><!--content-->
      <div class="foot">Copyright© 2012 Open Vision. 版权所有&nbsp;&nbsp;</div>
 </div>
 </body>
