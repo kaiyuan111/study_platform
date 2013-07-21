@@ -10,7 +10,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        echo 'welcome';
+        $this->render('test');
     }
 
     /**

@@ -2,7 +2,7 @@
 
 class RoleController extends Controller
 {
-    public $layout = '/layouts/empty';
+    public $layout = '/layouts/frame_with_leftnav';
 
     public function actionIndex()
     {
@@ -20,11 +20,11 @@ class RoleController extends Controller
         }
 
         // 过滤超极管理员
-        foreach($roleInfos as $role) {
-            if($role['rname']!='superman') $roles[] = $role;
-        }
+        // foreach($roleInfos as $role) {
+            // if($role['rname']!='superman') $roles[] = $role;
+        // }
 
-        $this->render('list',array('entitys'=>$roles));
+        $this->render('list',array('entitys'=>$roleInfos));
     }
 
     public function actionGetRoleList()

@@ -17,12 +17,13 @@ class Controller extends CController
         preg_match("/(^.*?)\?|(^.*)/",$_SERVER['REQUEST_URI'],$matchs);
         $requestUrl = empty($matchs[1]) ? $matchs[2] : $matchs[1];
         if($_SERVER['REQUEST_URI']=='/main/user/logout' 
-            || $_SERVER['REQUEST_URI']=='/main/user/login' 
+            || preg_match('|^/main/user/login|',$_SERVER['REQUEST_URI'])
             || $requestUrl=='/main/user/initsystem') {
             return true;
         }
         $userInfo = Login::getLoginInfo();
-        if(empty($userInfo)) $this->redirect('/main/user/login');
+        $url = urlencode($_SERVER['REQUEST_URI']);
+        if(empty($userInfo)) $this->redirect('/main/user/login?url='.$url);
         $this->userid = $userInfo['uid'];
         // 权限限制
         if(!Privilege::hasPrivilege($userInfo['uid'],$requestUrl)) {

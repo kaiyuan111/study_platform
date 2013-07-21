@@ -2,7 +2,7 @@
 
 class ActionController extends Controller
 {
-    public $layout = '/layouts/empty';
+    public $layout = '/layouts/frame_with_leftnav';
 
     public function actionIndex()
     {
