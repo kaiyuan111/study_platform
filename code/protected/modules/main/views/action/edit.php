@@ -12,7 +12,7 @@
 <div>logo：</div>
 <?php foreach($logopaths as $path) { ?>
 <ul class='normal_table'>
-<li><input type='checkbox' name='logopath' value='<?php echo $path['unionpath'];?>' <?php echo !empty($path['']) ? 'checked' : ''; ?>/><img src='<?php echo $path['path'];?>'/><img src='<?php echo $path['clickpath'];?>'/></li>
+<li><input type='checkbox' name='logopath' value='<?php echo $path['unionpath'];?>' <?php echo $path['path']==$entity['logo'] ? 'checked' : ''; ?>/><img src='<?php echo $path['path'];?>'/><img src='<?php echo $path['clickpath'];?>'/></li>
 </ul>
 <?php } ?>
 </div>
