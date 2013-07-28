@@ -3,7 +3,7 @@
     <img src="/images/frame/cont_home.png" align="absmiddle" class="home" />
     <span>用户管理</span>
     <div class="right_top_sous">
-      <form method='post' action='/main/user/list'>
+      <form class='jqtr' method='post' action='/main/user/list'>
         <ul>
           <li class="li">
             <span class="k">
@@ -24,10 +24,8 @@
     <div class='tip'>已经有此用户</div>
     <?php } ?>
     <div class="form">
-      <form  method='post' action='/main/user/edit'>
-        <input type='hidden' name='id' value='<?php echo !empty($entity['uid']) ? $entity['uid']:''; ?>
-        ' />
-        <br>
+      <form  class='jqtr' method='post' action='/main/user/edit'>
+        <input type='hidden' name='id' value='<?php echo !empty($entity['uid']) ? $entity['uid']:''; ?> ' /> <br>
         <ul>
           <li class="li">
             <span class="k" style="height:42px">
@@ -43,7 +41,7 @@
           </li>
           <li class="o_none">
             <span class="k"  style="height:42px">
-              <select name="rid" style="width:160px;">
+              <select id='role_select' name="rid" style="width:160px;">
                 <?php foreach($roles as $role) {?>
                 <option value ="<?php echo $role['rid'];?> "> <?php echo htmlspecialchars($role['rname']);?></option>
                 <?php }?>
@@ -63,3 +61,10 @@
   <div class="newz_k_foot"></div>
 </div>
 <!--Add_Class_content-->
+
+<script type='text/javascript'>
+(function($){
+    roleid = '<?php echo !empty($entity['rid']) ? $entity['rid']:''; ?>';
+    $("#role_select option[value='"+roleid+"']").attr('selected','selected');
+})(jQuery)
+</script>

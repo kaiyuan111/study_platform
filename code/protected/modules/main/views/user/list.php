@@ -1,7 +1,7 @@
 <div class="Add_Class_content">
     <div class="top">
         <span class="user_search">
-            <form method="post" action="/main/user/list">
+            <form class='jqtr' method="post" action="/main/user/list">
                 <input name='name' type="text" onfocus="if (value =='用户名'){value =''}" onblur="if (value ==''){value='用户名'}" value="用户名" />
                 <input type="submit" style="font-size:14px;" value="&nbsp;查&nbsp;询&nbsp;"/>
             </form>
@@ -79,7 +79,7 @@
                 + "<span class='user_li_4'><?php echo htmlspecialchars($e['rname']);?></span>"
                 + "<span class='user_li_5'>"
                 + "<a href='/main/user/edit?id=<?php echo htmlspecialchars($e['uid']);?>'><img src='/images/frame/update_ico.png'  /></a> &nbsp;&nbsp;&nbsp;&nbsp;"
-                + "<img src='/images/frame/del_ico.png'  /></span>"
+                + "<a href='/main/user/del?id=<?php echo htmlspecialchars($e['uid']);?>'><img src='/images/frame/del_ico.png'  /></a></span>"
                 + "</div></li>";
             tbody.push(content);
             <?php } ?>

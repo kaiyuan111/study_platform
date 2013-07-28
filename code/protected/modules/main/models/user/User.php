@@ -72,4 +72,9 @@ class User extends CActiveRecord
         $rows = $command->queryAll();
         return $rows;
     }
+
+    public function delUser($id)
+    {
+        $this->deleteByPk($id);
+    }
 }

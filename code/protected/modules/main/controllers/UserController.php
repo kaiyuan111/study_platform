@@ -109,4 +109,10 @@ class UserController extends Controller
         $this->redirect('/main/user/login');
     }
 
+    public function actionDel()
+    {
+        User::model()->delUser($_REQUEST['id']);
+        $this->redirect('/main/user/list');
+    }
+
 }

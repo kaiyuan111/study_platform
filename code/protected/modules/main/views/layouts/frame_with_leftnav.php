@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="/css/jqtransform.css" type="text/css" media="all" />
 <script language="javascript">
         $(function(){
-            $('form').jqTransform({imgPath:'/images/frame/'});
+            $('form.jqtr').jqTransform({imgPath:'/images/frame/'});
         });
 </script>
 </head>

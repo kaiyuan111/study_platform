@@ -39,6 +39,7 @@ class ActionController extends Controller
         $ismenu = isset($_REQUEST['is_menu'])&&$_REQUEST['is_menu']=='on';
         // 所有logopath
         $logopaths = Action::model()->getLogoPaths();
+        //echo "<pre>"; var_dump($logopaths); exit;
         if(isset($_REQUEST['id'])&&$_REQUEST['id']!='') {
             // 修改
             $logopaths = Action::model()->getLogoPaths($_REQUEST['id']);
