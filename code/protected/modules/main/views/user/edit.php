@@ -8,9 +8,7 @@
           <li class="li">
             <span class="k">
               <input name="name" type="text" size="21"/>
-              <a href="#">
-                <img src="/images/frame/im11.jpg" width="71" height="31" border="0" class="right_top_anniu" />
-              </a>
+                <input type="submit" style="font-size:14px;" value="&nbsp;查&nbsp;询&nbsp;"/>
             </span>
           </li>
         </ul>
