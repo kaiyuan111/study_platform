@@ -1,0 +1,95 @@
+.ui-helper-clearfix:before,
+.ui-helper-clearfix:after {
+	content: "";
+	display: table;
+	border-collapse: collapse;
+}
+.ui-helper-clearfix:after {
+	clear: both;
+}
+.ui-helper-clearfix {
+	min-height: 0; /* support: IE7 */
+}
+.ui-front {
+	z-index: 100;
+}
+.ui-tabs .ui-tabs-nav {
+	margin: 0;
+	padding-top: 5px;
+	padding-right: 10px;
+	padding-bottom: 0;
+	padding-left: 90px;
+}
+.ui-tabs .ui-tabs-nav li {
+	list-style: none;
+	float: left;
+	position: relative;
+	top: 0;
+	padding: 0;
+	white-space: nowrap;
+	margin-top: 1px;
+	margin-right: 0.2em;
+}
+.ui-tabs .ui-tabs-nav li a {
+	float: left;
+	text-decoration: none;
+	padding-top: -5px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+}
+
+
+.ui-tabs .ui-tabs-panel {
+	border-width: 0;
+	padding: 1em 1.4em;
+	background: none;
+}
+
+.ui-widget {
+	
+	font-size: 14px;
+	line-height: 25px;
+	text-decoration: none;
+}
+.ui-widget .ui-widget {
+	font-size: 14px;
+	line-height: 25px;
+	text-decoration: none;
+}
+
+.ui-widget-content {
+	color: #222222/*{fcContent}*/;
+	
+}
+.ui-widget-content a {
+	color: #222222/*{fcContent}*/;
+}
+.ui-widget-header {
+	color: #222222/*{fcHeader}*/;
+	font-weight: bold;
+	
+	
+
+}
+.ui-widget-header a {
+	color: #222222
+	font-size: 15px;
+	font-weight: bold;
+	text-decoration: none;
+	font-size: 15px;
+}
+.ui-widget-header a:hover{
+	color: #179FC9;
+	font-size: 15px;
+	font-weight: bold;
+	text-decoration: none;
+}
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+	font-weight: normal/*{fwDefault}*/;
+	color: #545454/*{fcDefault}*/;
+	background-color: #FFFFFF;
+	background-position: 50% 50%;
+}

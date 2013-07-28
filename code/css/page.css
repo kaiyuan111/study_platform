@@ -1,0 +1,33 @@
+/*CSS meneame style pagination*/
+
+DIV.meneame {
+FONT-SIZE: 12px;COLOR: #000000;TEXT-ALIGN: center;padding: 3px;height: 33px;width: 730px;font-weight: normal;margin-top: 0px;margin-right: 3px;margin-bottom: 3px;margin-left: 3px;background-position: right;
+}
+DIV.meneame A {
+PADDING-RIGHT: 12px;PADDING-LEFT: 11px;FONT-WEIGHT: normal;PADDING-BOTTOM:13px;
+COLOR: #000000;MARGIN-RIGHT: 3px;PADDING-TOP: 8px;background-image: url(/images/frame/im32.jpg);
+background-repeat: no-repeat;height: 66px;width: 70px;text-decoration: none;
+}
+DIV.meneame A:hover {
+PADDING-RIGHT: 12px;PADDING-LEFT: 11px;FONT-WEIGHT: bold;PADDING-BOTTOM: 13px;COLOR: #000000;MARGIN-RIGHT: 3px;PADDING-TOP: 8px;
+background-image: url(/images/frame/im32.jpg);background-repeat: no-repeat;height: 66px;width: 70px;
+}
+DIV.meneame A:active {
+PADDING-RIGHT: 12px;PADDING-LEFT: 11px;FONT-WEIGHT: bold;PADDING-BOTTOM: 13px;COLOR: #000000;MARGIN-RIGHT: 3px;
+PADDING-TOP: 8px;background-image: url(/images/frame/im32.jpg);background-repeat: no-repeat;height: 66px;width: 70px;
+}
+DIV.meneame SPAN.current {
+PADDING-RIGHT: 12px;PADDING-LEFT: 11px;FONT-WEIGHT: bold;
+PADDING-BOTTOM:13px;COLOR: #000000;MARGIN-RIGHT: 3px;PADDING-TOP: 8px;background-image: url(/images/frame/im32.jpg);
+background-repeat: no-repeat;height: 66px;width: 70px;
+}
+DIV.meneame SPAN.disabled {
+PADDING-RIGHT: 17px;PADDING-LEFT: 11px;PADDING-BOTTOM: 13px;COLOR: #FFFFFF;MARGIN-RIGHT: 3px;PADDING-TOP:8px;
+background-image: url(/images/frame/im31.jpg);height: 66px;width: 90px;
+border: 0px none #ffe3c6;background-repeat: no-repeat;
+}
+DIV.meneame SPAN.disabled_right {
+PADDING-RIGHT: 17px;PADDING-LEFT: 11px;PADDING-BOTTOM: 13px;COLOR: #FFFFFF;
+MARGIN-RIGHT: 3px;PADDING-TOP:8px;background-image: url(/images/frame/im33.jpg);height: 66px;width: 90px;
+border: 0px none #ffe3c6;background-repeat: no-repeat;
+}

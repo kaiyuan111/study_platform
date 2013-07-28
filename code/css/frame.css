@@ -13,22 +13,36 @@ input,select,button{font:12px Verdana,Arial,Tahoma;vertical-align:middle;}
 .f18{font-size:18px;font-family:"黑体"; color:#585858; height:42px; line-height:42px;}
 .bg{background:url(/images/frame/head_bg.png) repeat-x; width:100%; height:100px; text-shadow:10px; z-index:9;}
 .mt190{margin-top:30px;}
+
+/*顶部导航*/
 .head{width:1006px; height:84px; margin:0 auto;}
 .head .logo{float:left;}
 .head .home{float:right;}
 
 .content{width:1006px; overflow:hidden; margin:0 auto;}
+/*左侧导航*/
 .content .leftnav {float:left; width:176px; color:#6c6b6d;}
 .content .leftnav .Nav_1{background:url(/images/frame/Add_Class_left_1.png) no-repeat; width:106px; height:75px; padding-left:70px; font-size:13px; font-family:"黑体"; line-height:85px; font-weight:bold; overflow:hidden;}
 .content .leftnav .Nav_2{background:url(/images/frame/Add_Class_left_2.png) no-repeat; width:150px; height:48px; padding-left:26px; padding-top:8px; font-size:13px; font-family:"黑体"; line-height:22px; font-weight:bold;}
 .content .leftnav ul li{background:url(/images/frame/Add_Class_left_li.png) no-repeat;height:100px; width:176px;}
 .content .leftnav ul li:hover{background:url(/images/frame/Add_Class_left_li_move.png) no-repeat;}
-.content .leftnav ul li.move{background:url(/images/frame/Add_Class_left_li_move.png) no-repeat;}
+.content .leftnav ul li.click{background:url(/images/frame/Add_Class_left_li_move.png) no-repeat;}
 
+/*主体*/
 .content .main {float:left; width:830px;}
-
-
+.content .main .top{ height:48px; width:830px; border-bottom:#ccc 1px solid; font-size:14px; font-family:"黑体"; color:#9a9a9a;}
+.content .main .top .home{width:60px; border-right:#ccc 1px solid; margin-right:20px;}
 .foot{background:url(/images/frame/foot.png) no-repeat; width:1006px; height:60px; line-height:60px; color:#fff; text-align:right; margin:20px auto 0 auto;}
+
+
+/*主体render内容*/
+.content .main .right_content .param_input { background-repeat: no-repeat;height: 46px;width: 770px;margin-right: auto;margin-left: auto;margin-bottom: 16px;background-position: top;margin-top:14px;}
+.content .main .right_content .param_input .searchname {height: 30px;width: 80px;padding-top: 15px;font-size: 15px;text-decoration: none; color:#888787;font-weight: bold;float: left; }
+.content .main .right_content .param_input_back { height: 30px;width: 407px;padding-left: 70px;padding-top: 0px;font-weight: bold;float: left;}
+
+.content .main .right_content .render_output {background:url(/images/frame/Add_Class_content.png) no-repeat; width:780px; height:760px; margin:25px 0 0 30px; position:relative;}
+
+
 
 
 

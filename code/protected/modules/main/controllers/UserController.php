@@ -84,7 +84,7 @@ class UserController extends Controller
             }
         }
 
-        $this->render('edit',array('entity'=>$usrInfo,'roles'=>$roles,'label'=>$label));
+        $this->render('test',array('entity'=>$usrInfo,'roles'=>$roles,'label'=>$label));
     }
 
     public function actionLogin()

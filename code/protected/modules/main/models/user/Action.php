@@ -36,6 +36,7 @@ class Action extends CActiveRecord
                     // 点击的图片在子目录里，名字和不点击图片名字相同
                     'clickpath'=>"/images/frame/leftnav/click/".$file,
                 );
+                // 当前的图片是否从属于当前action,即是否被点击
                 $r['click'] = false;
                 if(!empty($action['logo'])&&$action['logo']==$r['path']) $r['click'] = true;
                 $ret[] = $r;
@@ -43,4 +44,5 @@ class Action extends CActiveRecord
         }
         return $ret;
     }
+
 }

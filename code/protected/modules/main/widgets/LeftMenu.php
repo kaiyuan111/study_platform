@@ -11,27 +11,28 @@ class LeftMenu extends CWidget
         preg_match("/(^.*?)\?|(^.*)/",$_SERVER['REQUEST_URI'],$matchs);
         $currentRoute  = empty($matchs[1]) ? $matchs[2] : $matchs[1];
         $actions = Privilege::getMenu($this->userid);
-        $content = " <ul> ";
+        $content = " <ul class='left_nav_ul'> ";
         foreach($actions as $k=>$v) {
+            if(preg_match("|^{$v['route']}|",$currentRoute)) {
+                // 点击后
+                $logopath = $v['logo_click'];
+                $class = "click";
+            } else {
+                $logopath = $v['logo'];
+                $class = "";
+            }
             if($this->type=='logo'&&!empty($v['logo'])) {
-                if(preg_match("|^{$v['route']}|",$currentRoute)) {
-                    // 点击后
-                    $logopath = $v['logo_click'];
-                } else {
-                    $logopath = $v['logo'];
-                }
                 $content .= "
-                    <li><a href='{$v['route']}'><img src='{$v['logo']}' /></a></li>
-                ";
+                    <li class='{$class}'><a href='{$v['route']}'><img src='{$logopath}' /></a></li>
+                    ";
             } else {
                 $content .= "
-                    <li><a href='{$v['route']}'>{$v['aname']}</a></li>
-                ";
+                    <li class='{$class}'><a href='{$v['route']}'>{$v['aname']}</a></li>
+                    ";
             }
         }
         $content .= " </ul> ";
-        echo $content;
-        //$this->render('main.views.widget.left_menu',array('actions'=>$actions));
+        $this->render('main.views.widget.left_menu',array('show'=>$content));
     }
 
 }

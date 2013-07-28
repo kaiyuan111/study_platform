@@ -1,11 +1,22 @@
-<hr>
+<div style='background-image: url(/images/frame/im34.jpg);' class="param_input">
+<div class="param_input_back">
+    <span class='searchname'>用户名称</span>
+    <form class="jqtransform" method="post" action="/main/user/list">
+    <div class="rowElem"><input type="text" name="name"/></div>
+    <div class="rowElem"><input type="submit" name="query" value="查询"/></div>
+    <button id="addnew">新增</button>
+    <!--<input type="submit" name="all" value="查询所有"/>-->
+    </form>
+</div>
+</div>
+<!--
 <form method="post" action="/main/user/list">
 账户:<input type="text" name="name"/>
 <input type="submit" name="query" value="查询"/>
 <input type="submit" name="all" value="查询所有"/>
 </form>
-<button id="addnew">新增</button>
-<hr>
+-->
+<div class='render_output'>
 <table id="elem_table" cellpadding="0" cellspacing="0" border="0" class="stdtable">
     <thead class="center">
     <tr>
@@ -22,12 +33,18 @@
 
 <div ></div>
 <div id="pagination" class="pagination"></div>
+</div><!--.render_output-->
 
+<script type="text/javascript" src="/js/jquery.jqtransform.js" ></script>
+<link rel="stylesheet" href="/css/jqtransform.css" type="text/css" media="all" />
 <script src="/js/jquery.pagination.js"></script>
 <link rel="stylesheet" type="text/css" href="/css/pagination.css"/>
 <script>
 
 (function($){
+    //$('form.jqtransform').jqTransform();
+    //$('#form').jqTransform({imgPath:'/images/'});
+
     $("#addnew").on('click',function(){
         window.location.href="/main/user/edit";
     });
