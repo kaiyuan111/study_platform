@@ -28,6 +28,7 @@ class UserController extends Controller
         }
 
         // 过滤超极管理员
+        $users = array();
         foreach($usrInfos as $user) {
             if($user['rname']!='superman') $users[] = $user;
         }
@@ -51,14 +52,13 @@ class UserController extends Controller
         foreach($roleInfos as $role) {
             if($role['rname']!='superman') $roles[] = $role;
         }
-        // var_dump($_REQUEST);
-        // exit;
+        // var_dump($_REQUEST); exit;
 // 
         if(isset($_REQUEST['id'])&&$_REQUEST['id']!='') {
             // 修改
             $usrInfo = $usr->getUserWithRole('uid=:uid',array(':uid'=>$_REQUEST['id']));
             $usrInfo = $usrInfo[0];
-            if(!empty($_REQUEST['modify'])) {
+            if(isset($_REQUEST['modify'])) {
                 $usr->updateByPk($_REQUEST['id'],array(
                     'uname'=>$_REQUEST['name'],
                     'email'=>$_REQUEST['email'],
@@ -74,7 +74,7 @@ class UserController extends Controller
                 $this->render('edit',array('roles'=>$roles,'entity'=>$usrInfo[0],'label'=>'has_usr'));
                 exit;
             }
-            if(!empty($_REQUEST['modify'])) {
+            if(isset($_REQUEST['modify'])) {
                 $usr->uname = $_REQUEST['name'];
                 $usr->email = $_REQUEST['email'];
                 $usr->pwd = $_REQUEST['pwd'];
@@ -84,7 +84,7 @@ class UserController extends Controller
             }
         }
 
-        $this->render('test',array('entity'=>$usrInfo,'roles'=>$roles,'label'=>$label));
+        $this->render('edit',array('entity'=>$usrInfo,'roles'=>$roles,'label'=>$label));
     }
 
     public function actionLogin()

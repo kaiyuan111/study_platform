@@ -4,8 +4,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $this->actionName;?></title>
 <link href="/css/frame.css" rel="stylesheet" media="screen" type="text/css" />
+<link href="/css/yongh.css" rel="stylesheet" media="screen" type="text/css" />
+<link href="/css/cj_css.css" rel="stylesheet" media="screen" type="text/css" />
+<link href="/css/css.css" rel="stylesheet" media="screen" type="text/css" />
 <!--<script type="text/javascript" src="/js/jquery-1.9.1.min.js" ></script>-->
-<script type="text/javascript" src="/js/jquery.js" ></script>
+<script type="text/javascript" src="/js/jquery171.js" ></script>
+
+<script type="text/javascript" src="/js/jquery.jqtransform.js" ></script>
+<link rel="stylesheet" href="/css/jqtransform.css" type="text/css" media="all" />
+<script language="javascript">
+        $(function(){
+            $('form').jqTransform({imgPath:'/images/frame/'});
+        });
+</script>
 </head>
 
 <body>

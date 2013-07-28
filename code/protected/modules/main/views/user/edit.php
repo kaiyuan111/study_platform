@@ -1,24 +1,67 @@
-<?php if($label=='has_usr') { ?>
-<div class='tip'>已经有此用户</div>
-<?php } ?>
-<form method='post' action='/main/user/edit'>
-用戶id:<?php echo !empty($entity['uid']) ? $entity['uid']:''; ?>
-<input type='hidden' name='id' value='<?php echo !empty($entity['uid']) ? $entity['uid']:''; ?>' /><br>
-账号:<input type='text' name='name' value='<?php echo !empty($entity['uname']) ? htmlspecialchars($entity['uname']):'';?>'/><br>
-邮箱:<input type='text' name='email' value='<?php echo !empty($entity['email']) ? htmlspecialchars($entity['email']):'';?>'/><br>
-密码:<input type='password' name='pwd' value='<?php echo !empty($entity['pwd']) ? htmlspecialchars($entity['pwd']):'';?>'/><br>
-<select id='role_select' name='rid'>
-<?php foreach($roles as $role) {?>
-<option value ="<?php echo $role['rid'];?>"><?php echo htmlspecialchars($role['rname']);?></option>
-<?php }?>
-</select>
-<input type='submit' name='modify' value="提交">
-</form>
+<div class="Add_Class_content">
+  <div class="top">
+    <img src="/images/frame/cont_home.png" align="absmiddle" class="home" />
+    <span>用户管理</span>
+    <div class="right_top_sous">
+      <form method='post' action='/main/user/list'>
+        <ul>
+          <li class="li">
+            <span class="k">
+              <input name="name" type="text" size="21"/>
+              <a href="#">
+                <img src="/images/frame/im11.jpg" width="71" height="31" border="0" class="right_top_anniu" />
+              </a>
+            </span>
+          </li>
+        </ul>
 
-<script type='text/javascript'>
-(function($){
-    roleid = '<?php echo !empty($entity['rid']) ? $entity['rid']:''; ?>';
-    console.log(roleid);
-    $("#role_select option[value='"+roleid+"']").attr('selected','selected');
-})(jQuery)
-</script>
+      </form>
+
+    </div>
+  </div>
+
+  <div class="cont" style="height:600px">
+    <div class="tittle_c">编辑用户</div>
+    <?php if($label=='has_usr') { ?>
+    <div class='tip'>已经有此用户</div>
+    <?php } ?>
+    <div class="form">
+      <form  method='post' action='/main/user/edit'>
+        <input type='hidden' name='id' value='<?php echo !empty($entity['uid']) ? $entity['uid']:''; ?>
+        ' />
+        <br>
+        <ul>
+          <li class="li">
+            <span class="k" style="height:42px">
+              <input name="name" type="text" class="input" value="<?php echo !empty($entity['uname']) ? htmlspecialchars($entity['uname']):'用户名';?>" size="31"/></span>
+          </li>
+          <li class="li">
+            <span class="k" style="height:42px">
+              <input name="pwd" type="text" class="input" value="<?php echo !empty($entity['pwd']) ? htmlspecialchars($entity['pwd']):'密码';?>" size="31"/></span>
+          </li>
+          <li class="li">
+            <span class="k" style="height:42px">
+              <input name="email" type="text" class="input" value="<?php echo !empty($entity['email']) ? htmlspecialchars($entity['email']):'邮箱';?>" size="31"/></span>
+          </li>
+          <li class="o_none">
+            <span class="k"  style="height:42px">
+              <select name="rid" style="width:160px;">
+                <?php foreach($roles as $role) {?>
+                <option value ="<?php echo $role['rid'];?> "> <?php echo htmlspecialchars($role['rname']);?></option>
+                <?php }?>
+              </select>
+            </span>
+          </li>
+
+        </ul>
+        <div class="submit_a">
+          <input type="submit" name='modify' value='&nbsp;&nbsp;确&nbsp;&nbsp;定&nbsp;&nbsp;' />
+        </div>
+      </form>
+
+    </div>
+    <!--form--> </div>
+  <!--cont-->
+  <div class="newz_k_foot"></div>
+</div>
+<!--Add_Class_content-->
