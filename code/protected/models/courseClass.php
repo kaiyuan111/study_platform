@@ -9,7 +9,7 @@ class CourseClass extends CActiveRecord
 
     public function tableName()
     {
-        return '`m-courseClass`';
+        return '`m-courseclass`';
     }
 
     

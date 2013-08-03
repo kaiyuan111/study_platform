@@ -1,4 +1,3 @@
-
 CREATE TABLE `m-action` (
   `aid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `aname` varchar(20) NOT NULL DEFAULT '',
@@ -9,8 +8,7 @@ CREATE TABLE `m-action` (
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`aid`),
   UNIQUE KEY `aname` (`aname`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8
-
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
 
 
 CREATE TABLE `m-role` (
@@ -19,14 +17,14 @@ CREATE TABLE `m-role` (
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`rid`),
   UNIQUE KEY `name` (`rname`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
+) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
 CREATE TABLE `m-role-action` (
   `rid` int(10) unsigned NOT NULL DEFAULT '0',
   `aid` int(10) unsigned NOT NULL DEFAULT '0',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`rid`,`aid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
 CREATE TABLE `m-user` (
   `uid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -38,13 +36,13 @@ CREATE TABLE `m-user` (
   CURRENT_TIMESTAMP,
   PRIMARY KEY (`uid`),
   UNIQUE KEY `name` (`uname`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8
+) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
-CREATE TABLE `m-courseClass` (
+CREATE TABLE `m-courseclass` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
 
 CREATE TABLE `m-course` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
