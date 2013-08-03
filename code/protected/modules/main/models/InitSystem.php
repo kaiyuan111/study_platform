@@ -19,10 +19,27 @@ class InitSystem
 
     static public function initRoles()
     {
+    	
+    	$roleArray = array('superman', 'teacher', 'student');
+    	foreach($roleArray as $value)
+    	{
+    		$roleInfo = Role::model()->find("rname=:rname", array(":rname"=>$value));
+    		if (!empty($roleInfo))
+    		{
+    			continue;
+    		}
+    		else 
+    		{
+    			$role = new Role();
+    			$role->rname = $value;
+    			$role->save();
+    		}
+    	}
     }
 
     static public function initUsers()
     {
+    	
     }
 
     /**

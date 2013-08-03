@@ -3,12 +3,14 @@
 class UserController extends Controller
 {
     public $layout = '/layouts/frame_with_leftnav';
-
+	
+	const ACCOUNT_PATTERN = '/^[A-Za-z\x{4e00-\x{9fa5}}][A-Za-z0-9\x{4e00-\x{9fa5}_-}{0-20}]$/u';
     public function actionInitSystem()
     {
         //todo 增加权限限制
         InitSystem::initActions();
         InitSystem::initSupperUser('superman','superman');
+        InitSystem::initRoles();
     }
 
     public function actionIndex()
@@ -87,22 +89,72 @@ class UserController extends Controller
         $this->render('edit',array('entity'=>$usrInfo,'roles'=>$roles,'label'=>$label));
     }
 
+    //登录
     public function actionLogin()
     {
-        $url = isset($_REQUEST['url']) ? $_REQUEST['url'] : '/';
-        if(isset($_REQUEST['login_sub'])&&!empty($_REQUEST['name'])&&!empty($_REQUEST['pwd'])) {
+    	$this->layout = '';
+        $url = isset($_REQUEST['url']) ? $_REQUEST['url'] : '';
+        if(isset($_POST['login_sub'])&&!empty($_POST['name'])&&!empty($_POST['pwd'])) 
+        {
             // 创建超极管理员
-            Login::logins($_REQUEST['name'],$_REQUEST['pwd']);
-            // var_dump($_REQUEST,$_SESSION);
-            $this->redirect($url);
+            $loginUserInfo = Login::logins($_REQUEST['name'],$_REQUEST['pwd']);
+            if (!empty($loginUserInfo))
+            {
+            	if (!empty($url))
+            	{
+            		$this->redirect($url);
+            	}
+            	else 
+            	{
+            		if ($loginUserInfo['rid'] == 1) //如果是管理员
+            		{
+            			$this->redirect('/admin/list');
+            		}
+            		elseif ($loginUserInfo['rid'] == 2)   //老师
+            		{
+            			$this->redirect('/teacher/creategroup');  //暂时为新建小组
+            		}
+            		elseif ($loginUserInfo['rid'] == 3)   //学生
+            		{
+            			$this->redirect('/student/list');
+            		}
+            	}
+            }
+            else 
+            {
+            	$this->render('error', '账号错误');
+            }
         }
-        // var_dump($_SESSION);
-        //unset($_SESSION['user']);
+        
         $this->render('login',array(
             'url' => $url,
         ));
     }
 
+    //注册
+    public function actionRegister()
+    {
+    	$account = isset($_POST['name']) ? trim($_POST['name']) : '';
+    	if (!$this->validateAccount($account))
+    	{
+    		$this->render('error', '用户名只能包括英文字符汉字和数字，并且不能以数字开头'); 
+    	}
+    	$pwd = isset($_POST['pwd']) ? trim($_POST['pwd']) : '';
+    	$pwdConfirm = isset($_POST['pwdconfirm']) ? trim($_POST['pwdconfirm']) : '';
+    	if (empty($pwd) || $pwd != $pwdConfirm) 
+    	{
+    		$this->render('error', '两次密码不一致');;
+    	}
+    	$email = isset($_POST['email']) ? trim($_POST['email']) : '';
+    	
+    	$user = new User();
+    	$user->uname = $account;
+        $user->email = $email;
+        $user->pwd = $pwd;
+        $user->rid = 2;
+        $user->save();
+        echo "reigister success";
+    }
     public function actionLogout()
     {
         Login::logout();
@@ -115,4 +167,15 @@ class UserController extends Controller
         $this->redirect('/main/user/list');
     }
 
+    private function validateAccount($account)
+    {
+    	 if (preg_match(self::ACCOUNT_PATTERN, $account))
+    	 {
+    	 	return true;
+    	 }
+    	 else
+    	 {
+    	 	return false;
+    	 }
+    }
 }

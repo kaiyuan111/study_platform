@@ -29,9 +29,9 @@
     <div class="content">
 
         <div class="leftnav">
-            <div class="Nav_1">老师,您好!</div>
+            <div class="Nav_1"><?php echo $this->userInfo['uname'] . ',您好!';?></div>
             <div class="Nav_2">2013年6月18日<br />星期二&nbsp;&nbsp; 10：34:05</div>
-            <?php $this->widget('LeftMenu', array('userid' => $this->userid,'type'=>'logo')); ?>
+            <?php $this->widget('application.modules.main.widgets.LeftMenu', array('userid' => $this->userid,'type'=>'logo')); ?>
         </div>
         <?php echo $content; ?>
      </div><!--content-->
