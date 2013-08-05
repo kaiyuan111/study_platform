@@ -31,7 +31,7 @@ class Action extends CActiveRecord
             $filepath = $path.$file;
             if(is_file($filepath)) {
                 $r = array(
-                    'unionpath'=>"/images/frame/leftnav/".$file."&"."/images/frame/leftnav/".$file,
+                    'unionpath'=>"/images/frame/leftnav/".$file."&"."/images/frame/leftnav/click/".$file,
                     'path'=>"/images/frame/leftnav/".$file,
                     // 点击的图片在子目录里，名字和不点击图片名字相同
                     'clickpath'=>"/images/frame/leftnav/click/".$file,
