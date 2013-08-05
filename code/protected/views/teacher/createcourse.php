@@ -28,7 +28,7 @@
                              </select>
                          </span>
            				<div class="right_tianjia">
-                        <div align="left"><a href="#">+ 添加科目</a></div>
+                        <div align="left"><a href="javascript:void(0)" id="addcourseclass">+ 添加科目</a></div>
                     	</div>
                     </li>
                  	<li class="li"><span class="h">课程简介&nbsp;：<font color="#cb0000">*&nbsp;&nbsp;</font></span><span >
@@ -38,5 +38,28 @@
              <div class="submit"><input type="submit" value="&nbsp;&nbsp;确&nbsp;&nbsp;定&nbsp;&nbsp;" /></div>
              </form>         	
          </div>
+         <div id="editDiv" style="display:none;position: absolute;width:680px; height:100px; left: 30px;top: 140px;z-index:10"><p style="color:red">请输入科目：</p>
+         <textarea name="content" style="width:680px;height:40px;"></textarea>
+         <input id="inputButton" type="submit" style="width:84px; height:33px; background:url(/images/frame/submit_on.png) no-repeat; border:0;" value=""  />
+         </div>
      </div>
 </div>
+
+<script charset="utf-8" src="/kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="/kindeditor/lang/zh_CN.js"></script>
+<link rel="stylesheet" href="/kindeditor/themes/default/default.css" />
+<script language="javascript">
+$("#addcourseclass").click(function(){
+ 	var editDom = $('#editDiv');
+	editDom.css('display','block');
+	var editor;
+	KindEditor.ready(function(K) {
+		editor = K.create('textarea[name="content"]', {
+			allowFileManager : true
+		});
+	});
+})
+$("#inputButton").click(function(){
+			alert("fuck,world");
+		})
+</script>

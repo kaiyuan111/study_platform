@@ -133,8 +133,8 @@ class TeacherController extends Controller
     }
     
 //查看消息
-    public function actionMessageList()
+    public function actionAddContent()
     {
-    	$this->render('message_list');
+    	$this->render('neir_bianh');
     }
 }
