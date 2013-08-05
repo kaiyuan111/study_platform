@@ -33,7 +33,7 @@
         window.location.href="/main/action/edit";
     });
     $countElems = <?php echo count($entitys);?>;
-    $countPerPage = 50;
+    $countPerPage = 20;
     tbody = new Array();
         <?php  foreach($entitys as $e) { ?>
             <?php if(!empty($e)) {?>
