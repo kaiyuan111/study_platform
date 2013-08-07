@@ -7,10 +7,10 @@
     		<form class="jqtr" id="form" name="form" method="post" action="">
     			<div id="uboxstyle" >
 	  			<select name="language" id="language" style="width:120px">
-	    			<option>请选择</option>
-	    			<option>1</option>
-	    			<option>2</option>
-	    			<option>3</option>
+	    			<option value="0">请选择</option>
+	    			<?php foreach ($courseList as $key => $value){?>
+	    				<option value="<?php echo $value->id;?>" <?php if (!empty($currentCourse) && $value->id == $currentCourse['id']){?> selected="selected" <?php }?>><?php echo $value->name;?></option>
+	    			<?php }?>
 	  			</select>
     			</div>
     		</form>
@@ -24,9 +24,18 @@
 			
 	<div class="cont_b">
    	<div class="tittle_b">章节目录</div>
+   	<?php if (empty($currentCourse))
+   		{ 
+   			echo "请选择课程";
+   		}
+   		 else
+   		 { 
+   		 	if (empty($currentCourseContent)){echo "还没有任何内容，请先添加内容"; } else {?>
+   		 
     <div id="f2">
 	    <div class="kecheng">
 		<ul id="sidelist2">
+			<?php foreach ($currentCourseContent as $key => $value){?>
 			<li>
 				<span>
 				<a href="#">
@@ -34,33 +43,16 @@
 				</a>
 				<a href="#">
 				<img src="/images/frame/im22.jpg" width="30" height="24" border="0" />
-				</a></span>第一章 地质学研究对象
-			</li>
-			<li>
-				<span>
-				<a href="#">
-				<img src="/images/frame/im21.jpg" width="36" height="24" border="0" />
-				</a>
-				<a href="#">
-				<img src="/images/frame/im22.jpg" width="30" height="24" border="0" />
-				</a></span>第二章 地质学研究对象
-			</li>
-			<li>
-				<span>
-				<a href="#">
-				<img src="/images/frame/im21.jpg" width="36" height="24" border="0" />
-				</a>
-				<a href="#">
-				<img src="/images/frame/im22.jpg" width="30" height="24" border="0" />
-				</a></span>第三章 地质学研究对象
+				</a></span><?php echo $value['title'];?>
 			</li>
 		</ul>
 		</div>
 	</div>
+	<?php }}}?>
 	<div style="height:50px"></div>
 	<div class="clear"></div>
 <!-- 页码开始-->
-	<div class="meneame">
+<!--  	<div class="meneame">
         <div align="right">
         <span class="disabled"></span>
         <span class="current">1</span>
@@ -69,8 +61,12 @@
         <a href="#?page=4">4</a>
         <span class="disabled_right"></span>
         </div>
-	</div>
+	</div>-->
 <!-- 页码结束-->
     </div>
 	<div class="newz_k_foot"></div>
 </div>
+
+<script language="javascript">
+
+</script>

@@ -3,7 +3,7 @@
         <div class="cont_e">
           <div class="tittle_e">编辑内容</div>
           <div class="form_a">
-            <div class="biaoti16">课题名称：网页设计</div>
+            <div class="biaoti16">课题名称：网页设计<?php //echo $currentCourse['name'];?></div>
             <div class="biaoti15">
               <div class="w">编辑内容:</div>
               <div class="r">

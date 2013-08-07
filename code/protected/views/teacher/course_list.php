@@ -16,26 +16,22 @@
 		<div class="clear"></div>	
 		<div id="tabs-1">
 			<div class="kecheng">
-				<div class="biaoti14">计算机科学类</div>
+				<!--  <div class="biaoti14">计算机科学类</div>-->
 					<ul id="sidelist">
+						<?php foreach ($courseList as $key => $value) {?>
 						<li>
 							<span>
 								<a href="#"><img src="/images/frame/im21.jpg" width="36" height="24" border="0" /></a>
 								<a href="#"><img src="/images/frame/im22.jpg" width="30" height="24" border="0" /></a>
-							</span>网页设计
+							</span><?php echo $value['name'];?>
 						</li>
-						<li>
-							<span>
-								<a href="#"><img src="/images/frame/im21.jpg" width="36" height="24" border="0" /></a>
-								<a href="#"><img src="/images/frame/im22.jpg" width="30" height="24" border="0" /></a>
-							</span>网页设计
-						</li>
+						<?php }?>
 					</ul>
 			</div>
 		</div>
 		<div id="tabs-2">		
 			<div class="kecheng">
-				<div class="biaoti14">计算机科学类</div>
+				<!--  <div class="biaoti14">计算机科学类</div>-->
 					<ul id="sidelist">
 						<li><span><a href="#">申请编辑</a></span>网页设计</li>
 						<li><span><a href="#">申请编辑</a></span>网页设计</li>

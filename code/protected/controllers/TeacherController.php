@@ -3,6 +3,10 @@
 class TeacherController extends Controller
 {
     //public $layout = '/layouts/frame_with_leftnav';
+    
+	static $msgArray = array(0=>'成功',
+							-1=>'参数错误');
+	
     public $layout = 'application.modules.main.views.layouts.frame_with_leftnav';
 
     public function actionIndex()
@@ -54,8 +58,27 @@ class TeacherController extends Controller
     //创建课程页面
     public function actionCreateCourse()
     {
+    	//echo "hello,world";exit;
     	$courseClass = CourseClass::model()->findAll();
     	$this->render('createcourse' , array('couseClass' => $courseClass));
+    }
+    
+    public function actionSaveCourseclass()
+    {
+    	//echo "fuck,world";exit;
+    	$name = isset($_REQUEST['name']) ? trim($_REQUEST['name']) : '';
+    	//echo $name;exit;
+    	if (empty($name))
+    	{
+    		$this->jsonResult(-1);
+    	}
+    	
+    	
+    	$courseClass = new CourseClass();
+    	$courseClass->name = $name;
+    	
+    	$courseClass->save();
+    	$this->jsonResult(0);
     }
     
     public function actionSaveCourse()
@@ -68,7 +91,7 @@ class TeacherController extends Controller
     		$this->render('createcourse', array('name' => $nameError));
     	}
     	
-    	$courseClass = isset($_POST['classid']) ? intval($_POST['clasid']) : 0;
+    	$courseClass = isset($_POST['classid']) ? intval($_POST['classid']) : 0;
     	if (empty($courseClass)) 
     	{
     		//$this->render('error', );
@@ -88,24 +111,48 @@ class TeacherController extends Controller
     	$newCourse->name = $courseName;
     	$newCourse->desc = $courseDesc;
     	$newCourse->classid = $courseClass;
-    	$newCourse->createor = $this->userid;
+    	$newCourse->creator = $this->userid;
     	
     	$newCourse->save();
+    	//$courseClass = CourseClass::model()->findAll();
+    	$this->render('createcoursesuc', '创建成功');
     }
     
     //课程列表页面
     public function actionCourseList()
     {
     	$course = new Course();
-    	//$courseList = $course->find('creator=:creator' , array(':creator' => $this->userid));
-    	//$this->render('course_list', array('courseList' => $courseList));
-    	$this->render('course_list');
+    	$courseList = $course->findAll('creator=:creator' , array(':creator' => $this->userid));
+    	
+    	//$assistCourseList = 
+    	$this->render('course_list', array('courseList' => $courseList));
+    	
+    	//$this->render('course_list');
     }
     
-	//管理内容
+	//管理内容,添加编辑内容
     public function actionManageCourse()
     {
-    	$this->render('course_content');
+    	//获取当前老师所有的课程
+    	$course = new Course();
+    	$courseList = Course::model()->findAll('creator=:creator' , array(':creator' => $this->userid));
+    	//var_dump($courseList);exit;
+    	$currentCourse = array();
+    	$currentCourseContent = array();
+    	$courseId = isset($_REQUEST['courseid']) ? intval($_REQUEST['courseid']) : 0;
+    	if (!empty($courseId))
+    	{
+    		$currentCourse = Course::model()->find('id=:id', array(':id'=>$courseId))->getAttributes();  //已选择课程
+    		if (!empty($currentCourse)) // 当前课程名称
+    		{
+    			$courseContent = new CourseContent();
+    			$currentCourseContent = $courseContent->findAll('courseid=:courseid',array(':courseid'=>$courseId));
+    		}
+    	}
+    	
+    	$this->render('course_content', array('currentCourse' => $currentCourse,
+    										'currentCourseContent' => $currentCourseContent,
+    										'courseList' => $courseList));
     }
     
 	//创建编辑小组
@@ -132,9 +179,45 @@ class TeacherController extends Controller
     	$this->render('message_list');
     }
     
-//查看消息
+	//添加内容页面
     public function actionAddContent()
     {
+    	/*$courseId = isset($_REQUEST['courseid']) ? intval($_REQUEST['courseid']) : 0;
+    	if (empty($courseId))
+    	{
+    		$this->render('error' , '课程id必须');
+    	}
+    	
+    	$currentObject = Course::model()->find('id=:id', array(':id'=>$courseId));
+    	if (empty($currentObject))
+    	{
+    		$this->render('error' , '课程信息不存在');
+    	}
+    	
+    	$currentCourse = $currentObject->getAttributes();  //已选择课程
+   		
+    	$this->render('neir_bianh', array('currentCourse' => $currentCourse, 
+    										'courseId' => $courseId));*/
     	$this->render('neir_bianh');
+    }
+    
+    //保存内容
+    public function actionSaveContent()
+    {
+    	$title = isset($_REQUEST['title']) ? intval($_REQUEST['title']) : 0;
+    	$courseId = isset($_REQUEST['courseid']) ? intval($_REQUEST['courseid']) : 0;
+    	
+    }
+    
+    
+    public function jsonResult($retCode = 0, $info = array())
+    {
+    	$msgArray = 
+    	$result = array('retCode' => $retCode,
+    					'msg' => self::$msgArray[$retCode],
+    					'info' => $info);
+    	
+    	echo json_encode($result);
+    	exit;
     }
 }

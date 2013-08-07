@@ -60,6 +60,21 @@ $("#addcourseclass").click(function(){
 	});
 })
 $("#inputButton").click(function(){
-			alert("fuck,world");
+			var content = $('textarea[name="content"]').val();
+			$.ajax({
+				type : 'post',
+				data : 'name=' + content,
+				dataType : 'json',
+				url : '/teacher/savecourseclass',
+				success: function(data)
+				{
+					if(data.retCode == 0)
+					{
+						alert("添加成功");window.location.reload();
+					}
+				}
+			});
 		})
+		
+		
 </script>
