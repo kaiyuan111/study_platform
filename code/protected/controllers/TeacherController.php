@@ -158,7 +158,29 @@ class TeacherController extends Controller
 	//创建编辑小组
     public function actionCreateGroup()
     {
-    	$this->render('group_edit');
+        //echo "<pre>";var_dump($_REQUEST,$_FILES);exit;
+        $course = new Course;
+        $courseList = $course->findAll('creator=:creator' , array(':creator' => $this->userid));
+        if(isset($_REQUEST['sub'])) {
+            $group = new Group;
+            $group->name = $_REQUEST['name'];
+            $group->creator = $this->userid;
+            $group->description = $_REQUEST['description'];
+            $group->courseid = $_REQUEST['courseid'];
+            $group->jointype = $_REQUEST['jointype'];
+            $group->save();
+            if($_FILES['file']['error']==0) {
+                $imgpath = Yii::app()->params['img_upload_path'];
+                preg_match('|^image/(.*)|',$_FILES['file']['type'],$match);
+                $filetype = $match[1];
+                $filepath = $imgpath.'grouplogo'.$group->id.'.'.$filetype;
+                if(file_exists($filepath)) {
+                    unlink($filepath);
+                }
+                move_uploaded_file($_FILES['file']['tmp_name'],$filepath);
+            }
+        }
+        $this->render('group_edit',array('course_list'=>$courseList));
     }
     
 	//小组人员管理
