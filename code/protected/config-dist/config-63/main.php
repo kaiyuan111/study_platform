@@ -97,5 +97,6 @@ return array(
         // using Yii::app()->params['paramName']
         'params'=>array(
             // this is used in contact page
+            'img_upload_path'=>'/home/hucong/img1/',
         ),
     );
