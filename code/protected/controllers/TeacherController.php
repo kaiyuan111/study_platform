@@ -115,7 +115,8 @@ class TeacherController extends Controller
     	
     	$newCourse->save();
     	//$courseClass = CourseClass::model()->findAll();
-    	$this->render('createcoursesuc', '创建成功');
+    	//$this->render('createcoursesuc', '创建成功');
+    	$this->redirect('/teacher/courselist');
     }
     
     //课程列表页面
@@ -182,7 +183,7 @@ class TeacherController extends Controller
 	//添加内容页面
     public function actionAddContent()
     {
-    	/*$courseId = isset($_REQUEST['courseid']) ? intval($_REQUEST['courseid']) : 0;
+    	$courseId = isset($_REQUEST['courseid']) ? intval($_REQUEST['courseid']) : 0;
     	if (empty($courseId))
     	{
     		$this->render('error' , '课程id必须');
@@ -195,24 +196,174 @@ class TeacherController extends Controller
     	}
     	
     	$currentCourse = $currentObject->getAttributes();  //已选择课程
+   		$chapterId = isset($_REQUEST['chapterid']) ? intval($_REQUEST['chapterid']) : 0;
+   		$courseContent = array();
+   		$homework = array();
+   		if ($chapterId)
+   		{
+   			//拉取该章内容
+   			$courseContent =  CourseContent::model()->findByPk($chapterId);
+   			if (empty($courseContent))
+    		{
+    			$this->jsonResult(-1);
+    		}
+    		$courseContent = $courseContent->getAttributes();
+    		
+    		//拉取该章习题
+    		$homework = Homework::model()->findAll('chapterid = :chapterid', 
+    											array(':chapterid' => $chapterId));
+    		//var_dump($homework);	exit;								
+			foreach ($homework as $key => &$value)
+			{
+				if ($value['type'] == 1 || $value['type'] == 2)
+				{
+					$value['option'] = explode(',||' , $value['option']);
+				}
+			}
+			//var_dump($homework);	exit;	    											
+   		}
+   		
    		
     	$this->render('neir_bianh', array('currentCourse' => $currentCourse, 
-    										'courseId' => $courseId));*/
-    	$this->render('neir_bianh');
+    										'courseId' => $courseId,
+    										'chapterId' => $chapterId,
+    										'courseContent' => $courseContent,
+    										'homework' => $homework));
+    	//$this->render('neir_bianh');
     }
     
     //保存内容
     public function actionSaveContent()
     {
-    	$title = isset($_REQUEST['title']) ? intval($_REQUEST['title']) : 0;
+    	
+    	$title = isset($_REQUEST['title']) ? trim($_REQUEST['title']) : '';
     	$courseId = isset($_REQUEST['courseid']) ? intval($_REQUEST['courseid']) : 0;
+    	
+    	$content = isset($_REQUEST['content']) ? trim($_REQUEST['content']) : 0;
+    	
+    	if (empty($title) || empty($courseId) || empty($content))
+    	{
+    		//$this->render('showmsg', '标题，课程id和内容不能为空');
+    		$this->jsonResult(-1);
+    	}
+    	
+    	$chapterId = isset($_REQUEST['chapterid']) ? trim($_REQUEST['chapterid']) : '';
+    	if (empty($chapterId))
+    	{
+	    	//var_dump($title, $courseId, $content);
+	    	$courseContent = new CourseContent();
+	    	$courseContent->title = $title;
+	    	$courseContent->courseid = $courseId;
+	    	$courseContent->content = $content;
+	    	$courseContent->save();
+	    	$this->jsonResult(0, array('id'=>$courseContent->id));
+    	}
+    	else
+    	{
+    		$courseContent =  CourseContent::model()->findByPk($chapterId);
+    		if (empty($courseContent))
+    		{
+    			$this->jsonResult(-1);
+    		}
+	    	$courseContent->title = $title;
+	    	$courseContent->courseid = $courseId;
+	    	$courseContent->content = $content;
+	    	$courseContent->save();
+	    	$this->jsonResult(0);
+    	}
+    }
+    
+    //添加习题
+    public function actionSaveHomeWork()
+    {
+    	$title = isset($_REQUEST['title']) ? trim($_REQUEST['title']) : '';
+    	$chapterid = isset($_REQUEST['chapterid']) ? intval($_REQUEST['chapterid']) : 0;
+    	
+    	$type = isset($_REQUEST['type']) ? trim($_REQUEST['type']) : 0;
+    	$option = isset($_REQUEST['option']) ? trim($_REQUEST['option']) : '';
+    	
+    	$homeworkid = isset($_REQUEST['homeworkid']) ? intval($_REQUEST['homeworkid']) : 0;
+    	
+    	if (empty($title) || empty($chapterid) || empty($type))
+    	{
+    		//$this->render('showmsg', '标题，课程id和内容不能为空');
+    		$this->jsonResult(-1);
+    	}
+    	
+    	if (($type == 1 || $type == 2) && empty($option))
+    	{
+    		$this->jsonResult(-1);
+    	}
+   		
+    	if (empty($homeworkid))
+    	{
+	    	//var_dump($title, $courseId, $content);
+	    	$homework = new Homework();
+	    	$homework->title = $title;
+	    	$homework->chapterid = $chapterid;
+	    	$homework->type = $type;
+	    	$homework->option = $option;
+	    	$homework->save();
+	    	$this->jsonResult(0, array('id'=>$homework->id));
+    	}
+    	else
+    	{
+    		
+    		$homework =  Homework::model()->findByPk($homeworkid);
+    		if (empty($homework))
+    		{
+    			$this->jsonResult(-1);
+    		}
+	    	$homework->title = $title;
+	    	$homework->chapterid = $chapterid;
+	    	$homework->type = $type;
+	    	$homework->option = $option;
+	    	$homework->save();
+	    	
+	    	$this->jsonResult(0);
+	    	//$this->jsonResult(0, array('id'=>$homework->id));
+    	}
     	
     }
     
+    public function actionGetHomeWork()
+    {
+    	$homeworkid = isset($_REQUEST['homeworkid']) ? intval($_REQUEST['homeworkid']) : 0;
+    	if (empty($homeworkid)) 
+    	{
+    		$this->jsonResult(-1);
+    	}
+    	
+    	$homework =  Homework::model()->findByPk($homeworkid);
+   		if (empty($homework))
+   		{
+   			$this->jsonResult(-1);
+   		}
+   		$homework = $homework->getAttributes();
+   		$homework['option'] = explode(',||' , $homework['option']);
+   		$this->jsonResult(0, $homework);
+    }
+    
+	public function actionDeleteHomeWork()
+    {
+    	$homeworkid = isset($_REQUEST['homeworkid']) ? intval($_REQUEST['homeworkid']) : 0;
+    	if (empty($homeworkid)) 
+    	{
+    		$this->jsonResult(-1);
+    	}
+    	
+    	$homework =  Homework::model()->findByPk($homeworkid);
+   		if (empty($homework))
+   		{
+   			$this->jsonResult(-1);
+   		}
+   		
+   		$homework->delete();
+   		$this->jsonResult(0);
+    }
     
     public function jsonResult($retCode = 0, $info = array())
     {
-    	$msgArray = 
     	$result = array('retCode' => $retCode,
     					'msg' => self::$msgArray[$retCode],
     					'info' => $info);

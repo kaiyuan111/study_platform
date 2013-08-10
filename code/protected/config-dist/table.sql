@@ -48,18 +48,18 @@ CREATE TABLE `m-course` (
   `name` varchar(50) NOT NULL DEFAULT '',
   `desc` blob  COMMENT '课程简介',
   `classid` int(10) not null comment '所属科目',
-  `createor` bigint(20) NOT NULL COMMENT '创建者',
+  `creator` bigint(20) NOT NULL COMMENT '创建者',
   PRIMARY KEY (`id`),
-  KEY `createor` (`createor`)
+  KEY `creator` (`creator`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
 CREATE TABLE `m-coursecontent` (
- `chapterid` bigint(20) unsigned not null AUTO_INCREMENT comment '章节id',
+ `id` bigint(20) unsigned not null AUTO_INCREMENT comment '章节id',
  `courseid` bigint(20) unsigned not null comment '课程id',
  `title` varchar(255) not null comment '章节标题',
  `content` BLOB  NOT NULL COMMENT '章节内容',
- `reserve` int unsigned not null comment'保留，看是否可用作章节权重等',
- PRIMARY KEY (`contentid`),
+ `reserve` int unsigned not null default 0 comment'保留，看是否可用作章节权重等',
+ PRIMARY KEY (`id`),
  key `courseid`(`courseid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
