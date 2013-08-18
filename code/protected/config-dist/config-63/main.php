@@ -98,5 +98,6 @@ return array(
         'params'=>array(
             // this is used in contact page
             'img_upload_path'=>'/home/hucong/img1/',
+            'group_member_maxnum'=>12,
         ),
     );

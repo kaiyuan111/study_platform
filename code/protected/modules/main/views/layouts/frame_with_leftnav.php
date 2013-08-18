@@ -19,7 +19,7 @@
 <!--  <link rel="stylesheet" href="/css/jqtransform_a.css" type="text/css" media="all" />-->
 <script language="javascript">
         $(function(){
-            $('form.jqtr').jqTransform({imgPath:'/images/frame/'});
+            $('form.jqtr').jqTransform();
         });
 </script>
 </head>

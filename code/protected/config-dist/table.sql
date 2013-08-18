@@ -74,6 +74,7 @@ CREATE TABLE `m-group` (
  `jointype` tinyint unsigned NOT NULL default 1 comment '加入方式（1自由加入，2审核加入，3邀请加入）',
  PRIMARY KEY (`id`),
  key `creator`(`creator`)
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
 CREATE TABLE `m-groupmember` (
