@@ -3,14 +3,13 @@
 	<div class="search_classs">
         <p>选择查看</p>
         <form class="jqtr" action="#">
-            <select name="select">
-                <option value="0">网页设计&nbsp;</option>
-                <option value="1">网页设计&nbsp;</option>
+            <select name="courseid" id="courseselect">
+            	<option value="0" <?php if ($courseId == 0){?> selected="true" <?php }?>>请选择课程</option>
+            	<?php foreach ($courseList as $key => $value) {?>
+                <option value="<?php echo $value['id'];?>"><?php echo $value['name'];?>&nbsp;</option>
+                <?php }?>
             </select>
-            <select name="select2">
-                <option value="0">第一章&nbsp;</option>
-                <option value="1">第一章&nbsp;</option>
-            </select>
+           
             <input type="submit" value="&nbsp;确&nbsp;定&nbsp;" />
         </form>
     </div>
@@ -18,69 +17,25 @@
       	<div class="My_tittle">批注列表</div>
         <div class="Discuss_list" id="wrapper">
         	<ul class="menu">
-            	<li class="item1" id="list1"><a href="#list1">地质学的研究对象 </a>
+        		<?php $i = 1;foreach ($annotationList as $key => $value){?>
+            	<li class="item1" id="list<?php echo $i;?>"><a href="#list<?php echo $i;?>"><?php echo $value['title'];?> </a>
                 	<ul>
                     	<div class="Mypostil_cont">
                           	<div class="Mypostil_cont_li">
-                              	网页设计——第一章 地质学的研究对象<br />
-                              	作者：舒良树<br>
-                              <b>批注：本书每个问题短小精悍，片刻即可读完，让人轻松的理解设计背后的心理 学动机。</b><br />
-                              <b>批注：本书每个问题短小精悍，片刻即可读完，让人轻松的理解设计背后的心理 学动机。</b><br />
-                              <b>批注：本书每个问题短小精悍，片刻即可读完，让人轻松的理解设计背后的心理 学动机。</b><br />
-                              <b>批注：本书每个问题短小精悍，片刻即可读完，让人轻松的理解设计背后的心理 学动机。</b><br />
-                              <b>批注：本书每个问题短小精悍，片刻即可读完，让人轻松的理解设计背后的心理 学动机。</b><br />
+                          	  <?php foreach ($value['content'] as $eachContent) {?>
+                              <b>批注：<?php echo $eachContent;?></b><br />
+                              <?php }?>
 	                              <div class="link">
-	                              <a href="">详情请见原文：<i>http://www.mifengtd.cn/articles/procrastination-bill.html</i></a>
+	                              <a href="/student/learndetail?chapterid=<?php echo $key;?>">详情请见原文<i></i></a>
 	                              </div>
                             </div>
                          </div>                                                                
                     </ul>
                 </li>
-                <li class="item1" id="list2"><a href="#list2">小组一 张三 </a>
-                     <ul>
-                          <div class="Mypostil_cont">
-                          	<div class="Mypostil_cont_li">
-                              	网页设计——第一章 地质学的研究对象<br />
-                              	作者：舒良树<br>
-                              <b>批注：本书每个问题短小精悍，片刻即可读完，让人轻松的理解设计背后的心理 学动机。</b>
-                              <div class="link">
-                              <a href="">详情请见原文：<i>http://www.mifengtd.cn/articles/procrastination-bill.html</i></a>
-                              </div>
-                             </div>
-                          </div>                                                                
-                      </ul>
-                </li>
-                <li class="item1" id="list3"><a href="#list3">小组一 张三 </a>
-                     <ul>
-                          <div class="Mypostil_cont">
-                          	<div class="Mypostil_cont_li">
-                              	网页设计——第一章 地质学的研究对象<br />
-                              	作者：舒良树<br>
-                              <b>批注：本书每个问题短小精悍，片刻即可读完，让人轻松的理解设计背后的心理 学动机。</b>
-                              <div class="link">
-                              <a href="">详情请见原文：<i>http://www.mifengtd.cn/articles/procrastination-bill.html</i></a>
-                              </div>
-                             </div>
-                          </div>                                                                
-                      </ul>
-                </li>
-                <li class="item1" id="list4"><a href="#list4">小组一 张三 </a>
-                     <ul>
-                          <div class="Mypostil_cont">
-                          	<div class="Mypostil_cont_li">
-                              	网页设计——第一章 地质学的研究对象<br />
-                              	作者：舒良树<br>
-                              <b>批注：本书每个问题短小精悍，片刻即可读完，让人轻松的理解设计背后的心理 学动机。</b>
-                              <div class="link">
-                              <a href="">详情请见原文：<i>http://www.mifengtd.cn/articles/procrastination-bill.html</i></a>
-                              </div>
-                             </div>
-                          </div>                                                                
-                      </ul>
-                </li>
+                <?php $i++;}?>
           </ul>
     	</div>
-		<div class="page">
+		<!--  <div class="page">
 		   	<ul>
 		       	<li class="up"><a href="#">&nbsp;</a></li>
 		       	<li><a href="">1</a></li>
@@ -89,6 +44,33 @@
 		       	<li><a href="">4</a></li>
 		       	<li class="down"><a href="#">&nbsp;</a></li>
 		      </ul>
-	     </div>
+	     </div> -->
+	     
 	</div>
 </div>
+
+<script type="text/javascript">
+//var courseCatalogues =  <?php //echo json_encode($courseCatalogues);?>;
+/*function chaptercontent()
+{
+	var courseId = $('#courseselect').val();
+	$('form.jqtr').children().eq(1).remove();
+	var courseCatalogue = courseCatalogues[courseId];
+	//console.log(courseCatalogue);return ;
+	var html = '<select name="select2" id="chapterselect"><option value="0" selected="true">请选择章节</option>';
+	//$('#chapterselect').empty();
+	//$("#chapterselect").append("<option value='0' selected='true'>请选择章节</option>");
+	if(courseId != 0)
+	{
+		for(var i=0; i < courseCatalogue.length; i++)
+		{
+			//$("#chapterselect").append("<option value='" + courseCatalogue[i].id + "'>" + courseCatalogue[i].title + "</option>"); 
+			html += "<option value='" + courseCatalogue[i].id + "'>" + courseCatalogue[i].title + "</option>"
+		}
+	}
+	html += '</select>';
+	$('form.jqtr').children().eq(0).after(html);
+	$('form.jqtr').attr('class', 'jqtr');
+	$('form.jqtr').jqTransform({imgPath:'/images/frame/'});
+};*/
+</script>

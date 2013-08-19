@@ -17,6 +17,7 @@ class Controller extends CController
 
     protected function beforeAction($action)
     {
+    	
     	//return true;
         // 登陆
         preg_match("/(^.*?)\?|(^.*)/",$_SERVER['REQUEST_URI'],$matchs);
@@ -29,13 +30,16 @@ class Controller extends CController
 
         // 登陆限制
         if($_SERVER['REQUEST_URI']=='/main/user/logout' 
-            || preg_match('|^/main/user/login|',$_SERVER['REQUEST_URI'])
+            || preg_match('|^/main/user/login|',$_SERVER['REQUEST_URI']) 
+            || preg_match('|^/main/user/register|',$_SERVER['REQUEST_URI'])
             || $requestUrl=='/main/user/initsystem') 
         {
             return true;
         }
+        
         $userInfo = Login::getLoginInfo();
         $url = urlencode($_SERVER['REQUEST_URI']);
+        //var_dump($url);exit;
         if(empty($userInfo)) $this->redirect('/main/user/login?url='.$url);
         $this->userid = $userInfo['uid'];
 		$this->userInfo = $userInfo;

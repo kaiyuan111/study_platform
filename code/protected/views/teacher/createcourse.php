@@ -41,6 +41,7 @@
          <div id="editDiv" style="display:none;position: absolute;width:680px; height:100px; left: 30px;top: 140px;z-index:10"><p style="color:red">请输入科目：</p>
          <textarea name="content" style="width:680px;height:40px;"></textarea>
          <input id="inputButton" type="submit" style="width:84px; height:33px; background:url(/images/frame/submit_on.png) no-repeat; border:0;" value=""  />
+         <input id="returnButton" type="submit" style="width:84px; height:33px; background:url(/images/frame/im42.jpg) no-repeat; border:0;" value=""  />
          </div>
      </div>
 </div>
@@ -75,6 +76,10 @@ $("#inputButton").click(function(){
 				}
 			});
 		})
-		
+
+$("#returnButton").click(function(){
+	var editDom = $('#editDiv');
+	editDom.css('display','none');
+})
 		
 </script>

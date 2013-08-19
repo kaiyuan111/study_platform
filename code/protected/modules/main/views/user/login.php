@@ -56,7 +56,7 @@ function slay2(num)
     </DIV>
     <DIV id="logintabcont2" style="DISPLAY: none;">
     	<div class="ml300">
-        	<form>
+        	<form action="/main/user/register" method="post">
                  <p><input name="name" type="text" size="33"  class="input1"/><span>*</span></p>
                  <p><input name="pwd" type="password" size="33"  class="input3"/><span>*</span></p>
                  <p><input name="pwdconfirm" type="password" size="33"  class="input4"/><span>*</span></p>

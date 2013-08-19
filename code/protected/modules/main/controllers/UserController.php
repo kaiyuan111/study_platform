@@ -4,7 +4,8 @@ class UserController extends Controller
 {
     public $layout = '/layouts/frame_with_leftnav';
 	
-	const ACCOUNT_PATTERN = '/^[A-Za-z\x{4e00-\x{9fa5}}][A-Za-z0-9\x{4e00-\x{9fa5}_-}{0-20}]$/u';
+	const ACCOUNT_PATTERN = '/^[A-Za-z\x{4e00}-\x{9fa5}][A-Za-z0-9\x{4e00}-\x{9fa5}_-]{2,20}$/u';
+	//const ACCOUNT_PATTERN = '/^[A-Za-z\x{4e00-\x{9fa5}}][A-Za-z0-9\x{4e00-\x{9fa5}_-}{2-20}]$/u';
     public function actionInitSystem()
     {
         //todo 增加权限限制
@@ -100,7 +101,7 @@ class UserController extends Controller
             $loginUserInfo = Login::logins($_REQUEST['name'],$_REQUEST['pwd']);
             if (!empty($loginUserInfo))
             {
-            	if (!empty($url))
+            	if (!empty($url) && $url != '/')
             	{
             		$this->redirect($url);
             	}
@@ -108,15 +109,15 @@ class UserController extends Controller
             	{
             		if ($loginUserInfo['rid'] == 1) //如果是管理员
             		{
-            			$this->redirect('/admin/list');
+            			$this->redirect('/main/user/list');
             		}
             		elseif ($loginUserInfo['rid'] == 2)   //老师
             		{
-            			$this->redirect('/teacher/creategroup');  //暂时为新建小组
+            			$this->redirect('/teacher/courselist');  //暂时为新建小组
             		}
             		elseif ($loginUserInfo['rid'] == 3)   //学生
             		{
-            			$this->redirect('/student/list');
+            			$this->redirect('/student/courselist');
             		}
             	}
             }
@@ -125,7 +126,7 @@ class UserController extends Controller
             	$this->render('error', '账号错误');
             }
         }
-        
+        //echo "fuck,world";
         $this->render('login',array(
             'url' => $url,
         ));
@@ -135,6 +136,7 @@ class UserController extends Controller
     public function actionRegister()
     {
     	$account = isset($_POST['name']) ? trim($_POST['name']) : '';
+    	var_dump($account);//exit;
     	if (!$this->validateAccount($account))
     	{
     		$this->render('error', '用户名只能包括英文字符汉字和数字，并且不能以数字开头'); 
@@ -151,9 +153,10 @@ class UserController extends Controller
     	$user->uname = $account;
         $user->email = $email;
         $user->pwd = $pwd;
-        $user->rid = 2;
+        $user->rid = 3;   //学生
         $user->save();
-        echo "reigister success";
+        
+        $this->redirect('/student/list');
     }
     public function actionLogout()
     {
@@ -167,14 +170,20 @@ class UserController extends Controller
         $this->redirect('/main/user/list');
     }
 
-    private function validateAccount($account)
+    public function validateAccount($account)
     {
-    	 if (preg_match(self::ACCOUNT_PATTERN, $account))
+    	//echo "11111";exit;
+    	//echo $account;
+    	$result = preg_match(self::ACCOUNT_PATTERN, $account, $match);
+    	//var_dump(self::ACCOUNT_PATTERN, $account,$result,$match);exit;
+    	 if (preg_match(self::ACCOUNT_PATTERN, $account, $match))
     	 {
+    	 	//echo "fuck,world";exit;
     	 	return true;
     	 }
     	 else
     	 {
+    	 	//echo "hello,world";exit;
     	 	return false;
     	 }
     }

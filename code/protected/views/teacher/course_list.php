@@ -21,7 +21,7 @@
 						<?php foreach ($courseList as $key => $value) {?>
 						<li>
 							<span>
-								<a href="#"><img src="/images/frame/im21.jpg" width="36" height="24" border="0" /></a>
+								<a href="/teacher/managecourse?courseid=<?php echo $value['id'];?>"><img src="/images/frame/im21.jpg" width="36" height="24" border="0" /></a>
 								<a href="#"><img src="/images/frame/im22.jpg" width="30" height="24" border="0" /></a>
 							</span><?php echo $value['name'];?>
 						</li>
