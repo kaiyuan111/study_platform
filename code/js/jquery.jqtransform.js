@@ -4,7 +4,7 @@
  * by mathieu vilaplana mvilaplana@dfc-e.com
  * Designer ghyslain armand garmand@dfc-e.com
  *
- * Download by http://www.codefans.net
+ *
  * Version 1.0 25.09.08
  * Version 1.1 06.08.09
  * Add event click on Checkbox and Radio
@@ -244,11 +244,21 @@
 	/***************************
 	  Select 
 	 ***************************/	
-	$.fn.jqTransSelect = function(){
+     // 新增方法，在初始化select的时候用，程序选定某个option
+	$.fn.jqTransSelectInit = function(value){
+        $(this).find("option").removeAttr("selected");
+        $(this).find("option[value='"+value+"']").attr("selected","selected");
+        // 重新刷新select
+        $(this).jqTransSelect(true);
+    }
+
+     // 添加flush参数，true时动态刷新select，false为不刷新
+	$.fn.jqTransSelect = function(flush){
 		return this.each(function(index){
 			var $select = $(this);
 
-			if($select.hasClass('jqTransformHidden')) {return;}
+            // 添加flush
+			if(!flush&&$select.hasClass('jqTransformHidden')) {return;}
 			if($select.attr('multiple')) {return;}
 
 			var oLabel  =  jqTransformGetLabel($select);
@@ -278,6 +288,12 @@
 					$select[0].selectedIndex = $(this).attr('index');
 					$('span:eq(0)', $wrapper).html($(this).html());
 					$ul.hide();
+                    // 增加select change事件
+                    $choosetext = $(this).text();
+                    //$select.find("option").trigger('selectclick');
+                    $select.find("option").removeAttr('selected','');
+                    $select.find("option:contains('"+$choosetext+"')").attr('selected','selected');
+                    $select.change();
 					return false;
 			});
 			/* Set the default */
@@ -333,7 +349,7 @@
 			$('input:radio', this).jqTransRadio();
 			$('textarea', this).jqTransTextarea();
 			
-			if( $('select', this).jqTransSelect().length > 0 ){jqTransformAddDocumentListener();}
+			if( $('select', this).jqTransSelect(false).length > 0 ){jqTransformAddDocumentListener();}
 			selfForm.bind('reset',function(){var action = function(){jqTransformReset(this);}; window.setTimeout(action, 10);});
 			
 			//preloading dont needed anymore since normal, focus and hover image are the same one
@@ -364,4 +380,3 @@
 	};/* End the Plugin */
 
 })(jQuery);
-				   
