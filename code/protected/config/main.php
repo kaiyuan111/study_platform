@@ -6,7 +6,7 @@
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 return array(
-    'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
+    'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..',
     'name'=>'问卷调查',
 
     // preloading 'log' component
@@ -44,21 +44,20 @@ return array(
                 'urlFormat'=>'path',
                 'rules'=>array(
                     //'<controller:\w+>/<id:\d+>'=>'<controller>/view',
-                    //'questionnaire/<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
-                    //'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
+                    'questionnaire/<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+                    '<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
                     '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
                 ),
-                'showScriptName'=>false,
             ),
             // 'db'=>array(
                 // 'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
             // ),
             // uncomment the following to use a MySQL database
             'db'=>array(
-                'connectionString' => 'mysql:host=127.0.0.1:3306;dbname=study_platform',
+                'connectionString' => 'mysql:host=10.16.15.79:3306;dbname=study',
                 'emulatePrepare' => true,
-                'username' => 'root',
-                'password' => '',
+                'username' => 'open',
+                'password' => '8J6cn4A7f4SC2a7W',
                 'charset' => 'utf8',
             ),
             /*
@@ -75,7 +74,7 @@ return array(
              */
             'errorHandler'=>array(
                 // use 'site/error' action to display errors
-                //'errorAction'=>'site/error',
+                'errorAction'=>'site/error',
             ),
             // 'log'=>array(
                 // 'class'=>'CLogRouter',
@@ -98,5 +97,7 @@ return array(
         // using Yii::app()->params['paramName']
         'params'=>array(
             // this is used in contact page
+            'img_upload_path'=>'/home/hucong/img1/',
+            'group_member_maxnum'=>12,
         ),
     );

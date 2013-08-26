@@ -70,7 +70,7 @@ CREATE TABLE `m-group` (
  `description` blob  COMMENT '小组简介',
  `courseid` bigint(20) unsigned not null comment '课程id',
  `membercount` tinyint unsigned NOT NULL default 12 comment '小组人数（默认12个人）',
- `icon` varchar(30) not null comment '小组图标',
+ `icon` varchar(100) not null comment '小组图标',
  `jointype` tinyint unsigned NOT NULL default 1 comment '加入方式（1自由加入，2审核加入，3邀请加入）',
  PRIMARY KEY (`id`),
  key `creator`(`creator`)
@@ -139,10 +139,11 @@ CREATE TABLE `m-answer` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
 CREATE TABLE `m-info` (
- `id` bigint(20) unsigned not null auto_increment comment '消息id',
- `type` tinyint unsigned not null comment '1通知类型，2需要作出操作'
- `content` BLOB  NOT NULL COMMENT '消息内容',
- `uid` bigint(20) NOT NULL COMMENT '消息接受者',
- PRIMARY KEY (`id`),
- key `uid`(`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8
+   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '消息id',
+   `type` TINYINT UNSIGNED NOT NULL COMMENT '1通知类型，2需要作出操作',
+   `content` BLOB  NOT NULL COMMENT '消息内容',
+   `uid` BIGINT(20) NOT NULL COMMENT '消息接受者',
+   `responce` BLOB NOT NULL COMMENT '消息响应',
+   PRIMARY KEY (`id`),
+   KEY `uid`(`uid`)
+) ENGINE=MYISAM DEFAULT CHARSET=utf8

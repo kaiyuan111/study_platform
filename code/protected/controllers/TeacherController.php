@@ -163,23 +163,35 @@ class TeacherController extends Controller
         $course = new Course;
         $courseList = $course->findAll('creator=:creator' , array(':creator' => $this->userid));
         if(isset($_REQUEST['sub'])) {
-            $group = new Group;
-            $group->name = $_REQUEST['name'];
-            $group->creator = $this->userid;
-            $group->description = $_REQUEST['description'];
-            $group->courseid = $_REQUEST['courseid'];
-            $group->jointype = $_REQUEST['jointype'];
-            $group->save();
+            try {
+                $group = new Group;
+                $group->name = $_REQUEST['name'];
+                $group->creator = $this->userid;
+                $group->description = $_REQUEST['description'];
+                $group->courseid = $_REQUEST['courseid'];
+                $group->jointype = $_REQUEST['jointype'];
+                $group->save();
+            } catch(Exception $e) {
+                $this->render('/site/error',array('errortxt'=>'创建小组保存错误'));
+                exit;
+            }
             // 保存图片
             if($_FILES['file']['error']==0) {
                 $imgpath = Yii::app()->params['img_upload_path'];
                 preg_match('|^image/(.*)|',$_FILES['file']['type'],$match);
+                if(empty($match[1])) {
+                    $this->render('/site/error',array('errortxt'=>'文件类型错误'));
+                    exit;
+                }
                 $filetype = $match[1];
                 $filepath = $imgpath.'grouplogo'.$group->id.'.'.$filetype;
                 if(file_exists($filepath)) {
                     unlink($filepath);
                 }
                 move_uploaded_file($_FILES['file']['tmp_name'],$filepath);
+                //var_dump($_FILES,$filepath);exit;
+                $group->icon = $filepath;
+                $group->save();
             }
         }
         $this->render('group_edit',array('course_list'=>$courseList));
