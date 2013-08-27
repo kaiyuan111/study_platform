@@ -139,11 +139,12 @@ CREATE TABLE `m-answer` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
 CREATE TABLE `m-info` (
-   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '消息id',
-   `type` TINYINT UNSIGNED NOT NULL COMMENT '1通知类型，2需要作出操作',
-   `content` BLOB  NOT NULL COMMENT '消息内容',
-   `uid` BIGINT(20) NOT NULL COMMENT '消息接受者',
-   `responce` BLOB NOT NULL COMMENT '消息响应',
-   PRIMARY KEY (`id`),
-   KEY `uid`(`uid`)
+  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '消息id',
+  `type` var_char(50) NOT NULL COMMENT 'request_edit_class申请编辑课程',
+  `uid_from` bigint(20) NOT NULL COMMENT '消息发送者',
+  `content` blob NOT NULL COMMENT '消息内容',
+  `uid_to` bigint(20) NOT NULL COMMENT '消息接受者',
+  `responce` BLOB NOT NULL COMMENT '消息响应',
+  PRIMARY KEY (`id`),
+  KEY `uid`(`uid`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8

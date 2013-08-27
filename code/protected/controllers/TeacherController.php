@@ -118,15 +118,42 @@ class TeacherController extends Controller
     	//$this->render('createcoursesuc', '创建成功');
     	$this->redirect('/teacher/courselist');
     }
+
+    // 老师申请其他课程的编辑权限
+    public function actionRequestEdit()
+    {
+        $courseId = !empty($_REQUEST['courseid']) ? $_REQUEST['courseid'] : "";
+        $course = Course::model()->find('id=:id',array(':id'=>$courseId));
+        if(!empty($course)) {
+            $info = Info::model()->find('uid_from=:fid and content=:c',
+                array(
+                    ':c'=>$courseId,
+                    ':fid'=>$this->userid,
+                )
+            );
+            if(empty($info)) {
+                $info = new Info;
+            }
+            $info->type='request_edit_class';
+            $info->uid_from=$this->userid;
+            $info->content=$courseId;
+            $info->uid_to=$course['creator'];
+            $info->save();
+            echo "申请成功";
+        } else {
+            echo "申请错误";
+        }
+    }
     
     //课程列表页面
     public function actionCourseList()
     {
     	$course = new Course();
     	$courseList = $course->findAll('creator=:creator' , array(':creator' => $this->userid));
+    	$otherCourseList = $course->findAll('creator!=:creator' , array(':creator' => $this->userid));
     	
     	//$assistCourseList = 
-    	$this->render('course_list', array('courseList' => $courseList));
+    	$this->render('course_list', array('courseList' => $courseList,'otherCourseList' => $otherCourseList));
     	
     	//$this->render('course_list');
     }
