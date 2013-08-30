@@ -312,11 +312,14 @@ class TeacherController extends Controller
     }
 
     // 老师回复编辑课程的消息
+    // 老师特权 m-user-privilege 的privilege_tag=courseedit
+    // content字段存入课程id
     public function actionReturnMessage()
     {
         $infoid = isset($_REQUEST['infoid']) ? $_REQUEST['infoid'] : 0;
         $responce = isset($_REQUEST['responce']) ? $_REQUEST['responce'] : 0;
         $fromid = isset($_REQUEST['fromid']) ? $_REQUEST['fromid'] : 0;
+        $courseid = isset($_REQUEST['courseid']) ? $_REQUEST['courseid'] : 0;
 
         $info = Info::model()->find("id=:id",array(":id"=>$infoid));
         if($info->is_responce==1) exit;
@@ -326,12 +329,17 @@ class TeacherController extends Controller
 
         // 答应
         if($responce==1) {
-            $mp = MUserPriviledge::model()->find("uid=:id and privilege_tag=:t",array(':id'=>$fromid,':t'=>'courseedit'));
+            $mp = MUserPriviledge::model()->find("uid=:id and privilege_tag=:t and content=:cid",
+                array(':id'=>$fromid,':t'=>'courseedit',':cid'=>$courseid));
             if(empty($mp)) $mp = new MUserPriviledge;
             else exit;
             $mp->uid=$fromid;
             $mp->privilege_tag="courseedit";
+            $mp->content=$courseid;
             $mp->save();
+        } else {
+            MUserPriviledge::model()->deleteAll("uid=:id and privilege_tag=:t and content=:cid",
+                array(':id'=>$fromid,':t'=>'courseedit',':cid'=>$courseid));
         }
     }
 

@@ -38,8 +38,9 @@ CREATE TABLE `m-user` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
 CREATE TABLE `m-user-privilege` (
-  `uid` int(10) unsigned NOT NULL DEFAULT '0',
-  `privilege_tag` varchar(20) NOT NULL DEFAULT '',
+  `uid` int(10) unsigned NOT NULL DEFAULT '0' comment '用户id',
+  `privilege_tag` varchar(20) NOT NULL DEFAULT '' comment '特权标志',
+  `content` varchar(20) NOT NULL DEFAULT '' comment '特权内容',
   PRIMARY KEY (`uid`,`privilege_tag`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
