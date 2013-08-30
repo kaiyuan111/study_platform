@@ -125,7 +125,7 @@ class TeacherController extends Controller
         $courseId = !empty($_REQUEST['courseid']) ? $_REQUEST['courseid'] : "";
         $course = Course::model()->find('id=:id',array(':id'=>$courseId));
         if(!empty($course)) {
-            $info = Info::model()->find('uid_from=:fid and content=:c',
+            $info = Info::model()->find('uid_from=:fid and content=:c and is_responce=0',
                 array(
                     ':c'=>$courseId,
                     ':fid'=>$this->userid,
@@ -136,6 +136,7 @@ class TeacherController extends Controller
             }
             $info->type='request_edit_class';
             $info->uid_from=$this->userid;
+            $info->request_time=date("Y-m-d");
             $info->content=$courseId;
             $info->uid_to=$course['creator'];
             $info->save();
@@ -310,10 +311,53 @@ class TeacherController extends Controller
         $this->render('discuss_list');
     }
 
+    // 老师回复编辑课程的消息
+    public function actionReturnMessage()
+    {
+        $infoid = isset($_REQUEST['infoid']) ? $_REQUEST['infoid'] : 0;
+        $responce = isset($_REQUEST['responce']) ? $_REQUEST['responce'] : 0;
+        $fromid = isset($_REQUEST['fromid']) ? $_REQUEST['fromid'] : 0;
+
+        $info = Info::model()->find("id=:id",array(":id"=>$infoid));
+        if($info->is_responce==1) exit;
+        $info->is_responce = 1;
+        $info->responce = $responce;
+        $info->save();
+
+        // 答应
+        if($responce==1) {
+            $mp = MUserPriviledge::model()->find("uid=:id and privilege_tag=:t",array(':id'=>$fromid,':t'=>'courseedit'));
+            if(empty($mp)) $mp = new MUserPriviledge;
+            else exit;
+            $mp->uid=$fromid;
+            $mp->privilege_tag="courseedit";
+            $mp->save();
+        }
+    }
+
     //查看消息
+    // 老师申请编辑课程的消息表中的数据为
+    // type=request_edit_class
+    // content=courseid
+    // responce= 1 同意 or 0 拒绝
     public function actionMessageList()
     {
-        $this->render('message_list');
+        $tinfos = Info::model()->findAll('uid_to=:id and type=\'request_edit_class\' and is_responce=0 order by request_time desc',array(':id'=>$this->userid));
+        //echo "<pre>";var_dump($courses);exit;
+        $infos = array();
+        foreach($tinfos as $i) {
+            if(!empty($i['content']))  {
+                $course = Course::model()->find('id=:id',array(':id'=>$i['content']));
+                $r = $i->getAttributes();
+                $r['courseid'] = $course['id'];
+                $r['coursename'] = $course['name'];
+                $user = User::model()->find('uid=:id',array(':id'=>$i['uid_from']));
+                $r['uname_from'] = $user['uname'];
+                $r['request_time'] = date("Y-m-d",strtotime($r['request_time']));
+                $infos[] = $r;
+            }
+        }
+        $this->render('message_list', array('infos'=>$infos));
     }
 
     //添加内容页面
