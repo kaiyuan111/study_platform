@@ -2,7 +2,7 @@
 
 class SiteController extends Controller
 {
-    public $layout = "application.modules.main.views.layouts.frame_without_leftnav";
+    public $layout = '';//"application.modules.main.views.layouts.frame_without_leftnav";
 
     /**
      * This is the default 'index' action that is invoked
@@ -10,7 +10,8 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $this->render('test');
+        $this->render('index');
+        //echo 'fuck,world';exit;
     }
 
     /**

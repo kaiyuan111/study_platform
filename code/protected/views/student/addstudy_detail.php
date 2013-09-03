@@ -3,7 +3,7 @@
 		<input type="hidden" name="type" value="<?php echo $type;?>" />
 		<input type="hidden" name="chapterid" value="<?php echo $chapterid;?>" />
         <!--  <div class="del"><a href=""><img src="/images/frame/del_ico2.png" /></a>-->
-        <?php if ($type == 3){?><div class="del"><span>讨论主题：</span><input name="text" type="text" size="25"  value=""/></div><?php }?>
+        <?php if ($type == 3){?><div class="del"><span>讨论主题：</span><input name="title" type="text" size="25"  value=""/></div><?php }?>
         <?php if ($type == 1){?><div class="del"><span style="font-size:20px">摘抄内容：</span></div><?php }?>
         <?php if ($type == 2){?><div class="del"><span style="font-size:20px">批注内容：</span></div><?php }?>
 		<div class="cont"><a href="/student/learndetail?chapterid=<?php echo $chapterid;?>">单击查看原文详情</a></div>
@@ -13,58 +13,16 @@
         <?php if ($type == 3){?>
         <div class="checkbox">
            	<div class="t">选择讨论组的成员</div>
-            <div class="all"><label for="checkbox-01">
+            <!--  <div class="all"><label for="checkbox-01">
                                              全选<input type="checkbox"  value="1" id="checkbox-01" name="sample-checkbox-01" /></label>
-            </div>        
+            </div>-->        
            	<ul>
+           		<?php foreach ($groupMemberInfo as $key => $value){ if ($value['uid'] != $this->userid){?>
                	<li>
-                       <label for="checkbox-01" class="label_check">       
-                       <input type="checkbox" checked="" value="1" id="checkbox-01" name="sample-checkbox-01" />多选1      </label>  
+                       <label for="checkbox-<?php echo $key;?>" class="label_check">       
+                       <input name="discussmember[]" type="checkbox" value="<?php echo $value['uid'];?>" id="checkbox-<?php echo $key;?>" /><?php echo $value['uname'];?>      </label>  
                 </li>
-               	<li>
-                       <label for="checkbox-02" class="label_check">       
-                       <input type="checkbox" value="2" id="checkbox-02" name="sample-checkbox-02" />多选2      </label>  
-                </li>
-               	<li>
-                       <label for="checkbox-01" class="label_check">       
-                       <input type="checkbox" value="1" id="checkbox-01" name="sample-checkbox-01" />多选1      </label>  
-                </li>
-               	<li>
-                       <label for="checkbox-01" class="label_check">       
-                       <input type="checkbox" value="1" id="checkbox-01" name="sample-checkbox-01" />多选1      </label>  
-                </li>
-               	<li>
-                       <label for="checkbox-01" class="label_check">       
-                       <input type="checkbox" value="1" id="checkbox-01" name="sample-checkbox-01" />多选1      </label>  
-                </li>
-               	<li>
-                       <label for="checkbox-01" class="label_check">       
-                       <input type="checkbox" value="1" id="checkbox-01" name="sample-checkbox-01" />多选1      </label>  
-                </li>
-               	<li>
-                       <label for="checkbox-01" class="label_check">       
-                       <input type="checkbox" value="1" id="checkbox-01" name="sample-checkbox-01" />多选1      </label>  
-                </li>
-               	<li>
-                       <label for="checkbox-01" class="label_check">       
-                       <input type="checkbox" value="1" id="checkbox-01" name="sample-checkbox-01" />多选1      </label>  
-                </li>
-               	<li>
-                       <label for="checkbox-01" class="label_check">       
-                       <input type="checkbox" value="1" id="checkbox-01" name="sample-checkbox-01" />多选1      </label>  
-                </li>
-               	<li>
-                       <label for="checkbox-01" class="label_check">       
-                       <input type="checkbox" value="1" id="checkbox-01" name="sample-checkbox-01" />多选1      </label>  
-                </li>
-               	<li>
-                       <label for="checkbox-01" class="label_check">       
-                       <input type="checkbox" value="1" id="checkbox-01" name="sample-checkbox-01" />多选1      </label>  
-                </li>
-               	<li>
-                       <label for="checkbox-01" class="label_check">       
-                       <input type="checkbox" value="1" id="checkbox-01" name="sample-checkbox-01" />多选1      </label>  
-                </li>
+                <?php }}?>
             </ul>
         </div>
         <?php }?>

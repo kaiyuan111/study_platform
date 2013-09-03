@@ -156,7 +156,8 @@ class UserController extends Controller
         $user->rid = 3;   //学生
         $user->save();
         
-        $this->redirect('/student/list');
+        Login::logins($account,$pwd);
+        $this->redirect('/student/courselist');
     }
     public function actionLogout()
     {

@@ -3,6 +3,10 @@
 class StudentController extends Controller
 {
     //public $layout = '/layouts/frame_with_leftnav';
+    static $msgArray = array(0=>'成功',
+							-1=>'参数错误',
+							-2=>'操作失败');
+							
     public $layout = 'application.modules.main.views.layouts.frame_with_leftnav';
 
     //课程列表
@@ -71,7 +75,7 @@ class StudentController extends Controller
     										array(':uid' => $this->userid, 'chapterid' => $chapterid));
     	
     	$homework = Homework::model()->findAll('chapterid=:chapterid', array(':chapterid'=>$chapterid));
-    	
+    	//var_dump($homework);exit;
     	foreach ($homework as $key => &$value)
 		{
 			if ($value['type'] == 1 || $value['type'] == 2)
@@ -80,6 +84,18 @@ class StudentController extends Controller
 			}
 		}
     	
+		unset($value);
+		
+		//获取该用户提交的答案，如果有提交的话
+		$answer = array();
+		$answerModel = new Answer();
+		$answerT = $answerModel->getHomeworkAnswerByChapterid($chapterid, $this->userid);
+		
+		foreach ($answerT as $key => $value)
+		{
+			$answer[$value['homeworkid']] = $value;
+		}
+		
 		//下一页
 		$nextChapter = CourseContent::model()->find('id > :chapterid', 
 													array(':chapterid'=>$chapterid));
@@ -95,7 +111,8 @@ class StudentController extends Controller
     										'excerptList' => $excerptList,
     										'homework' => $homework,
     										'nextChapter' => $nextChapter,
-    										'preChapter' => $preChapter,));
+    										'preChapter' => $preChapter,
+    										'answer' => $answer,));
     	
     	$this->layout = 'application.modules.main.views.layouts.frame_with_leftnav';
     }
@@ -116,13 +133,26 @@ class StudentController extends Controller
     		$this->render('error', '章节id错误');
     	}
     	
+    	$groupMemberInfo = array();
     	if ($type == 3)
     	{
     		//获取用户所在的组的成员（这门课的）
-    		//$groupMember = 
+    		$courseContent = new CourseContent();
+    		$courseId = $courseContent->getCourseIdByChapterId($chapterid);
+    		//echo $chapterid;exit;
+    		//获取小组id
+    		$groupMem = new GroupMember();
+    		$groupId = $groupMem->getGroupIdByCourseId($courseId, $this->userid);
+    		//echo $groupId;exit;
+    		
+    		//根据成员id获取成员的信息
+    	
+    		$groupMemberInfo = $groupMem->getGroupMemberInfoByGroupId($groupId);
+    		//var_dump($groupMemberInfo);exit;
     	}
     	
-    	$this->render('addstudy_detail' , array('type' => $type, 'chapterid' => $chapterid));
+    	$this->render('addstudy_detail' , array('type' => $type, 'chapterid' => $chapterid,
+    			'groupMemberInfo' => $groupMemberInfo));
     	$this->layout = 'application.modules.main.views.layouts.frame_with_leftnav';
     }
     
@@ -162,7 +192,41 @@ class StudentController extends Controller
     	}
     	else //添加讨论
     	{
+    		$content = isset($_REQUEST['content']) ? trim($_REQUEST['content']) : '';
+    		if (empty($content))
+    		{
+    			$this->render('error', '内容不能为空');
+    		}
     		
+    		$studyTitle = isset($_REQUEST['title']) ? trim($_REQUEST['title']) : '';
+    		$studyDetail = new StudyDiscuss();
+    		$studyDetail->content = $content;
+    		$studyDetail->uid = $this->userid;
+    		$studyDetail->chapterid = $chapterid;
+    		$studyDetail->title = $studyTitle;
+    		$studyDetail->save();
+    		
+    		$member = isset($_REQUEST['discussmember']) ? ($_REQUEST['discussmember']) : '';
+    		
+    		if (!empty($member))
+    		{
+    			
+    			foreach ($member as $eachUid)
+    			{
+    				$discussMember = new DiscussMember();
+    				$discussMember->discussid = $studyDetail->id;
+    				$discussMember->uid = $eachUid;
+    				$discussMember->save();
+    			}
+    			
+    		}
+    		
+    		$muser = new MUser();
+    		$memberInfo = $muser->getUserInfoByUids($member);
+    		$this->layout = 'application.modules.main.views.layouts.frame_without_leftnav';
+    		$this->render('addstudy_detail' , array('type' => $type, 'chapterid' => $chapterid,
+    		'groupMemberInfo' => $memberInfo));
+    		$this->layout = 'application.modules.main.views.layouts.frame_with_leftnav';
     	}
     	
     }
@@ -202,7 +266,104 @@ class StudentController extends Controller
 	
     public function actionDiscussList()
     {
-    	$this->render('discuss_list');
+    	//创建的讨论
+    	$discuss = new StudyDiscuss();
+    	$originalDiscuss = StudyDiscuss::model()->findAllBySql('select * from `m-discuss` where uid=:uid',
+    	array(':uid' => $this->userid));
+    	
+    	//被邀请加入的讨论
+    	$joindDisIdsT = DiscussMember::model()->findAllBySql('select discussid from `m-discussmember`
+    		where uid=:uid' , array(':uid' => $this->userid));
+    	//var_dump($joindDisIdsT);exit;
+    	$joindDisIds = array();
+    	foreach ($joindDisIdsT as $key => $value)
+    	{
+    		$joindDisIds[] = $value['discussid'];
+    	}
+    	//var_dump($joindDisIds);exit;
+    	$joinDiscuss = array();
+    	$joindDisIdsStr = implode(',',$joindDisIds);
+    	//var_dump($joindDisIdsStr);exit;
+    	if (!empty($joindDisIdsStr))
+    	{
+    		$joinDiscuss = StudyDiscuss::model()->findAllBySql("select * from `m-discuss` where id in ($joindDisIdsStr)");
+    	}
+    	//var_dump($joinDiscuss);exit;
+    	$this->render('discuss_list', array('originalDis' => $originalDiscuss,
+    							'joindDis' => $joinDiscuss));
+    }
+    
+    //讨论详情页
+    public function actionDiscussDetail()
+    {
+    	//echo "fuck,world";exit;
+    	$discussId = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+    	
+    	//获取讨论的主题等信息
+    	$discussInfo = StudyDiscuss::model()->findByPk($discussId);
+    	if (empty($discussInfo))
+    	{
+    		$this->render('error', '讨论信息不能为空');
+    	}
+    	
+    	//获取讨论的参与人员信息
+    	$discussMember = new DiscussMember();
+    	$discussMemberInfo = $discussMember->getDisMemberInfoByDiscussId($discussId);
+    	
+    	//获取讨论的评论
+    	
+    	$discussReply = DiscussReply::model()->findAllBySql("select * from `m-discussreply` where discussid={$discussId}");
+    	$uidArray = array();
+    	foreach ($discussReply as $key => $value)
+    	{
+    		//echo $value['time'];exit;
+    		$uidArray[] = $value['uid'];
+    		//var_dump($value['time']);exit;
+    	}
+    	
+    	//var_dump($discussReply);exit;
+    	$replyUserInfoT = array();
+    	if (!empty($uidArray))
+    	{
+    		$muser = new MUser();
+    		$replyUserInfoT = $muser->getUserInfoByUids($uidArray);
+    	}
+    	
+    	$replyUserInfo = array();
+    	foreach ($replyUserInfoT as $key=> $value)
+    	{
+    		$replyUserInfo[$value['uid']] = $value;
+    	}
+    	
+    	$this->layout = 'application.modules.main.views.layouts.frame_without_leftnav';
+    		
+    	$this->render('discuss_detail', array('discussInfo' => $discussInfo,
+    						'discussMemberInfo' => $discussMemberInfo,
+    						'discussReply' => $discussReply,
+    						'replyUserInfo' => $replyUserInfo,));
+    	
+    	$this->layout = 'application.modules.main.views.layouts.frame_with_leftnav';
+    }
+    
+    //添加讨论的回复
+    public function actionAddDiscussReply()
+    {
+    	$discussId = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+    	$content = isset($_REQUEST['content']) ? trim($_REQUEST['content']) : '';
+    	//echo $content;exit;
+   		if (empty($content))
+   		{
+   			$this->jsonResult(-1);
+   		}
+   		//echo "fuck,world";exit;
+   		$discussReply = new DiscussReply();
+   		$discussReply->uid = $this->userid;
+   		$discussReply->time = time();
+   		$discussReply->comment = $content;
+   		$discussReply->discussid = $discussId;
+   		$discussReply->save();
+   		
+   		$this->jsonResult(0);
     }
     
     //摘抄列表
@@ -246,12 +407,79 @@ class StudentController extends Controller
 	//小组列表
 	public function actionGroupList()
     {
-    	$this->render('group_list');
+    	$group = new Group();
+    	$groupList = $group->getGroupListByUid($this->userid);
+    	$this->render('group_list',array('groupList' => $groupList));
     }
     
 	//消息列表
 	public function actionMessageList()
     {
     	$this->render('message_list');
+    }
+    
+	public function jsonResult($retCode = 0, $info = array())
+    {
+        $result = array('retCode' => $retCode,
+            'msg' => self::$msgArray[$retCode],
+            'info' => $info);
+
+        echo json_encode($result);
+        exit;
+    }
+    
+    public function makeReadTime($timeStamp)
+    {
+    	return date('Y-m-d G:i:s',$timeStamp);
+    	//return strftime('%g-%m-%d %H:%M', $timeStamp);
+    }
+    
+    public function actionSaveAnswer()
+    {
+    	//$courseId = isset($_REQUEST['courseid']) ? intval($_REQUEST['courseid']) : 0;
+    	//取出习题个数，对每个习题进行操作
+    	$homeworkNum = isset($_REQUEST['homeworknum']) ? intval($_REQUEST['homeworknum']) : 0;
+    	
+    	for ($i = 1; $i <= $homeworkNum; $i++)
+    	{
+    		$typeVar = 'type_' . $i;
+    		$type = isset($_REQUEST[$typeVar]) ? intval($_REQUEST[$typeVar]) : 0;
+    		
+    		$homeworkVar = 'homeworkid_' . $i;
+    		//var_dump($homeworkVar);
+    		$homeworkId = isset($_REQUEST[$homeworkVar]) ? intval($_REQUEST[$homeworkVar]) : 0;
+    		//var_dump($homeworkId);
+    		//echo $homeworkId;
+    		if (empty($homeworkId))
+    		{
+    			continue;
+    		}
+    		
+    		$answerVar = 'answer_' . $i;
+    		$answer = isset($_REQUEST[$answerVar]) ? trim($_REQUEST[$answerVar]) : 0;
+    		//var_dump($answer);
+    		//echo $answer;
+    		if (empty($answer))
+    		{
+    			continue;
+    		}
+    		
+    		
+    		//$answerModel = new Answer();
+    		$answerModel = Answer::model()->findBySql("select * from `m-answer` where homeworkid = {$homeworkId} and uid = {$this->userid}" );
+    		if (empty($answerModel))
+    		{
+    			//echo "hello,world";
+    			$answerModel = new Answer();
+    			$answerModel->homeworkid = $homeworkId;
+    			$answerModel->uid = $this->userid;
+    		}
+    		
+    		//echo $answerModel['answer'];
+    		$answerModel->answer = $answer;
+    		$answerModel->save();
+    	}
+    	
+    	$this->jsonResult(0);
     }
 }

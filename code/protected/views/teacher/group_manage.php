@@ -129,7 +129,7 @@
             uids += $(this).data("id")+",";
         });
         leaderid = $("#leader li.groupleader").data("id");
-        console.log(leaderid);
+        //console.log(leaderid);
         uids += leaderid;
         groupid = "<?php echo $curgroup?>";
         $.post( '/teacher/savegroupmember',

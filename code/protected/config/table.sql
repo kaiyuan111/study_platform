@@ -68,12 +68,14 @@ CREATE TABLE `m-group` (
  `name` varchar(20) NOT NULL COMMENT '小组名',
  `creator` bigint(20) NOT NULL COMMENT '创建者',
  `description` blob  COMMENT '小组简介',
+ `leaderid` bigint(20) unsigned NOT NULL COMMENT '组长id',
  `courseid` bigint(20) unsigned not null comment '课程id',
  `membercount` tinyint unsigned NOT NULL default 12 comment '小组人数（默认12个人）',
  `icon` varchar(30) not null comment '小组图标',
  `jointype` tinyint unsigned NOT NULL default 1 comment '加入方式（1自由加入，2审核加入，3邀请加入）',
  PRIMARY KEY (`id`),
- key `creator`(`creator`)
+ key `creator`(`creator`),
+UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
 CREATE TABLE `m-groupmember` (
@@ -85,11 +87,13 @@ CREATE TABLE `m-groupmember` (
 CREATE TABLE `m-discuss` (
  `id` bigint(20) unsigned not null auto_increment comment '讨论id',
  `title` varchar(255) not null comment '讨论主题',
- `courseid` int unsigned not null comment '课程id',
+ `chapterid` int unsigned not null comment '章节id',
  `content` BLOB  NOT NULL COMMENT '讨论内容',
  `tags` varchar(255) not null comment '讨论标签',
- PRIMARY KEY (`contentid`),
- key `courseid`(`courseid`)
+ `uid` bigint(20) NOT NULL COMMENT '用户id',
+ PRIMARY KEY (`id`),
+ key `chapterid`(`chapterid`),
+ key `uid`(`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
 CREATE TABLE `m-discussmember` (
@@ -99,12 +103,13 @@ CREATE TABLE `m-discussmember` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
 CREATE TABLE `m-discussreply` (
- `id` bigint(20) unsigned not null comment '回复id',
+ `id` bigint(20) unsigned not null auto_increment comment '回复id',
  `discussid` bigint(20) unsigned not null comment '讨论id',
  `comment` BLOB  NOT NULL COMMENT '回复内容',
  `uid` bigint(20) NOT NULL COMMENT '用户id',
- PRIMARY `id` (`id`)
- key 
+ `time` int(10) not null comment '回复时间',
+ PRIMARY key `id` (`id`),
+ key `uid` (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
 CREATE TABLE `m-study` (

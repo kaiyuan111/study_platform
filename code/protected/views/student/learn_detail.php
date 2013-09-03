@@ -25,29 +25,32 @@
     </div>
     
     <div id="tabcont1" >
-    <form>
+    <form >
+    	<input type="hidden" value="<?php echo count($homework);?>" name="homeworknum"/>
     	<?php $i = 0;foreach ($homework as $key => $value){ $i++;?>
+    		<input type="hidden" value="<?php echo $value['id'];?>" name="homeworkid_<?php echo $i;?>"/>
+    		<input type="hidden" value="<?php echo $value['type'];?>" name="type_<?php echo $i;?>"/>
     		<?php if ($value['type'] == 1){  //单选题?>
     			<div class="practise_tittle">&nbsp;&nbsp;<?php echo $i . '.';?><?php echo $value['title'];?></div>
     			<div class="practise_answer">
 	            <span>
 	                <label for="radio-01" class="label_radio">      
-	                    <input type="radio" checked="" value="1" id="radio-01" name="sample-radio" /> A、 <?php echo $value['option'][0];?>     
+	                    <input type="radio" <?php if (isset($answer[$value['id']]) && $answer[$value['id']]['answer'] == 'A'){?> checked="true" <?php }?> value="A" id="radio-01" name="answer_<?php echo $i;?>" /> A、 <?php echo $value['option'][0];?>     
 	                </label>  
 	            </span>
 	            <span>
 	                <label for="radio-02" class="label_radio">      
-	                    <input type="radio" checked="" value="2" id="radio-02" name="sample-radio" /> B、  <?php echo $value['option'][1];?>   
+	                    <input type="radio" <?php if (isset($answer[$value['id']]) && $answer[$value['id']]['answer'] == 'B'){?> checked="true" <?php }?> value="B" id="radio-02" name="answer_<?php echo $i;?>" /> B、  <?php echo $value['option'][1];?>   
 	                </label>  
 	            </span>        
 	            <span>
 	                <label for="radio-03" class="label_radio">      
-	                    <input type="radio" checked="" value="3" id="radio-03" name="sample-radio" /> C、  <?php echo $value['option'][2];?>        
+	                    <input type="radio" <?php if (isset($answer[$value['id']]) && $answer[$value['id']]['answer'] == 'C'){?> checked="true" <?php }?> value="C" id="radio-03" name="answer_<?php echo $i;?>" /> C、  <?php echo $value['option'][2];?>        
 	                </label>  
 	            </span>
 	            <span>
 	                <label for="radio-04" class="label_radio">      
-	                    <input type="radio" checked="" value="4" id="radio-04" name="sample-radio" /> D、  <?php echo $value['option'][3];?>  
+	                    <input type="radio" <?php if (isset($answer[$value['id']]) && $answer[$value['id']]['answer'] == 'D'){?> checked="true" <?php }?> value="D" id="radio-04" name="answer_<?php echo $i;?>" /> D、  <?php echo $value['option'][3];?>  
 	                </label>  
 	            </span> 
         		</div>  
@@ -56,31 +59,31 @@
     		<div class="practise_answer">
             <span>
                 <label for="checkbox-01" class="label_check">       
-                	<input type="checkbox" checked="" value="1" id="checkbox-01" name="sample-checkbox-01" />A、 <?php echo $value['option'][0];?>      
+                	<input type="checkbox" <?php if (isset($answer[$value['id']]) && strpos($answer[$value['id']]['answer'], 'A') !== false){?> checked="true" <?php }?> value="A" id="checkbox-01" name="answer_<?php echo $i;?>" />A、 <?php echo $value['option'][0];?>      
                 </label>  
             </span>
             <span>
                 <label for="checkbox-02" class="label_check">       
-                	<input type="checkbox" value="2" id="checkbox-02" name="sample-checkbox-02" />B、  <?php echo $value['option'][1];?>     
+                	<input type="checkbox" <?php if (isset($answer[$value['id']]) && strpos($answer[$value['id']]['answer'], 'B') !== false){?> checked="true" <?php }?> value="B" id="checkbox-02" name="answer_<?php echo $i;?>" />B、  <?php echo $value['option'][1];?>     
                 </label>     
             </span>        
             <span>
                 <label for="checkbox-03" class="label_check">       
-                	<input type="checkbox" value="3" id="checkbox-03" name="sample-checkbox-03" />C、  <?php echo $value['option'][2];?>
+                	<input type="checkbox" <?php if (isset($answer[$value['id']]) && strpos($answer[$value['id']]['answer'], 'C') !== false){?> checked="true" <?php }?> value="C" id="checkbox-03" name="answer_<?php echo $i;?>" />C、  <?php echo $value['option'][2];?>
                 </label>     
             </span>
             <span>
                 <label for="checkbox-04" class="label_check">       
-                	<input type="checkbox" value="4" id="checkbox-04" name="sample-checkbox-04" />D、  <?php echo $value['option'][3];?>
+                	<input type="checkbox" <?php if (isset($answer[$value['id']]) && strpos($answer[$value['id']]['answer'], 'D') !== false){?> checked="true" <?php }?> value="D" id="checkbox-04" name="answer_<?php echo $i;?>" />D、  <?php echo $value['option'][3];?>
                 </label>     
             </span> 
         </div> 
     		<?php }else {?>
     			<div class="practise_tittle">&nbsp;&nbsp;<?php echo $i . '.';?><?php echo $value['title'];?></div>
-    			<div class="practise_answer"><textarea name="answer"></textarea></div>
+    			<div class="practise_answer"><textarea name="answer_<?php echo $i;?>"><?php if (isset($answer[$value['id']])){echo $answer[$value['id']]['answer'];}?></textarea></div>
     	<?php }}?>
           
-        <div class="submit"><input type="submit" name="submit" class="submit1" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" /></div>
+        <div class="submit"><input id="homeworksubmit" type="button" name="submit" class="submit1" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" /></div>
     </form>
     </div>				
    
@@ -110,7 +113,68 @@
         
         
         </div>
+        
 <script >
+
+$('#homeworksubmit').click(function(){
+
+	var homeworknum = "<?php echo count($homework);?>";
+	homeworknum = Number(homeworknum);
+	var data='homeworknum=' + homeworknum;
+	
+	for(var i=1; i<=homeworknum; i++)
+	{
+		var type = $('input[name=type_' + i + ']').val();
+		var homeworkid = $('input[name=homeworkid_' + i + ']').val();
+		if(type == 1)  //单选题
+		{
+			var answer = $('input[name=answer_' + i + ']:checked').val();
+			if(answer == false || answer == undefined || answer == "")
+			{
+				alert('请回答第' + i + '个题');
+				return ;
+			}
+			data += '&type_' + i + '=' + type + '&homeworkid_' + i + '='+ homeworkid + '&answer_' + i + '=' + answer;
+		}
+		else if(type == 2)  //多选题
+		{
+			var answer = [];
+			 
+			  $('input[name=answer_' + i + ']:checked').each(function(){    
+				  answer.push($(this).val());    
+			  });    
+			  if(answer.length == 0)
+			  {
+				  alert('请回答第' + i + '个题');
+				  return ;
+			  }
+			  answer = answer.join('-');
+			  data += '&type_' + i + '=' + type + '&homeworkid_' + i + '='+ homeworkid + '&answer_' + i + '=' + answer;
+		}
+		else   //问答题
+		{
+			var answer = $('textarea[name=answer_' + i + ']').val();
+			if(answer == "")
+			{
+				alert('请回答第' + i + '个题');
+				return ;
+			}
+			data += '&type_' + i + '=' + type + '&homeworkid_' + i + '='+ homeworkid + '&answer_' + i + '=' + answer;
+		}
+	}
+	
+	$.ajax({
+		type : 'post',
+		data : data,
+		dataType : 'json',
+		url : '/student/saveanswer',
+		success: function(data)
+		{
+			alert(data.msg);
+		}
+	});
+});
+
 function slay(num)
 {
 	for(var id = 1;id<=4;id++)
@@ -160,4 +224,5 @@ function setupLabel(){
 	setupLabel();     
 	});
 
+	
 </script> 

@@ -23,19 +23,18 @@
         });
 </script>
 </head>
-
 <body>
 <div class="bg">
     <div class="head">
         <span class="logo"><img src="/images/frame/logo.png" /></span>
-        <span class="home"><a href="#"><img src="/images/frame/home.png" /></a><a href="/main/user/logout"><img src="/images/frame/out.png" /></a></span>
+        <span class="home"><a href="/"><img src="/images/frame/home.png" /></a><a href="/main/user/logout"><img src="/images/frame/out.png" /></a></span>
     </div>
 
     <div class="content">
 
         <div class="leftnav">
             <div class="Nav_1"><?php echo $this->userInfo['uname'] . ',您好!';?></div>
-            <div class="Nav_2">2013年6月18日<br />星期二&nbsp;&nbsp; 10：34:05</div>
+            <div class="Nav_2"><?php echo date('Y年m月d日',time());?><br /><?php $weekth = intval(date('N',time()));echo $this->weeks[$weekth];?>&nbsp;&nbsp; <?php echo date('G:i:s',time());?></div>
             <?php $this->widget('application.modules.main.widgets.LeftMenu', array('userid' => $this->userid,'type'=>'logo')); ?>
         </div>
         <?php echo $content; ?>

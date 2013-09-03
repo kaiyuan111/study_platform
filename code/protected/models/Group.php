@@ -26,8 +26,7 @@ class Group extends CActiveRecord
             select g.id,g.name,u.uid,u.uname from `m-group` as g 
             inner join `m-groupmember` as gm on g.id=gm.groupid 
             inner join `m-user` as u on gm.uid=u.uid 
-            inner join `m-role` as r on u.rid=r.rid 
-            where g.id={$gid} and r.rname='学生' and u.uid!=g.leaderid
+            where g.id={$gid} and u.rid=3 and u.uid!=g.leaderid
         ";
         $conn = Yii::app()->db;
         $command = $conn->createCommand($sql);
@@ -56,4 +55,20 @@ class Group extends CActiveRecord
         return empty($rows)?array():$rows[0];
     }
 
+    /*
+     * 获取某个用户的所属小组列表
+     */
+	public function getGroupListByUid($uid)
+    {
+        $sql = "
+            select g.* from `m-group` as g 
+            inner join `m-groupmember` as gm on g.id = gm.groupid
+            where gm.uid='{$uid}'
+        ";
+        $conn = Yii::app()->db;
+        $command = $conn->createCommand($sql);
+        $rows = $command->queryAll();
+        
+        return $rows;
+    }
 }

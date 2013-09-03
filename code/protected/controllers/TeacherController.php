@@ -248,6 +248,7 @@ class TeacherController extends Controller
             $userInst = new MUser;
             // 组员
             $students = $userInst->getStudentWithoutGroup($_REQUEST['course']);
+            //var_dump($students);exit;
             $groupInst = new Group;
             $groupmembers = $groupInst->getStudentWithinGroup($_REQUEST['group']);
             $groupleader = $groupInst->getGroupLeader($_REQUEST['group']);

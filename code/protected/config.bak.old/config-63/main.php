@@ -6,7 +6,7 @@
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 return array(
-    'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
+    'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..',
     'name'=>'问卷调查',
 
     // preloading 'log' component
@@ -42,13 +42,13 @@ return array(
             // uncomment the following to enable URLs in path-format
             'urlManager'=>array(
                 'urlFormat'=>'path',
+            	'showScriptName'=>false,//注意false不要用引号括上
                 'rules'=>array(
                     //'<controller:\w+>/<id:\d+>'=>'<controller>/view',
-                    //'questionnaire/<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
-                    //'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
+                    'questionnaire/<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+                    '<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
                     '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
                 ),
-                'showScriptName'=>false,
             ),
             // 'db'=>array(
                 // 'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
@@ -75,7 +75,7 @@ return array(
              */
             'errorHandler'=>array(
                 // use 'site/error' action to display errors
-                //'errorAction'=>'site/error',
+                'errorAction'=>'site/error',
             ),
             // 'log'=>array(
                 // 'class'=>'CLogRouter',
@@ -98,7 +98,5 @@ return array(
         // using Yii::app()->params['paramName']
         'params'=>array(
             // this is used in contact page
-            'img_upload_path'=>'E:\kadinwang\repository\upload_image',
-            'group_member_maxnum'=>12,
         ),
     );

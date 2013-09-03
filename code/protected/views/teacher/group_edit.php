@@ -29,7 +29,7 @@
             	<div class="submit">
             	<a href="Manage_Class.html">
             	<input type="submit" name='sub' value="&nbsp;&nbsp;创&nbsp;&nbsp;建&nbsp;&nbsp;" />
-            	</a>
+            	 </a>
             	</div>
             </form>
 	</div>

@@ -40,9 +40,8 @@ class MUser extends CActiveRecord
     public function getStudentWithoutGroup($cid)
     {
         $sql = "
-            select u.*, r.rname from `m-user` as u 
-            inner join `m-role` as r on u.rid=r.rid 
-            where r.rname='学生' and u.uid not in 
+            select u.* from `m-user` as u 
+            where u.rid = 3 and u.uid not in 
             (select distinct uid from `m-groupmember` as gm
                 inner join `m-group` as g on gm.groupid=g.id
                 where courseid = {$cid}
@@ -64,16 +63,31 @@ class MUser extends CActiveRecord
     public function getTeacherByGroup($gid)
     {
         $sql = "
-            select u.*, r.rname, 
+            select u.*,
             case when u.uid in (select distinct uid from `m-groupmember` where groupid={$gid}) then '1' 
             else '0' end ingroup 
-            from `m-user` as u 
-            inner join `m-role` as r on u.rid=r.rid 
-            where r.rname='老师'
+            from `m-user` as u where u.rid = 2
         ";
         $conn = Yii::app()->db;
         $command = $conn->createCommand($sql);
         $rows = $command->queryAll();
+        return $rows;
+    }
+    
+    //根据uid获取用户信息
+    public function getUserInfoByUids($uidArray)
+    {
+    	if (empty($uidArray))
+    	{
+    		return array();
+    	}
+    	$memberIdStr = implode(',',$uidArray);
+		$sql = "select uid,uname from `m-user` where uid in ({$memberIdStr})";
+		$conn = Yii::app()->db;
+		$command = $conn->createCommand($sql);
+       
+        $rows = $command->queryAll();
+        
         return $rows;
     }
 }

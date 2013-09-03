@@ -68,13 +68,14 @@ CREATE TABLE `m-group` (
  `name` varchar(20) NOT NULL COMMENT '小组名',
  `creator` bigint(20) NOT NULL COMMENT '创建者',
  `description` blob  COMMENT '小组简介',
+ `leaderid` bigint(20) unsigned NOT NULL COMMENT '组长id',
  `courseid` bigint(20) unsigned not null comment '课程id',
  `membercount` tinyint unsigned NOT NULL default 12 comment '小组人数（默认12个人）',
  `icon` varchar(30) not null comment '小组图标',
  `jointype` tinyint unsigned NOT NULL default 1 comment '加入方式（1自由加入，2审核加入，3邀请加入）',
  PRIMARY KEY (`id`),
  key `creator`(`creator`),
-  UNIQUE KEY `name` (`name`)
+UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
 CREATE TABLE `m-groupmember` (
@@ -110,7 +111,7 @@ CREATE TABLE `m-discussreply` (
 
 CREATE TABLE `m-study` (
  `id` bigint(20) unsigned not null auto_increment comment 'id',
- `type` tinyint unsigned not null comment '1我的摘抄，2我的批注'
+ `type` tinyint unsigned not null comment '1我的摘抄，2我的批注',
  `content` BLOB  NOT NULL COMMENT '内容',
  `chapterid` bigint(20)  NOT NULL COMMENT '所属章节id',
  `uid` bigint(20) NOT NULL COMMENT '用户id',
@@ -120,7 +121,7 @@ CREATE TABLE `m-study` (
 
 CREATE TABLE `m-homework` (
  `id` bigint(20) unsigned not null auto_increment comment '作业id，每道题都是一个记录',
- `type` tinyint unsigned not null comment '1单选，2多选，3问答'
+ `type` tinyint unsigned not null comment '1单选，2多选，3问答',
  `title` BLOB  NOT NULL COMMENT '题目',
  `option` BLOB  NOT NULL COMMENT '选择题选项',
  `rightanswer` BLOB  NOT NULL COMMENT '正确答案',

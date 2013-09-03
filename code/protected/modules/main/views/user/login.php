@@ -48,9 +48,8 @@ function slay2(num)
         	<form action="/main/user/login" method="post">
                  <p><input name="name" type="text" size="33"  class="input1"/></p>
                  <p><input name="pwd" type="password" size="33"  class="input2"/></p>
-                 <input name="login_sub" type="hidden"/>
                  <input name="url" type="hidden" value="<?php echo $url;?>"/>
-                 <p><input type="submit"  class="submit2" value="&nbsp;&nbsp;" /></p>
+                 <p><input name="login_sub" type="submit"  class="submit2" value="&nbsp;&nbsp;" /></p>
             </form>
         </div>
     </DIV>

@@ -6,6 +6,9 @@
 class Controller extends CController
 {
 
+	public $weeks = array(1=>'星期一',2=>'星期二',3=>'星期三',
+				4=>'星期四',5=>'星期五',6=>'星期六',7=>'星期日');
+				
     public $layout='//layouts/column1';
 
     public $userid=0;
@@ -17,11 +20,12 @@ class Controller extends CController
 
     protected function beforeAction($action)
     {
-    	
+    	date_default_timezone_set('PRC');	
     	//return true;
         // 登陆
         preg_match("/(^.*?)\?|(^.*)/",$_SERVER['REQUEST_URI'],$matchs);
         $requestUrl = empty($matchs[1]) ? $matchs[2] : $matchs[1];
+        //var_dump($requestUrl);exit;
         //echo $requestUrl;exit;
         // 页面title
         $actionInfo = Action::model()->find("route=:route",array(':route'=>$requestUrl));
