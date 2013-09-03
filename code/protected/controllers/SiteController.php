@@ -10,8 +10,20 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $this->render('index');
-        //echo 'fuck,world';exit;
+        $userInfo = Login::getLoginInfo();
+        $roleInfo = Role::model()->find('rid=:id',array(':id'=>$userInfo['rid']));
+        if ($roleInfo['rname'] == 'superman') //如果是管理员
+        {
+            $this->redirect('/main/user/list');
+        }
+        elseif ($roleInfo['rname'] == '老师')   //老师
+        {
+            $this->redirect('/teacher/courselist');  //暂时为新建小组
+        }
+        elseif ($loginUserInfo['rname'] == '学生')   //学生
+        {
+            $this->redirect('/student/courselist');
+        }
     }
 
     /**

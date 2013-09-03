@@ -124,11 +124,16 @@
 
     // 提交结果
     $(document).delegate("#savemember", 'click',function() {
+        if($('#choosed_teacher_list').children().length>12) {
+            alert('小组成员超过12个,请减少小组成员');
+            return;
+        }
         uids = "";
         $("#choosed_teacher_list li.teacher,#choosed_student_list li.student").each(function(index) {
             uids += $(this).data("id")+",";
         });
         leaderid = $("#leader li.groupleader").data("id");
+
         //console.log(leaderid);
         uids += leaderid;
         groupid = "<?php echo $curgroup?>";

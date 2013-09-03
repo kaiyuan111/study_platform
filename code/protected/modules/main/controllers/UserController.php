@@ -101,25 +101,14 @@ class UserController extends Controller
             $loginUserInfo = Login::logins($_REQUEST['name'],$_REQUEST['pwd']);
             if (!empty($loginUserInfo))
             {
-            	if (!empty($url) && $url != '/')
-            	{
-            		$this->redirect($url);
-            	}
-            	else 
-            	{
-            		if ($loginUserInfo['rid'] == 1) //如果是管理员
-            		{
-            			$this->redirect('/main/user/list');
-            		}
-            		elseif ($loginUserInfo['rid'] == 2)   //老师
-            		{
-            			$this->redirect('/teacher/courselist');  //暂时为新建小组
-            		}
-            		elseif ($loginUserInfo['rid'] == 3)   //学生
-            		{
-            			$this->redirect('/student/courselist');
-            		}
-            	}
+                if (!empty($url) && $url != '/')
+                {
+                    $this->redirect($url);
+                }
+                else 
+                {
+                    $this->redirect('/site/index');
+                }
             }
             else 
             {

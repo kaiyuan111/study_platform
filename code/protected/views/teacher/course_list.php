@@ -33,9 +33,9 @@
 			<div class="kecheng">
 				<!--  <div class="biaoti14">计算机科学类</div>-->
 					<ul id="sidelist">
-						<li><span><a href="#">申请编辑</a></span>网页设计</li>
-						<li><span><a href="#">申请编辑</a></span>网页设计</li>
-						<li><span><a href="#">申请编辑</a></span>网页设计</li>
+						<?php foreach ($otherCourseList as $key => $value) {?>
+                        <li><span><a class='request_edit' data-id='<?php echo $value['id']?>'  href="#">申请编辑</a></span><?php echo $value['name']?></li>
+						<?php }?>
 					</ul>
 			</div>
 		</div>
@@ -61,6 +61,17 @@
 
 <script>
 $(function() {
-$( "#tabs" ).tabs();
+    $( "#tabs" ).tabs();
+    $("a.request_edit").on('click',function() {
+        courseid = $(this).data("id");
+        $.post( '/teacher/requestedit',
+                { 
+                    "courseid" : courseid,
+                },
+                function(data) {
+                    alert(data);
+                }
+        );
+    });
 });
 </script>

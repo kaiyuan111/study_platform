@@ -118,15 +118,43 @@ class TeacherController extends Controller
     	//$this->render('createcoursesuc', '创建成功');
     	$this->redirect('/teacher/courselist');
     }
+
+    // 老师申请其他课程的编辑权限
+    public function actionRequestEdit()
+    {
+        $courseId = !empty($_REQUEST['courseid']) ? $_REQUEST['courseid'] : "";
+        $course = Course::model()->find('id=:id',array(':id'=>$courseId));
+        if(!empty($course)) {
+            $info = Info::model()->find('uid_from=:fid and content=:c and is_responce=0',
+                array(
+                    ':c'=>$courseId,
+                    ':fid'=>$this->userid,
+                )
+            );
+            if(empty($info)) {
+                $info = new Info;
+            }
+            $info->type='request_edit_class';
+            $info->uid_from=$this->userid;
+            $info->request_time=date("Y-m-d");
+            $info->content=$courseId;
+            $info->uid_to=$course['creator'];
+            $info->save();
+            echo "申请成功";
+        } else {
+            echo "申请错误";
+        }
+    }
     
     //课程列表页面
     public function actionCourseList()
     {
     	$course = new Course();
     	$courseList = $course->findAll('creator=:creator' , array(':creator' => $this->userid));
+    	$otherCourseList = $course->findAll('creator!=:creator' , array(':creator' => $this->userid));
     	
     	//$assistCourseList = 
-    	$this->render('course_list', array('courseList' => $courseList));
+    	$this->render('course_list', array('courseList' => $courseList,'otherCourseList' => $otherCourseList));
     	
     	//$this->render('course_list');
     }
@@ -163,23 +191,35 @@ class TeacherController extends Controller
         $course = new Course;
         $courseList = $course->findAll('creator=:creator' , array(':creator' => $this->userid));
         if(isset($_REQUEST['sub'])) {
-            $group = new Group;
-            $group->name = $_REQUEST['name'];
-            $group->creator = $this->userid;
-            $group->description = $_REQUEST['description'];
-            $group->courseid = $_REQUEST['courseid'];
-            $group->jointype = $_REQUEST['jointype'];
-            $group->save();
+            try {
+                $group = new Group;
+                $group->name = $_REQUEST['name'];
+                $group->creator = $this->userid;
+                $group->description = $_REQUEST['description'];
+                $group->courseid = $_REQUEST['courseid'];
+                $group->jointype = $_REQUEST['jointype'];
+                $group->save();
+            } catch(Exception $e) {
+                $this->render('/site/error',array('errortxt'=>'创建小组保存错误'));
+                exit;
+            }
             // 保存图片
             if($_FILES['file']['error']==0) {
                 $imgpath = Yii::app()->params['img_upload_path'];
                 preg_match('|^image/(.*)|',$_FILES['file']['type'],$match);
+                if(empty($match[1])) {
+                    $this->render('/site/error',array('errortxt'=>'文件类型错误'));
+                    exit;
+                }
                 $filetype = $match[1];
                 $filepath = $imgpath.'grouplogo'.$group->id.'.'.$filetype;
                 if(file_exists($filepath)) {
                     unlink($filepath);
                 }
                 move_uploaded_file($_FILES['file']['tmp_name'],$filepath);
+                //var_dump($_FILES,$filepath);exit;
+                $group->icon = $filepath;
+                $group->save();
             }
         }
         $this->render('group_edit',array('course_list'=>$courseList));
@@ -272,10 +312,61 @@ class TeacherController extends Controller
         $this->render('discuss_list');
     }
 
+    // 老师回复编辑课程的消息
+    // 老师特权 m-user-privilege 的privilege_tag=courseedit
+    // content字段存入课程id
+    public function actionReturnMessage()
+    {
+        $infoid = isset($_REQUEST['infoid']) ? $_REQUEST['infoid'] : 0;
+        $responce = isset($_REQUEST['responce']) ? $_REQUEST['responce'] : 0;
+        $fromid = isset($_REQUEST['fromid']) ? $_REQUEST['fromid'] : 0;
+        $courseid = isset($_REQUEST['courseid']) ? $_REQUEST['courseid'] : 0;
+
+        $info = Info::model()->find("id=:id",array(":id"=>$infoid));
+        if($info->is_responce==1) exit;
+        $info->is_responce = 1;
+        $info->responce = $responce;
+        $info->save();
+
+        // 答应
+        if($responce==1) {
+            $mp = MUserPriviledge::model()->find("uid=:id and privilege_tag=:t and content=:cid",
+                array(':id'=>$fromid,':t'=>'courseedit',':cid'=>$courseid));
+            if(empty($mp)) $mp = new MUserPriviledge;
+            else exit;
+            $mp->uid=$fromid;
+            $mp->privilege_tag="courseedit";
+            $mp->content=$courseid;
+            $mp->save();
+        } else {
+            MUserPriviledge::model()->deleteAll("uid=:id and privilege_tag=:t and content=:cid",
+                array(':id'=>$fromid,':t'=>'courseedit',':cid'=>$courseid));
+        }
+    }
+
     //查看消息
+    // 老师申请编辑课程的消息表中的数据为
+    // type=request_edit_class
+    // content=courseid
+    // responce= 1 同意 or 0 拒绝
     public function actionMessageList()
     {
-        $this->render('message_list');
+        $tinfos = Info::model()->findAll('uid_to=:id and type=\'request_edit_class\' and is_responce=0 order by request_time desc',array(':id'=>$this->userid));
+        //echo "<pre>";var_dump($courses);exit;
+        $infos = array();
+        foreach($tinfos as $i) {
+            if(!empty($i['content']))  {
+                $course = Course::model()->find('id=:id',array(':id'=>$i['content']));
+                $r = $i->getAttributes();
+                $r['courseid'] = $course['id'];
+                $r['coursename'] = $course['name'];
+                $user = User::model()->find('uid=:id',array(':id'=>$i['uid_from']));
+                $r['uname_from'] = $user['uname'];
+                $r['request_time'] = date("Y-m-d",strtotime($r['request_time']));
+                $infos[] = $r;
+            }
+        }
+        $this->render('message_list', array('infos'=>$infos));
     }
 
     //添加内容页面
