@@ -37,6 +37,13 @@ CREATE TABLE `m-user` (
   UNIQUE KEY `name` (`uname`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
+CREATE TABLE `m-user-privilege` (
+  `uid` int(10) unsigned NOT NULL DEFAULT '0' comment '用户id',
+  `privilege_tag` varchar(20) NOT NULL DEFAULT '' comment '特权标志',
+  `content` varchar(20) NOT NULL DEFAULT '' comment '特权内容',
+  PRIMARY KEY (`uid`,`privilege_tag`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8
+
 CREATE TABLE `m-courseclass` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL DEFAULT '',
@@ -143,10 +150,14 @@ CREATE TABLE `m-answer` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
 
 CREATE TABLE `m-info` (
- `id` bigint(20) unsigned not null auto_increment comment '消息id',
- `type` tinyint unsigned not null comment '1通知类型，2需要作出操作'
- `content` BLOB  NOT NULL COMMENT '消息内容',
- `uid` bigint(20) NOT NULL COMMENT '消息接受者',
- PRIMARY KEY (`id`),
- key `uid`(`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '消息id',
+  `type` varchar(30) NOT NULL DEFAULT '' COMMENT '1通知类型，2需要作出操作',
+  `request_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '申请时间',
+  `uid_from` bigint(20) NOT NULL DEFAULT '-1' COMMENT '消息发送者',
+  `content` blob NOT NULL COMMENT '消息内容',
+  `uid_to` bigint(20) NOT NULL DEFAULT '-1' COMMENT '消息接受者',
+  `is_responce` tinyint(4) NOT NULL DEFAULT '0',
+  `responce` blob NOT NULL COMMENT '消息响应',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid_to`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8
