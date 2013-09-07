@@ -350,9 +350,10 @@ class TeacherController extends Controller
     // type=request_edit_class
     // content=courseid
     // responce= 1 同意 or 0 拒绝
+    // 通知消息 无需回复
     public function actionMessageList()
     {
-        $tinfos = Info::model()->findAll('uid_to=:id and type=\'request_edit_class\' and is_responce=0 order by request_time desc',array(':id'=>$this->userid));
+        $tinfos = Info::model()->findAll('uid_to=:id and is_responce=0 order by request_time desc',array(':id'=>$this->userid));
         //echo "<pre>";var_dump($courses);exit;
         $infos = array();
         foreach($tinfos as $i) {

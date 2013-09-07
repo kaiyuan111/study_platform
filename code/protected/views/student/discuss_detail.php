@@ -5,7 +5,7 @@
           <?php echo $discussInfo['content'];?> 
    		</div>
        <div class="message">
-      		<div class="t"><a href=""><img src="/images/frame/yqls.png" align="bottom" /></a></div>
+      		<div class="t"><a id="invite_teacher" href="#"><img src="/images/frame/yqls.png" align="bottom" /></a></div>
       		<?php if (!empty($discussReply)) {?>
            <ul>
            <?php foreach ($discussReply as $key => $value) {?>
@@ -52,6 +52,25 @@
 </div>
 
 <script type="text/javascript">
+(function($) {
+    // 邀请老师
+    $("#invite_teacher").on('click',function()
+    {
+        var groupid = '<?php echo $groupid;?>';
+        var courseid = '<?php echo $chapter['courseid'];?>';
+        var discussid = <?php echo $discussInfo['id'];?>;
+
+        $.ajax({
+            type : 'post',
+                data : 'groupid=' + groupid + '&courseid=' + courseid + '&discussid=' + discussid,
+                url : '/student/inviteteacherfordiscuss',
+                success: function(data)
+                {
+                    alert(data);
+                }
+        });;
+    })
+})(jQuery);
 $(".submit_blue").click(function()
 	    {
     		var discussid = <?php echo $discussInfo['id'];?>;

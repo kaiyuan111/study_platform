@@ -8,6 +8,7 @@
 return array(
     'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..',
     'name'=>'问卷调查',
+    'defaultController'=>'site',
 
     // preloading 'log' component
     'preload'=>array('log'),

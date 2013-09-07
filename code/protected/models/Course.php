@@ -11,7 +11,25 @@ class Course extends CActiveRecord
     {
         return '`m-course`';
     }
-    
+
+    public function courseListByUid($uid)
+    {
+        if (empty($uid))
+        {
+            return array();
+        }
+
+        $command = 'select c.* from `m-groupmember` m inner join `m-group` g on m.groupid = g.id 
+            left join `m-course` c on g.courseid = c.id where m.uid = :uid';
+
+        $conn = Yii::app()->db;
+        $command = $conn->createCommand($command);
+        $command->bindParam(':uid',$uid);
+
+        $rows = $command->queryAll();
+        return $rows;
+    }
+
     public function getCreateCourseListByUid($uid)
     {
     	if (empty($uid))
