@@ -12,19 +12,20 @@ class Course extends CActiveRecord
         return '`m-course`';
     }
     
-    public function courseListByUid($uid)
+    public function getCreateCourseListByUid($uid)
     {
     	if (empty($uid))
     	{
     		return array();
     	}
     	
-    	$command = 'select c.* from `m-groupmember` m inner join `m-group` g on m.groupid = g.id 
-    	left join `m-course` c on g.courseid = c.id where m.uid = :uid';
+    	/*$command = 'select c.* from `m-groupmember` m inner join `m-group` g on m.groupid = g.id 
+    	left join `m-course` c on g.courseid = c.id where m.uid = :uid';*/
+    	
+    	$command = 'select * from `m-course` where creator = ' . $uid;
 
     	$conn = Yii::app()->db;
         $command = $conn->createCommand($command);
-        $command->bindParam(':uid',$uid);
         
         $rows = $command->queryAll();
         return $rows;
@@ -77,5 +78,34 @@ class Course extends CActiveRecord
         }
         //var_dump($rows);exit;
         return array();
+    }
+    
+    //获取助教管理的课程信息
+    public function getCourseListOfAssist($userid)
+    {
+    	$command = 'select c.* from `m-groupmember` gm 
+    				inner join `m-group` g on gm.groupid = g.id
+    				inner join `m-course` c on g.courseid = c.id 
+    			    where gm.uid = ' . $userid;
+    	
+    	$conn = Yii::app()->db;
+        $command = $conn->createCommand($command);
+    	$rows = $command->queryAll();
+    	
+    	return $rows;
+    }
+    
+    //根据课程获取助教的小组
+    public function getGroupListByCid($cid, $uid)
+    {
+    	$command = 'select g.* from `m-groupmember` gm 
+    				inner join `m-group` g on gm.groupid = g.id
+    			    where g.courseid = ' . $cid . 'and gm.uid = ' . $uid;
+    	
+    	$conn = Yii::app()->db;
+        $command = $conn->createCommand($command);
+    	$rows = $command->queryAll();
+    	
+    	return $rows;
     }
 }

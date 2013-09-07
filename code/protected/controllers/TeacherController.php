@@ -463,6 +463,78 @@ class TeacherController extends Controller
         }
     }
 
+    //查看作业list
+    public function actionHomeWorkAnswerList()
+    {
+    	//获取创建的课程
+    	$courseModel = new Course();
+    	$createCourse = $courseModel->getCreateCourseListByUid($this->userid);
+    	//var_dump($createCourse);
+    	//获取是小组助教的课程
+    	
+    	$assistCourse = $courseModel->getCourseListOfAssist($this->userid);
+    	//var_dump($assistCourse);exit;
+    	//$allCourse = $createCourse + $assistCourse;
+    	$allCourse = array();
+    	foreach ($createCourse as $key => $value)
+    	{
+    		$allCourse[$value['id']] = $value;
+    	}
+    	
+    	foreach ($assistCourse as $key => $value)
+    	{
+    		$allCourse[$value['id']] = $value;
+    	}
+    	
+    	$groupId = isset($_REQUEST['groupid']) ? intval($_REQUEST['groupid']) : 0;
+    	if (!empty($groupId)) 
+    	{
+    		//获取这个小组下的学生的这门课的作业
+    		;
+    	}
+    	
+    }
+    
+    //根据课程id获取课程内容
+    public function getCourseContentByCid()
+    {
+    	$cid = isset($_REQUEST['cid']) ? intval($_REQUEST['cid']) : 0;
+    	if (empty($cid)) 
+    	{
+    		$this->jsonResult(-1);
+    	}
+    	
+    	$content = CourseContent::model()->findAll('courseid=:courseid',array(':courseid'=>$cid));
+    	$this->jsonResult(0, $content);
+    }
+    
+    //根据课程获取小组
+    public function getGroupByCid()
+    {
+    	$cid = isset($_REQUEST['cid']) ? intval($_REQUEST['cid']) : 0;
+    	if (empty($cid)) 
+    	{
+    		$this->jsonResult(-1);
+    	}
+    	
+    	$groupList = array();
+    	$courseInfo = Course::model()->findByPk($cid);
+    	if ($courseInfo['creator'] == $this->userid)   //如果是创建者，可获取所有小组
+    	{
+    		$groupList = Group::model()->findAll('courseid=:courseid', 
+    			array(':courseid' => $cid));
+    			
+    	}
+    	else   //如果是助教，只获取属于自己助教的小组
+    	{
+    		$courseModel = new Course();
+    		$groupList = $courseModel->getGroupListByCid($cid, $this->userid);
+    	}
+    	
+    	$this->jsonResult(0, $groupList);
+    }
+    
+    
     //添加习题
     public function actionSaveHomeWork()
     {
