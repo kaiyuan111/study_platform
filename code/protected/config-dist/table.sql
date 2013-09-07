@@ -148,6 +148,7 @@ CREATE TABLE `m-answer` (
 CREATE TABLE `m-info` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '消息id',
   `type` varchar(30) NOT NULL DEFAULT '' COMMENT '1通知类型，2需要作出操作',
+  `title` varchar(100) NOT NULL DEFAULT '' COMMENT '消息题目',
   `request_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '申请时间',
   `uid_from` bigint(20) NOT NULL DEFAULT '-1' COMMENT '消息发送者',
   `content` blob NOT NULL COMMENT '消息内容',
@@ -156,5 +157,5 @@ CREATE TABLE `m-info` (
   `responce` blob NOT NULL COMMENT '消息响应',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid_to`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8
 

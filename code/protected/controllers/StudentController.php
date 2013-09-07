@@ -120,7 +120,8 @@ class StudentController extends Controller
     //添加摘抄，添加批注，添加讨论页面，根据type参数来区分，1摘抄，2批注，3讨论
     public function actionStudyDetailPage()
     {
-    	$this->layout = 'application.modules.main.views.layouts.frame_without_leftnav';
+    	$this->layout = 'application.modules.main.views.layouts.iframe';
+    	//$this->layout = 'application.modules.main.views.layouts.frame_without_leftnav';
     	$type = isset($_REQUEST['type']) ? intval($_REQUEST['type']) : 0;
     	if ($type != 1 && $type != 2 && $type != 3)
     	{

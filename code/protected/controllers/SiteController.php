@@ -16,11 +16,11 @@ class SiteController extends Controller
         {
             $this->redirect('/main/user/list');
         }
-        elseif ($roleInfo['rname'] == '老师')   //老师
+        elseif ($roleInfo['rname'] == 'teacher')   //老师
         {
             $this->redirect('/teacher/courselist');  //暂时为新建小组
         }
-        elseif ($loginUserInfo['rname'] == '学生')   //学生
+        elseif ($roleInfo['rname'] == 'student')   //学生
         {
             $this->redirect('/student/courselist');
         }

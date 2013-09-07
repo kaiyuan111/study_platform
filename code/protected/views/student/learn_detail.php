@@ -18,9 +18,9 @@
 	<div class="leftTitle">
         <ul>
             <LI class="active" id="tab1"><A onmouseover=javascript:slay(1) href="javascript:slay(1)">&nbsp;练&nbsp;&nbsp;&nbsp;&nbsp;习&nbsp;</A></LI>
-            <LI id="tab2"><A onmouseover=javascript:slay(2) href="/student/studydetailpage?type=1&chapterid=<?php echo $courseContent['id'];?>" target="_blank">添加摘抄</A></LI>
-            <LI id="tab3"><A onmouseover=javascript:slay(3) href="/student/studydetailpage?type=2&chapterid=<?php echo $courseContent['id'];?>" target="_blank">添加批注</A></LI>
-            <LI id="tab4"><A onmouseover=javascript:slay(4) href="/student/studydetailpage?type=3&chapterid=<?php echo $courseContent['id'];?>" target="_blank">发起讨论</A></LI>
+            <LI id="tab2"><A id='add_zhaiyao' onmouseover=javascript:slay(2) href="/student/studydetailpage?type=1&chapterid=<?php echo $courseContent['id'];?>" >添加摘抄</A></LI>
+            <LI id="tab3"><A id='add_pizhu' onmouseover=javascript:slay(3) href="/student/studydetailpage?type=2&chapterid=<?php echo $courseContent['id'];?>">添加批注</A></LI>
+            <LI id="tab4"><A id='add_taolun' onmouseover=javascript:slay(4) href="/student/studydetailpage?type=3&chapterid=<?php echo $courseContent['id'];?>" >发起讨论</A></LI>
         </ul>
     </div>
     
@@ -114,7 +114,15 @@
         
         </div>
         
+<link href="/css/colorbox.css" rel="stylesheet" media="screen" type="text/css" />
+<script type="text/javascript" src="/js/jquery.colorbox.js" ></script>
 <script >
+(function($) {
+    // 弹出添加摘要,添加批注，发起讨论
+    $("#add_zhaiyao").colorbox({iframe:true, innerWidth:750, innerHeight:530});
+    $("#add_pizhu").colorbox({iframe:true, innerWidth:750, innerHeight:530});
+    $("#add_taolun").colorbox({iframe:true, innerWidth:740, innerHeight:700});
+})(jQuery);
 
 $('#homeworksubmit').click(function(){
 

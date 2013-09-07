@@ -135,6 +135,7 @@ class TeacherController extends Controller
                 $info = new Info;
             }
             $info->type='request_edit_class';
+            $info->title='申请编辑课程';
             $info->uid_from=$this->userid;
             $info->request_time=date("Y-m-d");
             $info->content=$courseId;
