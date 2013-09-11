@@ -37,7 +37,7 @@ class Privilege
     static public function getMenu($uid)
     {
         $userInst = new User;
-        $userInfo = $userInst->getUserWithAction('uid=:id',array(':id'=>$uid));
+        $userInfo = $userInst->getUserWithAction('uid=:id order by menu_pos',array(':id'=>$uid));
         $ret = array();
         foreach($userInfo as $k=>$v) {
             if($v['is_menu']) {

@@ -28,7 +28,15 @@ class Role extends CActiveRecord
         $roleaction = new RoleAction;
         $roleaction->deleteAll('rid=:id',array(':id'=>$params['id']));
         if(!empty($params['actions'])) {
-            $roleaction->saveActions($params['id'],$params['actions']);
+            $ret = array();
+            foreach($params['actions'] as $a) {
+                if(isset($params['positions'][$a])) {
+                    $ret[$a] = $params['positions'][$a];
+                } else {
+                    $ret[$a] = 0;
+                }
+            }
+            $roleaction->saveActions($params['id'],$ret);
         }
     }
 
@@ -49,7 +57,15 @@ class Role extends CActiveRecord
         $roleaction = new RoleAction;
         $roleaction->deleteAll('rid=:id',array(':id'=>$roleInfo['rid']));
         if(!empty($params['actions'])) {
-            $roleaction->saveActions($roleInfo['rid'],$params['actions']);
+            $ret = array();
+            foreach($params['actions'] as $a) {
+                if(isset($params['positions'][$a])) {
+                    $ret[$a] = $params['positions'][$a];
+                } else {
+                    $ret[$a] = 0;
+                }
+            }
+            $roleaction->saveActions($roleInfo['rid'],$ret);
         }
     }
 
@@ -68,6 +84,7 @@ class Role extends CActiveRecord
         else return array();
         // get 该角色的action列表
         $roleInfo['actions'] = RoleAction::model()->findActions($rid);
+        //echo "<pre>";var_dump($roleInfo['actions']);exit;
         return $roleInfo;
     }
 }
