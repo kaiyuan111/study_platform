@@ -21,9 +21,11 @@ CREATE TABLE `m-role` (
 CREATE TABLE `m-role-action` (
   `rid` int(10) unsigned NOT NULL DEFAULT '0',
   `aid` int(10) unsigned NOT NULL DEFAULT '0',
+  `menu_pos` int(10) unsigned NOT NULL DEFAULT '0',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`rid`,`aid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8
+
 
 CREATE TABLE `m-user` (
   `uid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
