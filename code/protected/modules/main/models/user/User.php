@@ -46,6 +46,15 @@ class User extends CActiveRecord
         return $rows;
     }
 
+    /**
+     * getUserWithAction 
+     *
+     * 获取用户拥有权限的action
+     * 
+     * @param string $condition 
+     * @param array $params 
+     * @return void
+     */
     public function getUserWithAction($condition='',$params=array())
     {
         if(!empty($condition)) {

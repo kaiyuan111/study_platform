@@ -25,7 +25,7 @@ class RoleAction extends CActiveRecord
         $actions = $this->findAll('rid=:id',array(':id'=>$rid));
         $ret = array();
         foreach($actions as $v) {
-            $ret[] = $v['aid'];
+            $ret[$v['aid']] = $v['menu_pos'];
         }
         return $ret;
     }
@@ -34,15 +34,15 @@ class RoleAction extends CActiveRecord
      * saveActions 
      * 
      * @param mixed $rid 角色id
-     * @param array $actions  array(aid1,aid2)
+     * @param array $actions  array(aid1=>pos,aid2=>pos)
      * @return void
      */
     public function saveActions($rid,array $actions)
     {
         $conn = Yii::app()->db;
-        $sql = "insert into `m-role-action` (rid,aid) values ";
+        $sql = "insert into `m-role-action` (rid,aid,menu_pos) values ";
         foreach($actions as $k=>$v) {
-            $sql .= "({$rid},{$v}),";
+            $sql .= "({$rid},{$k},{$v}),";
         }
         $sql = trim($sql,',');
         $command = $conn->createCommand($sql);

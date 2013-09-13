@@ -27,7 +27,7 @@
 <div class="bg">
     <div class="head">
         <span class="logo"><img src="/images/frame/logo.png" /></span>
-        <span class="home"><a href="/"><img src="/images/frame/home.png" /></a><a href="/main/user/logout"><img src="/images/frame/out.png" /></a></span>
+        <span class="home"><a href="/site/index"><img src="/images/frame/home.png" /></a><a href="/main/user/logout"><img src="/images/frame/out.png" /></a></span>
     </div>
 
     <div class="content">

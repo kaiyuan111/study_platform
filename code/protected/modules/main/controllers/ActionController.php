@@ -22,6 +22,7 @@ class ActionController extends Controller
         $this->render('list',array('entitys'=>$actionInfos));
     }
 
+
     public function actionEdit()
     {
         $action = new Action;

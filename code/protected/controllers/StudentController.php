@@ -166,7 +166,8 @@ class StudentController extends Controller
     //添加摘抄，添加批注，添加讨论页面，根据type参数来区分，1摘抄，2批注，3讨论
     public function actionStudyDetailPage()
     {
-    	$this->layout = 'application.modules.main.views.layouts.frame_without_leftnav';
+    	$this->layout = 'application.modules.main.views.layouts.iframe';
+    	//$this->layout = 'application.modules.main.views.layouts.frame_without_leftnav';
     	$type = isset($_REQUEST['type']) ? intval($_REQUEST['type']) : 0;
     	if ($type != 1 && $type != 2 && $type != 3)
     	{
@@ -338,7 +339,14 @@ class StudentController extends Controller
     	$this->render('discuss_list', array('originalDis' => $originalDiscuss,
     							'joindDis' => $joinDiscuss));
     }
-    
+
+    public function actionInviteTeacherForDiscuss()
+    {
+        $ret = StudyDiscuss::model()->notifyTeacherToDiscuss($this->userid,$_REQUEST['courseid'],$_REQUEST['groupid'],$_REQUEST['discussid']);
+        if($ret) echo "邀请成功";
+        else echo "邀请失败";
+    }
+
     //讨论详情页
     public function actionDiscussDetail()
     {
@@ -351,13 +359,22 @@ class StudentController extends Controller
     	{
     		$this->render('error', '讨论信息不能为空');
     	}
+
+        // 获取章节信息
+        $chapter = CourseContent::model()->find('courseid=:id',array(':id'=>$discussId));
+        // 获取当前讨论组的所属小组
+        $temp = GroupMember::model()->find('uid=:id',array(':id'=>$discussInfo['uid']));
+        if(empty($temp)) {
+            $this->render('/site/error',array('errortxt'=>'获取小组信息失败'));
+            exit;
+        }
+        $groupid = $temp['groupid'];
     	
     	//获取讨论的参与人员信息
     	$discussMember = new DiscussMember();
     	$discussMemberInfo = $discussMember->getDisMemberInfoByDiscussId($discussId);
     	
     	//获取讨论的评论
-    	
     	$discussReply = DiscussReply::model()->findAllBySql("select * from `m-discussreply` where discussid={$discussId}");
     	$uidArray = array();
     	foreach ($discussReply as $key => $value)
@@ -386,6 +403,8 @@ class StudentController extends Controller
     	$this->render('discuss_detail', array('discussInfo' => $discussInfo,
     						'discussMemberInfo' => $discussMemberInfo,
     						'discussReply' => $discussReply,
+    						'chapter' => $chapter,
+    						'groupid' => $groupid,
     						'replyUserInfo' => $replyUserInfo,));
     	
     	$this->layout = 'application.modules.main.views.layouts.frame_with_leftnav';

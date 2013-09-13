@@ -40,11 +40,12 @@ class RoleController extends Controller
 
     public function actionEdit()
     {
+        //echo "<pre>";var_dump($_REQUEST);exit;
         $role = new Role;
         $roleInfo = array();
         $label = '';
         foreach($_REQUEST as $k=>$v) {
-            if($k!='actions')
+            if($k!='actions'&&$k!='positions')
                 $_REQUEST[$k] = trim($v);
         }
         // action 列表 展现
@@ -72,6 +73,9 @@ class RoleController extends Controller
             }
         }
 
+        // foreach($actionList as $k=>$v) {
+            // echo "<pre>";var_dump($k,$v->getAttributes());
+        // }exit;
         $this->render('edit',array('action_list'=>$actionList,'entity'=>$roleInfo,'label'=>$label));
     }
 }
