@@ -7,6 +7,7 @@ class TeacherController extends Controller
 	static $msgArray = array(0=>'成功',
 							-1=>'参数错误');
 	
+	static $optionMap = array(0 => 'A', 1 => 'B', 2 => 'C', 3 => 'D');
     public $layout = 'application.modules.main.views.layouts.frame_with_leftnav';
 
     public function actionIndex()
@@ -16,7 +17,7 @@ class TeacherController extends Controller
 
 	//public function action
     
-    public function actionSaveGroup()
+    /*public function actionSaveGroup()
     {
         $usr = new User;
         $usrInfos = array();
@@ -53,19 +54,17 @@ class TeacherController extends Controller
         $group->jointype = $joinType;
         
         $group->save();
-    }
+    }*/
 	
     //创建课程页面
     public function actionCreateCourse()
     {
-    	//echo "hello,world";exit;
     	$courseClass = CourseClass::model()->findAll();
     	$this->render('createcourse' , array('couseClass' => $courseClass));
     }
     
     public function actionSaveCourseclass()
     {
-    	//echo "fuck,world";exit;
     	$name = isset($_REQUEST['name']) ? trim($_REQUEST['name']) : '';
     	//echo $name;exit;
     	if (empty($name))
@@ -88,7 +87,8 @@ class TeacherController extends Controller
     	{
     		//$this->render('error', );
     		$nameError = '课程名称不能为空';
-    		$this->render('createcourse', array('name' => $nameError));
+    		//$this->render('createcourse', array('name' => $nameError));
+    		$this->render('/site/error',array('errortxt'=>$nameError));
     	}
     	
     	$courseClass = isset($_POST['classid']) ? intval($_POST['classid']) : 0;
@@ -96,7 +96,8 @@ class TeacherController extends Controller
     	{
     		//$this->render('error', );
     		$classError = '所属科目必选';
-    		$this->render('createcourse', array('class' => $classError));
+    		//$this->render('createcourse', array('class' => $classError));
+    		$this->render('/site/error',array('errortxt'=>$classError));
     	}
     	
     	$courseDesc = isset($_POST['desc']) ? intval($_POST['desc']) : 0;
@@ -104,7 +105,8 @@ class TeacherController extends Controller
     	{
     		//$this->render('error', );
     		$descError = '课程描述必填';
-    		$this->render('createcourse', array('desc' => $descError));
+    		//$this->render('createcourse', array('desc' => $descError));
+    		$this->render('/site/error',array('errortxt'=>$descError));
     	}
     	
     	$newCourse = new Course();
@@ -144,6 +146,20 @@ class TeacherController extends Controller
         } else {
             echo "申请错误";
         }
+    }
+    
+    public function actionDeleteCourse()
+    {
+    	$courseId = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+    	if (empty($courseId)) 
+    	{
+    		//$this->render('/site/error',array('errortxt'=>''));;
+    		$this->jsonResult(-1);
+    	}
+    	
+    	$post=Course::model()->findByPk($courseId); // 假设有一个帖子，其 ID 为 10
+		$post->delete(); // 从数据表中删除此行
+		$this->jsonResult(0);
     }
     
     //课程列表页面
@@ -306,12 +322,6 @@ class TeacherController extends Controller
         ));
     }
 
-    //查看讨论
-    public function actionDiscussList()
-    {
-        $this->render('discuss_list');
-    }
-
     // 老师回复编辑课程的消息
     // 老师特权 m-user-privilege 的privilege_tag=courseedit
     // content字段存入课程id
@@ -462,7 +472,43 @@ class TeacherController extends Controller
         }
     }
 
-    //查看作业list
+    //查看讨论
+    public function actionDiscussList()
+    {
+    	//获取创建的课程
+    	$courseModel = new Course();
+    	$createCourse = $courseModel->getCreateCourseListByUid($this->userid);
+    	//var_dump($createCourse);
+    	//获取是小组助教的课程
+    	//var_dump($createCourse);exit;
+    	$assistCourse = $courseModel->getCourseListOfAssist($this->userid);
+    	//var_dump($assistCourse);exit;
+    	//$allCourse = $createCourse + $assistCourse;
+    	$allCourse = array();
+    	foreach ($createCourse as $key => $value)
+    	{
+    		$allCourse[$value['id']] = $value;
+    	}
+    	
+    	foreach ($assistCourse as $key => $value)
+    	{
+    		$allCourse[$value['id']] = $value;
+    	}
+    	
+    	$discussList = array();
+    	$groupId = isset($_REQUEST['groupid']) ? intval($_REQUEST['groupid']) : 0;
+    	if (!empty($groupId)) 
+    	{
+    		//获取这个组下的讨论
+    		$discussModel = new StudyDiscuss();
+    		$discussList = $discussModel->getDiscussList($groupId);
+    	}
+    	
+    	$this->render('discuss_list', array('discussList' => $discussList,
+    								'allCourse' => $allCourse));
+    }
+    
+	//查看作业list
     public function actionHomeWorkAnswerList()
     {
     	//获取创建的课程
@@ -470,7 +516,7 @@ class TeacherController extends Controller
     	$createCourse = $courseModel->getCreateCourseListByUid($this->userid);
     	//var_dump($createCourse);
     	//获取是小组助教的课程
-    	
+    	//var_dump($createCourse);exit;
     	$assistCourse = $courseModel->getCourseListOfAssist($this->userid);
     	//var_dump($assistCourse);exit;
     	//$allCourse = $createCourse + $assistCourse;
@@ -486,48 +532,119 @@ class TeacherController extends Controller
     	}
     	
     	$groupId = isset($_REQUEST['groupid']) ? intval($_REQUEST['groupid']) : 0;
-    	if (!empty($groupId)) 
+    	$chapterId = isset($_REQUEST['chapterid']) ? intval($_REQUEST['chapterid']) : 0;
+    	
+    	$homework = array();
+    	$groupAnswer = array();
+    	$userInfo = array();
+    	if (!empty($groupId) && !empty($chapterId)) 
     	{
-    		//获取这个小组下的学生的这门课的作业
-    		;
+    		//获取这个小组下的学生的这门课的这一章的作业
+    		
+    		//获取这个小组的成员;
+    		$groupMem = GroupMember::model()->findAll("groupid=:groupid", 
+    			array(':groupid'=>$groupId));
+    		$groupMemIds = array();
+    		foreach ($groupMem as $key => $value)
+    		{
+    			$groupMemIds[] = $value['uid'];
+    		}
+			//获取这章的作业
+			$homeworkT = Homework::model()->findAll('chapterid=:chapterid', array(':chapterid'=>$chapterId));
+	    	//var_dump($homework);exit;
+	    	$homework = array();
+	    	$homeworkIds = array();
+	    	foreach ($homeworkT as $key => $value)
+			{
+				if ($value['type'] == 1 || $value['type'] == 2)
+				{
+					$value['option'] = explode(',||' , $value['option']);
+				}
+				$homework[$value['id']] = $value;
+				$homeworkIds[] = $value['id'];
+			}
+	    	
+			//获取这章每个学生的答案,没有点评过的答案
+			$answerModel = new Answer();
+			$groupAnswerT = $answerModel->getGroupMemberAnswer($groupMemIds, $chapterId);
+			$groupAnswer = array();
+			//根据人来分类
+			foreach ($groupAnswerT as $key => $value)
+			{
+				if (empty($value['remark']))
+				{
+					$groupAnswer[$value['uid']][$value['homeworkid']] = $value;
+				}
+			}
+			
+			$uids = array_keys($groupAnswer);
+			$muser = new MUser();
+    		$userInfoT = $muser->getUserInfoByUids($uids);
+    		foreach ($userInfoT as $key => $value)
+    		{
+    			$userInfo[$value['uid']] = $value;
+    		}
     	}
+    	
+    	//var_dump($allCourse);exit;
+    	$this->render('homework_list', array('allCourse' => $allCourse, 
+    				'homework' => $homework,
+    				'groupAnswer' => $groupAnswer,
+    				'userInfo' => $userInfo,
+    				'optionMap' => self::$optionMap));
     	
     }
     
     //根据课程id获取课程内容
-    public function getCourseContentByCid()
+    public function actionGetCourseContentByCid()
     {
     	$cid = isset($_REQUEST['cid']) ? intval($_REQUEST['cid']) : 0;
     	if (empty($cid)) 
     	{
-    		$this->jsonResult(-1);
+    		$this->jsonResult(0);
     	}
     	
-    	$content = CourseContent::model()->findAll('courseid=:courseid',array(':courseid'=>$cid));
+    	$contentT = CourseContent::model()->findAll('courseid=:courseid',array(':courseid'=>$cid));
+    	$content = array();
+    	foreach ($contentT as $key => $value)
+    	{
+    		$content[] = array('id' => $value['id'],
+    							'title' => $value['title']);
+    	}
+    	
+    	//var_dump($content);exit;
     	$this->jsonResult(0, $content);
     }
     
     //根据课程获取小组
-    public function getGroupByCid()
+    public function actionGetGroupByCid()
     {
     	$cid = isset($_REQUEST['cid']) ? intval($_REQUEST['cid']) : 0;
     	if (empty($cid)) 
     	{
-    		$this->jsonResult(-1);
+    		$this->jsonResult(0);
     	}
     	
     	$groupList = array();
     	$courseInfo = Course::model()->findByPk($cid);
     	if ($courseInfo['creator'] == $this->userid)   //如果是创建者，可获取所有小组
     	{
-    		$groupList = Group::model()->findAll('courseid=:courseid', 
+    		//echo "fuck";exit;
+    		$groupListT = Group::model()->findAll('courseid=:courseid', 
     			array(':courseid' => $cid));
     			
     	}
     	else   //如果是助教，只获取属于自己助教的小组
     	{
+    		//echo "hello,world";exit;
     		$courseModel = new Course();
-    		$groupList = $courseModel->getGroupListByCid($cid, $this->userid);
+    		$groupListT = $courseModel->getGroupListByCid($cid, $this->userid);
+    	}
+    	
+    	foreach ($groupListT as $key => $value)
+    	{
+    		$groupList[] = array('id' => $value['id'],
+    					'name' => $value['name']);
     	}
     	
     	$this->jsonResult(0, $groupList);
@@ -587,6 +704,23 @@ class TeacherController extends Controller
 
     }
 
+    //添加作业的点评
+    public function actionSaveHomeworkRemark()
+    {
+    	$id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+    	$remark = isset($_REQUEST['remark']) ? trim($_REQUEST['remark']) : '';
+    	if (empty($remark))
+    	{
+    		$this->jsonResult(-1);
+    		return ;
+    	}
+    	
+    	$answerFind = Answer::model()->findByPk($id);
+    	$answerFind->remark = $remark;
+    	$answerFind->save();
+    	$this->jsonResult(0);
+    }
+    
     public function actionGetHomeWork()
     {
         $homeworkid = isset($_REQUEST['homeworkid']) ? intval($_REQUEST['homeworkid']) : 0;
@@ -632,4 +766,5 @@ class TeacherController extends Controller
         echo json_encode($result);
         exit;
     }
+    
 }

@@ -22,7 +22,7 @@
 						<li>
 							<span>
 								<a href="/teacher/managecourse?courseid=<?php echo $value['id'];?>"><img src="/images/frame/im21.jpg" width="36" height="24" border="0" /></a>
-								<a href="#"><img src="/images/frame/im22.jpg" width="30" height="24" border="0" /></a>
+								<a href="javascript: void(0)" onclick="return deleteItem(<?php echo $value['id'];?>);"><img src="/images/frame/im22.jpg" width="30" height="24" border="0" /></a>
 							</span><?php echo $value['name'];?>
 						</li>
 						<?php }?>
@@ -45,7 +45,7 @@
 				
 	<div style="height:30px"></div>				
 <!-- 页码开始-->
-	<div class="meneame">
+ <!--   	<div class="meneame">
         <div align="right">
         <span class="disabled"></span>
         <span class="current">1</span>
@@ -54,12 +54,31 @@
         <a href="#?page=4">4</a>
         <span class="disabled_right"></span>
     	</div>
-	</div>
+	</div>-->
 <!-- 页码结束-->						
 	</div>
 </div>
 
-<script>
+<script type="text/javascript">
+function deleteItem(id)
+{
+    var data = 'id=' + id;
+	$.ajax({
+		type : 'post',
+		data : data,
+		dataType : 'json',
+		url : '/teacher/deletecourse',
+		success: function(retData)
+		{
+			if(retData.retCode == 0)
+			{
+    			alert(retData.msg);
+    			window.location.reload();
+			}
+		}
+	})
+}
+
 $(function() {
     $( "#tabs" ).tabs();
     $("a.request_edit").on('click',function() {

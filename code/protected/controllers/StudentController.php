@@ -6,7 +6,8 @@ class StudentController extends Controller
     static $msgArray = array(0=>'成功',
 							-1=>'参数错误',
 							-2=>'操作失败');
-							
+
+	static $optionMap = array(0 => 'A', 1 => 'B', 2 => 'C', 3 => 'D');							
     public $layout = 'application.modules.main.views.layouts.frame_with_leftnav';
 
     //课程列表
@@ -20,6 +21,51 @@ class StudentController extends Controller
         $this->render('/student/my4d' , array('courseList' => $courseList));
     }
 
+    //作业列表
+    public function actionHomeWorkList()
+    {
+    	//学生上的课
+    	$course = new Course();
+    	$courseList = $course->courseListByUid($this->userid);
+    	
+    	$chapterId = isset($_REQUEST['chapterid']) ? intval($_REQUEST['chapterid']) : 0;
+    	$homework = array();
+    	$answer = array();
+    	
+    	if (!empty($chapterId)) 
+    	{
+    		//获取这章的作业
+			$homeworkT = Homework::model()->findAll('chapterid=:chapterid', array(':chapterid'=>$chapterId));
+	    	//var_dump($homework);exit;
+	    	$homework = array();
+	    	$homeworkIds = array();
+	    	foreach ($homeworkT as $key => $value)
+			{
+				if ($value['type'] == 1 || $value['type'] == 2)
+				{
+					$value['option'] = explode(',||' , $value['option']);
+				}
+				$homework[$value['id']] = $value;
+			}
+			
+			//获取这章的答案
+	    	$answer = array();
+			$answerModel = new Answer();
+			$answerT = $answerModel->getHomeworkAnswerByChapterid($chapterId, $this->userid);
+			
+			foreach ($answerT as $key => $value)
+			{
+				$answer[$value['homeworkid']] = $value;
+			}
+    	}
+    	$this->render('/student/homework_list' , 
+    				array('courseList' => $courseList,
+    					'homework' => $homework,
+    					'answer' => $answer,
+    					'chapterId' => $chapterId,
+    					'optionMap' => self::$optionMap));
+    }
+    
     //目录列表
     public function actionCatalogueList()
     {

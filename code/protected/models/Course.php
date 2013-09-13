@@ -12,6 +12,28 @@ class Course extends CActiveRecord
         return '`m-course`';
     }
     
+    //获取学生要学习的课程
+    public function courseListByUid($uid)
+    {
+    	if (empty($uid))
+    	{
+    		return array();
+    	}
+    	
+    	$command = 'select c.* from `m-groupmember` m inner join `m-group` g on m.groupid = g.id 
+    	left join `m-course` c on g.courseid = c.id where m.uid = :uid';
+    	
+    	//$command = 'select * from `m-course` where creator = ' . $uid;
+		
+    	$conn = Yii::app()->db;
+        $command = $conn->createCommand($command);
+        $command->bindParam(':uid',$uid);
+        
+        $rows = $command->queryAll();
+        return $rows;
+    }
+    
+    //获取老师创建的课程
     public function getCreateCourseListByUid($uid)
     {
     	if (empty($uid))
@@ -100,7 +122,7 @@ class Course extends CActiveRecord
     {
     	$command = 'select g.* from `m-groupmember` gm 
     				inner join `m-group` g on gm.groupid = g.id
-    			    where g.courseid = ' . $cid . 'and gm.uid = ' . $uid;
+    			    where g.courseid = ' . $cid . ' and gm.uid = ' . $uid;
     	
     	$conn = Yii::app()->db;
         $command = $conn->createCommand($command);

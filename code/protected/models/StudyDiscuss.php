@@ -31,4 +31,19 @@ class StudyDiscuss extends CActiveRecord
         $rows = $command->queryAll();
         return $rows;
     }
+    
+    //获取小组讨论列表
+    public function getDiscussList($groupId)
+    {
+    	$command = 'select d.* from `m-group` g inner join `m-coursecontent` cc on 
+    				g.courseid = cc.courseid inner join `m-discuss` d on 
+    				cc.id = d.chapterid where g.id = ' . $groupId;
+    	
+    	
+    	$conn = Yii::app()->db;
+        $command = $conn->createCommand($command);
+        $rows = $command->queryAll();
+        
+        return $rows;
+    }
 }
