@@ -13,6 +13,11 @@ input,select,button{font:12px Verdana,Arial,Tahoma;vertical-align:middle;}
 .f18{font-size:18px;font-family:"黑体"; color:#585858; height:42px; line-height:42px;}
 .bg{background:url(/images/frame/head_bg.png) repeat-x; width:100%; height:100px; text-shadow:10px; z-index:999;}
 .mt190{margin-top:30px;}
+
+/*common*/
+.red_tip {color:red;display:inline;}
+
+
 /*顶部导航*/
 .head{width:1006px; height:84px; margin:0 auto;}
 .head .logo{float:left;}

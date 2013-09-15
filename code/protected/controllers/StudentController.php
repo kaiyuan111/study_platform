@@ -234,7 +234,11 @@ class StudentController extends Controller
     		$studyDetail->save();
     		
     		$this->layout = 'application.modules.main.views.layouts.frame_without_leftnav';
-    		$this->render('addstudy_detail' , array('type' => $type, 'chapterid' => $chapterid));
+            $this->render('addstudy_detail' , array(
+                'finish' => 1,
+                'type' => $type, 
+                'chapterid' => $chapterid)
+            );
     		$this->layout = 'application.modules.main.views.layouts.frame_with_leftnav';
     	}
     	else //添加讨论
@@ -271,8 +275,12 @@ class StudentController extends Controller
     		$muser = new MUser();
     		$memberInfo = $muser->getUserInfoByUids($member);
     		$this->layout = 'application.modules.main.views.layouts.frame_without_leftnav';
-    		$this->render('addstudy_detail' , array('type' => $type, 'chapterid' => $chapterid,
-    		'groupMemberInfo' => $memberInfo));
+            $this->render('addstudy_detail' , array(
+                'finish' => 1,
+                'type' => $type, 
+                'chapterid' => $chapterid,
+                'groupMemberInfo' => $memberInfo)
+            );
     		$this->layout = 'application.modules.main.views.layouts.frame_with_leftnav';
     	}
     	
@@ -340,6 +348,13 @@ class StudentController extends Controller
     							'joindDis' => $joinDiscuss));
     }
 
+    /**
+     * actionInviteTeacherForDiscuss 
+     *
+     * 邀请老师参与讨论
+     * 
+     * @return void
+     */
     public function actionInviteTeacherForDiscuss()
     {
         $ret = StudyDiscuss::model()->notifyTeacherToDiscuss($this->userid,$_REQUEST['courseid'],$_REQUEST['groupid'],$_REQUEST['discussid']);

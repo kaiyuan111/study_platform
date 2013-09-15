@@ -112,7 +112,8 @@ class UserController extends Controller
             }
             else 
             {
-            	$this->render('error', '账号错误');
+            	$this->render('login', array('error'=>1,'url'=>$url));
+                exit;
             }
         }
         //echo "fuck,world";

@@ -6,7 +6,7 @@
         <?php if ($type == 3){?><div class="del"><span>讨论主题：</span><input name="title" type="text" size="25"  value=""/></div><?php }?>
         <?php if ($type == 1){?><div class="del"><span style="font-size:20px">摘抄内容：</span></div><?php }?>
         <?php if ($type == 2){?><div class="del"><span style="font-size:20px">批注内容：</span></div><?php }?>
-		<div class="cont"><a href="/student/learndetail?chapterid=<?php echo $chapterid;?>">单击查看原文详情</a></div>
+		<div class="cont"><a id="close_colorbox"href="#">单击查看原文详情</a></div>
         <div class="content">
            <textarea name="content" style="width:670px;height:290px;visibility:hidden;"></textarea>
         </div>
@@ -34,6 +34,17 @@
 <script charset="utf-8" src="/kindeditor/lang/zh_CN.js"></script>
 <link rel="stylesheet" href="/kindeditor/themes/default/default.css" />
 <script>
+(function($) {
+    $("#close_colorbox").on('click',function() {
+        window.parent.$.colorbox.close();
+    });
+
+    finish = '<?php echo isset($finish)&&$finish==1 ? 1 : 0 ?>';
+    if(finish=='1') {
+        // 关闭弹窗
+        window.parent.$.colorbox.close();
+    }
+})(jQuery)
 	var editor;
 	KindEditor.ready(function(K) {
 		editor = K.create('textarea[name="content"]', {

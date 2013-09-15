@@ -45,8 +45,9 @@ function slay2(num)
     </DIV>
     <DIV id="logintabcont1">
     	<div class="ml300">
-        	<form action="/main/user/login" method="post">
-                 <p><input name="name" type="text" size="33"  class="input1"/></p>
+            <form action="/main/user/login" method="post">
+            <?php if(!empty($error)) {?><span class='red_tip'>用户名密码错误</span><?php }?>
+            <p><input name="name" type="text" size="33"  class="input1"/></p>
                  <p><input name="pwd" type="password" size="33"  class="input2"/></p>
                  <input name="url" type="hidden" value="<?php echo $url;?>"/>
                  <p><input name="login_sub" type="submit"  class="submit2" value="&nbsp;&nbsp;" /></p>

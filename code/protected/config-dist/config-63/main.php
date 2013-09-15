@@ -100,5 +100,10 @@ return array(
             // this is used in contact page
             'img_upload_path'=>'/home/hucong/img1/',
             'group_member_maxnum'=>12,
+            'rid' =>array(
+                'teacher'=>2,
+                'student'=>3,
+                'admin'=>4,
+            ),
         ),
     );

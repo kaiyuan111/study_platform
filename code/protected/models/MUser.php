@@ -39,9 +39,11 @@ class MUser extends CActiveRecord
      */
     public function getStudentWithoutGroup($cid)
     {
+        $params = Yii::app()->getParams();
+        $rid = $params['rid'];
         $sql = "
             select u.* from `m-user` as u 
-            where u.rid = 3 and u.uid not in 
+            where u.rid = {$rid['student']} and u.uid not in 
             (select distinct uid from `m-groupmember` as gm
                 inner join `m-group` as g on gm.groupid=g.id
                 where courseid = {$cid}
@@ -54,19 +56,23 @@ class MUser extends CActiveRecord
     }
 
     /**
-     * getTeacher
+     * getTeacherByGroup 
      *
-     * 获取助教列表
+     * 获取助教列表(区分是否是当前组的助教)
      * 
+     * @param mixed $gid  当前组
+     * @param mixed $courseuid  当前组所属的课程的老师
      * @return void
      */
-    public function getTeacherByGroup($gid)
+    public function getTeacherByGroup($gid,$courseuid='-1')
     {
+        $params = Yii::app()->getParams();
+        $rid = $params['rid'];
         $sql = "
             select u.*,
             case when u.uid in (select distinct uid from `m-groupmember` where groupid={$gid}) then '1' 
             else '0' end ingroup 
-            from `m-user` as u where u.rid = 2
+            from `m-user` as u where u.rid = {$rid['teacher']} and uid!={$courseuid}
         ";
         $conn = Yii::app()->db;
         $command = $conn->createCommand($sql);
