@@ -481,7 +481,20 @@ class StudentController extends Controller
     //小组信息
 	public function actionGroupDetail()
     {
-    	$this->render('group_detail');
+        if(!isset($_REQUEST['id'])) $this->render('/site/error');
+        $groupInfo = Group::model()->findByPk($_REQUEST['id']);
+        $leaderInfo = User::model()->findByPk($groupInfo['leaderid']);
+        $teacher = Course::model()->courseCreatorByCid($groupInfo['courseid']);
+        $assists = MUser::model()->getAssistantByGroup($groupInfo['id'],$teacher['uid']);
+        $groupUsers = Group::model()->getStudentWithinGroup($groupInfo['id']);
+
+        //var_dump($leaderInfo->getAttributes());exit;
+        $this->render('group_detail',array(
+            'groupinfo'=>$groupInfo,
+            'leaderinfo'=>$leaderInfo,
+            'assists'=>$assists,
+            'groupusers'=>$groupUsers,
+        ));
     }
     
 	//小组列表
