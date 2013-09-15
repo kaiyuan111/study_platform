@@ -6,7 +6,6 @@
 			<span class="l">
             <div class="t"><img src="/images/frame/myclasss1.png" width="50" height="50" align="absmiddle" /><?php echo $groupinfo['name']?></div>
 				<div class="c"><!--<div class="out_class"><a href=""><img src="/images/frame/out_class.png" /></a></div>-->
-                        	创建于2008-05-06     <br />
                             组长： <a href=""><?php echo $leaderinfo['uname']?></a> <br />
                             助教： 
                             <?php foreach($assists as $a) {?>
