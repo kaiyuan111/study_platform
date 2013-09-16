@@ -20,16 +20,23 @@ class Controller extends CController
 
     protected function beforeAction($action)
     {
+    	header("Cache-Control: no-cache, must-revalidate");
     	date_default_timezone_set('PRC');	
     	//return true;
         // 登陆
         preg_match("/(^.*?)\?|(^.*)/",$_SERVER['REQUEST_URI'],$matchs);
+        //var_dump($matchs);exit;
         $requestUrl = empty($matchs[1]) ? $matchs[2] : $matchs[1];
-        //var_dump($requestUrl);exit;
+        
         //echo $requestUrl;exit;
         // 页面title
         $actionInfo = Action::model()->find("route=:route",array(':route'=>$requestUrl));
-        $this->actionName = $actionInfo['aname'];
+        //var_dump($actionInfo);exit;
+        if (!empty($actionInfo))
+        {
+        	$this->actionName = $actionInfo['aname'];
+        }
+        
         //var_dump($this->actionName);exit;
 
         // 登陆限制
@@ -42,8 +49,9 @@ class Controller extends CController
         {
             return true;
         }
-        
+       
         $userInfo = Login::getLoginInfo();
+        //var_dump($userInfo);exit;
         $url = urlencode($_SERVER['REQUEST_URI']);
         //var_dump($url);exit;
         if(empty($userInfo)) $this->redirect('/main/user/login?url='.$url);
@@ -52,6 +60,7 @@ class Controller extends CController
         // 权限限制
         if(!Privilege::hasPrivilege($userInfo['uid'],$requestUrl)) 
         {
+        	//echo "22222";
             return false;
         }
 

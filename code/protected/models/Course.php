@@ -130,4 +130,27 @@ class Course extends CActiveRecord
     	
     	return $rows;
     }
+    
+    //获取可编辑的课程
+    public function getPriviCourseList($uid)
+    {
+								
+    	$canEditCourseIds = MUserPriviledge::model()->findAll('uid=:uid and privilege_tag=:type',
+    						array(':uid' => $uid, ':type' => 'courseedit'));
+    						
+    	$priviCourseIds = array();
+        foreach ($canEditCourseIds as $key => $value)
+        {
+        	$priviCourseIds[] = intval($value['content']);
+        }
+        
+        $priviCourseList = array();
+        if (!empty($priviCourseIds))
+        {
+        	$tmpIds = implode(',', $priviCourseIds);
+        	$priviCourseList = Course::model()->findAll('id in (:ids)', array(':ids' => $tmpIds));
+        }
+        
+        return $priviCourseList;
+    }
 }

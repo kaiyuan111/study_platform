@@ -12,7 +12,7 @@ class SiteController extends Controller
     {
         $userInfo = Login::getLoginInfo();
         $roleInfo = Role::model()->find('rid=:id',array(':id'=>$userInfo['rid']));
-        if ($roleInfo['rid'] == 1) //如果是管理员
+        if ($roleInfo['rid'] == 1||$roleInfo['rid'] == 4) //如果是管理员
         {
             $this->redirect('/main/user/list');
         }

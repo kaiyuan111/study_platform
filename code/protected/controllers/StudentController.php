@@ -72,7 +72,9 @@ class StudentController extends Controller
     	$courseid = isset($_REQUEST['courseid']) ? intval($_REQUEST['courseid']) : 0;
     	if (empty($courseid))
     	{
-    		$this->render('error', '课程id不能为空');
+    		//$this->render('error', '课程id不能为空');
+    		$this->render('/site/error',array('errortxt'=>'课程不能为空'));
+    		exit();
     	}
     	
     	$course = new Course();
@@ -82,7 +84,9 @@ class StudentController extends Controller
     	$courseCreator = $course->courseCreatorByCid($courseid);
     	if (empty($courseCreator))
     	{
-    		$this->render('error', '创建者为空，出错');
+    		//$this->render('error', '创建者为空，出错');
+    		$this->render('/site/error',array('errortxt'=>'课程创建者不能为空'));
+    		exit();
     	}
     	
     	$courseInfo = Course::model()->findByPk($courseid);
@@ -100,7 +104,9 @@ class StudentController extends Controller
     	$chapterid = isset($_REQUEST['chapterid']) ? intval($_REQUEST['chapterid']) : 0;
     	if (empty($chapterid)) 
     	{
-    		$this->render('error', '章节id不能为空');
+    		//$this->render('error', '章节id不能为空');
+    		$this->render('/site/error',array('errortxt'=>'章节id不能为空'));
+    		exit();
     	}
     	
     	$courseContent = new CourseContent();
@@ -171,13 +177,17 @@ class StudentController extends Controller
     	$type = isset($_REQUEST['type']) ? intval($_REQUEST['type']) : 0;
     	if ($type != 1 && $type != 2 && $type != 3)
     	{
-    		$this->render('error', '添加类型参数错误');
+    		//$this->render('error', '添加类型参数错误');
+    		$this->render('/site/error',array('errortxt'=>'添加类型参数错误'));
+    		exit();
     	}
     	
     	$chapterid = isset($_REQUEST['chapterid']) ? intval($_REQUEST['chapterid']) : 0;
     	if (empty($chapterid))
     	{
-    		$this->render('error', '章节id错误');
+    		//$this->render('error', '章节id错误');
+    		$this->render('/site/error',array('errortxt'=>'章节id错误'));
+    		exit();
     	}
     	
     	$groupMemberInfo = array();
@@ -209,13 +219,17 @@ class StudentController extends Controller
     	$type = isset($_REQUEST['type']) ? intval($_REQUEST['type']) : 0;
     	if ($type != 1 && $type != 2 && $type != 3)
     	{
-    		$this->render('error', '添加类型参数错误');
+    		//$this->render('error', '添加类型参数错误');
+    		$this->render('/site/error',array('errortxt'=>'添加类型参数错误'));
+    		exit();
     	}
     	
     	$chapterid = isset($_REQUEST['chapterid']) ? intval($_REQUEST['chapterid']) : 0;
     	if (empty($chapterid))
     	{
-    		$this->render('error', '章节id错误');
+    		//$this->render('error', '章节id错误');
+    		$this->render('/site/error',array('errortxt'=>'章节id错误'));
+    		exit();
     	}
     	
     	if ($type == 1 || $type ==2) //添加批注和摘抄
@@ -223,7 +237,9 @@ class StudentController extends Controller
     		$content = isset($_REQUEST['content']) ? trim($_REQUEST['content']) : '';
     		if (empty($content))
     		{
-    			$this->render('error', '内容不能为空');
+    			//$this->render('error', '内容不能为空');
+    			$this->render('/site/error',array('errortxt'=>'内容不能为空'));
+    			exit();
     		}
     		
     		$studyDetail = new StudyDetail();
@@ -242,7 +258,8 @@ class StudentController extends Controller
     		$content = isset($_REQUEST['content']) ? trim($_REQUEST['content']) : '';
     		if (empty($content))
     		{
-    			$this->render('error', '内容不能为空');
+    			$this->render('/site/error',array('errortxt'=>'内容不能为空'));
+    			exit();
     		}
     		
     		$studyTitle = isset($_REQUEST['title']) ? trim($_REQUEST['title']) : '';
@@ -340,11 +357,18 @@ class StudentController extends Controller
     							'joindDis' => $joinDiscuss));
     }
 
+    // 邀请老师讨论
     public function actionInviteTeacherForDiscuss()
     {
         $ret = StudyDiscuss::model()->notifyTeacherToDiscuss($this->userid,$_REQUEST['courseid'],$_REQUEST['groupid'],$_REQUEST['discussid']);
-        if($ret) echo "邀请成功";
-        else echo "邀请失败";
+        if($ret) 
+        {
+        	echo "邀请成功";
+        }
+        else 
+        {
+        	echo "邀请失败";
+        }
     }
 
     //讨论详情页
@@ -357,7 +381,9 @@ class StudentController extends Controller
     	$discussInfo = StudyDiscuss::model()->findByPk($discussId);
     	if (empty($discussInfo))
     	{
-    		$this->render('error', '讨论信息不能为空');
+    		//$this->render('error', '讨论信息不能为空');
+    		$this->render('/site/error',array('errortxt'=>'讨论信息不能为空'));
+    		exit();
     	}
 
         // 获取章节信息

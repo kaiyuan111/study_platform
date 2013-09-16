@@ -47,7 +47,7 @@
 				<a href="/teacher/addcontent?chapterid=<?php echo $value['id']?>&courseid=<?php echo $currentCourse['id'];?>">
 				<img src="/images/frame/im21.jpg" width="36" height="24" border="0" />
 				</a>
-				<a href="#">
+				<a href="javascript: void(0)" onclick="return deleteItem(<?php echo $value['id'];?>);">
 				<img src="/images/frame/im22.jpg" width="30" height="24" border="0" />
 				</a></span><?php echo $value['title'];?>
 			</li>
@@ -74,6 +74,24 @@
 </div>
 
 <script language="javascript">
+function deleteItem(id)
+{
+    var data = 'id=' + id;
+	$.ajax({
+		type : 'post',
+		data : data,
+		dataType : 'json',
+		url : '/teacher/deletechapter',
+		success: function(retData)
+		{
+			if(retData.retCode == 0)
+			{
+    			alert(retData.msg);
+    			window.location.reload();
+			}
+		}
+	})
+}
 $('#queding3').click(function(){
 	$('#form').submit();
 })

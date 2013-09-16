@@ -33,8 +33,12 @@
 			<div class="kecheng">
 				<!--  <div class="biaoti14">计算机科学类</div>-->
 					<ul id="sidelist">
-						<?php foreach ($otherCourseList as $key => $value) {?>
-                        <li><span><a class='request_edit' data-id='<?php echo $value['id']?>'  href="#">申请编辑</a></span><?php echo $value['name']?></li>
+						<?php foreach ($assistCourse as $key => $value) {?>
+						<?php if (!isset($priviCourseList[$value['id']])){?>
+                        <li><span><a class='request_edit' data-id='<?php echo $value['id']?>'  href="javascript: void(0)">申请编辑</a></span><?php echo $value['name']?></li>
+						<?php }else{?>
+						<li><span><a class='' data-id='<?php echo $value['id']?>'  href="/teacher/managecourse?courseid=<?php echo $value['id'];?>">编辑</a></span><?php echo $value['name']?></li>
+						<?php }?>
 						<?php }?>
 					</ul>
 			</div>

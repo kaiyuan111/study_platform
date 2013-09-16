@@ -69,10 +69,12 @@ class StudyDiscuss extends CActiveRecord
             return false;
         }
         $message = "邀请您参加课程《{$courseInfo['name']}》的讨论组《{$discussInfo['title']}》!";
-        foreach($teachers as $t) {
+        foreach($teachers as $t) 
+        {
             $info = new Info;
             $info->saveNotifyMessage("邀请讨论",$message,$uidFrom,$t['uid']);
         }
+        
         $info = new Info;
         $info->saveNotifyMessage("邀请讨论",$message,$uidFrom,$courseInfo['creator']);
         return true;

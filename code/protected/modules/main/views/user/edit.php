@@ -29,15 +29,15 @@
         <ul>
           <li class="li">
             <span class="k" style="height:42px">
-              <input name="name" type="text" class="input" value="<?php echo !empty($entity['uname']) ? htmlspecialchars($entity['uname']):'用户名';?>" size="31"/></span>
+              <span>用户名：</span><input name="name" type="text" class="input" value="<?php echo !empty($entity['uname']) ? htmlspecialchars($entity['uname']):'';?>" size="31"/></span>
           </li>
           <li class="li">
             <span class="k" style="height:42px">
-              <input name="pwd" type="text" class="input" value="<?php echo !empty($entity['pwd']) ? htmlspecialchars($entity['pwd']):'密码';?>" size="31"/></span>
+              <span>密码：</span><input name="pwd" type="text" class="input" value="<?php echo !empty($entity['pwd']) ? htmlspecialchars($entity['pwd']):'';?>" size="31"/></span>
           </li>
           <li class="li">
             <span class="k" style="height:42px">
-              <input name="email" type="text" class="input" value="<?php echo !empty($entity['email']) ? htmlspecialchars($entity['email']):'邮箱';?>" size="31"/></span>
+              <span>邮箱：</span><input name="email" type="text" class="input" value="<?php echo !empty($entity['email']) ? htmlspecialchars($entity['email']):'';?>" size="31"/></span>
           </li>
           <li class="o_none">
             <span class="k"  style="height:42px">

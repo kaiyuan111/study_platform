@@ -40,7 +40,7 @@
                   <div class="xuanxiang_im edit" homeworkid="<?php echo $value['id'];?>"><a href="javascript:void(0)"><img src="/images/frame/im40.jpg" width="18" height="18" /></a></div>
                   <div class="xuanxiang_im delete" homeworkid="<?php echo $value['id'];?>"><a href="javascript:void(0)"><img src="/images/frame/im41.jpg" width="18" height="18" /></a></div>
                 </div>
-                <?php if ($value['type'] == 1 || $type['type'] == 2){?>
+                <?php if ($value['type'] == 1 || $value['type'] == 2){?>
                 <div id="xuanxiang_y">
 				<div class="xuanxiang" id="optionindex_<?php echo $value['id'];?>">A.<?php echo $value['option'][0]?>&nbsp;B.<?php echo $value['option'][1]?>&nbsp; C.<?php echo $value['option'][2]?>&nbsp; D.<?php echo $value['option'][3]?></div>
 				</div>

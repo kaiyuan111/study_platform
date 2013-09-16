@@ -38,10 +38,10 @@
                         <div class="info_cont"> <b><?php echo htmlspecialchars($c['uname_from'])?></b>
                             向您申请编辑《<?php echo htmlspecialchars($c['coursename'])?>》，是否同意？
                             <br />
-                            <a data-cid="<?php echo htmlspecialchars($c['courseid'])?>" data-fromid="<?php echo htmlspecialchars($c['uid_from'])?>" data-infoid="<?php echo htmlspecialchars($c['id'])?>" class="bt_ok" href="#">
+                            <a data-cid="<?php echo htmlspecialchars($c['courseid'])?>" data-fromid="<?php echo htmlspecialchars($c['uid_from'])?>" data-infoid="<?php echo htmlspecialchars($c['id'])?>" class="bt_ok" href="javascript: void(0)">
                                 <img src="/images/frame/info_ok.png" />
                             </a>
-                            <a data-cid="<?php echo htmlspecialchars($c['courseid'])?>" data-fromid="<?php echo htmlspecialchars($c['uid_from'])?>" data-infoid="<?php echo htmlspecialchars($c['id'])?>" class="bt_no" href="#">
+                            <a data-cid="<?php echo htmlspecialchars($c['courseid'])?>" data-fromid="<?php echo htmlspecialchars($c['uid_from'])?>" data-infoid="<?php echo htmlspecialchars($c['id'])?>" class="bt_no" href="javascript: void(0)">
                                 <img src="/images/frame/info_no.png" />
                             </a>
                         </div>
@@ -126,7 +126,7 @@
 					'responce':1
 				},
 				function(data) {
-					console.log(data);
+					//console.log(data);
 					window.location.reload();
 				}
 			);
@@ -141,7 +141,7 @@
 					'responce':0
 				},
 				function(data) {
-					console.log(data);
+					//console.log(data);
 					window.location.reload();
 				}
 			);

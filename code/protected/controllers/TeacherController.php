@@ -12,7 +12,7 @@ class TeacherController extends Controller
 
     public function actionIndex()
     {
-        $this->redirect('/main/teacher/courselist');
+        $this->redirect('/teacher/courselist');
     }
 
 	//public function action
@@ -126,14 +126,16 @@ class TeacherController extends Controller
     {
         $courseId = !empty($_REQUEST['courseid']) ? $_REQUEST['courseid'] : "";
         $course = Course::model()->find('id=:id',array(':id'=>$courseId));
-        if(!empty($course)) {
+        if(!empty($course)) 
+        {
             $info = Info::model()->find('uid_from=:fid and content=:c and is_responce=0',
                 array(
                     ':c'=>$courseId,
                     ':fid'=>$this->userid,
                 )
             );
-            if(empty($info)) {
+            if(empty($info)) 
+            {
                 $info = new Info;
             }
             $info->type='request_edit_class';
@@ -144,11 +146,29 @@ class TeacherController extends Controller
             $info->uid_to=$course['creator'];
             $info->save();
             echo "申请成功";
-        } else {
+        } 
+        else 
+        {
             echo "申请错误";
         }
     }
     
+    //删除章节
+    public function actionDeleteChapter()
+    {
+    	$chapterId = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+    	if (empty($chapterId)) 
+    	{
+    		//$this->render('/site/error',array('errortxt'=>''));;
+    		$this->jsonResult(-1);
+    	}
+    	
+    	$post=CourseContent::model()->findByPk($chapterId); 
+		$post->delete(); // 从数据表中删除此行
+		$this->jsonResult(0);
+    }
+    
+    //删除课程
     public function actionDeleteCourse()
     {
     	$courseId = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
@@ -167,11 +187,23 @@ class TeacherController extends Controller
     public function actionCourseList()
     {
     	$course = new Course();
+    	//创建课程
     	$courseList = $course->findAll('creator=:creator' , array(':creator' => $this->userid));
-    	$otherCourseList = $course->findAll('creator!=:creator' , array(':creator' => $this->userid));
     	
-    	//$assistCourseList = 
-    	$this->render('course_list', array('courseList' => $courseList,'otherCourseList' => $otherCourseList));
+    	//助教的课程
+    	$assistCourse = $course->getCourseListOfAssist($this->userid);
+    	
+    	//可编辑的课程
+    	$priviCourseListT = $course->getPriviCourseList($this->userid);
+    	$priviCourseList = array();
+    	foreach ($priviCourseListT as $key => $value)
+    	{
+    		$priviCourseList[$value['id']] = $value;
+    	}
+    	
+    	$this->render('course_list', array('courseList' => $courseList,
+    			'assistCourse' => $assistCourse,
+    			'priviCourseList' => $priviCourseList));
     	
     	//$this->render('course_list');
     }
@@ -183,6 +215,13 @@ class TeacherController extends Controller
     	$course = new Course();
     	$courseList = Course::model()->findAll('creator=:creator' , array(':creator' => $this->userid));
     	//var_dump($courseList);exit;
+    	//获取当前老师有权编辑的课程
+    	$priviCourseList = $course->getPriviCourseList($this->userid);
+    	if (!empty($priviCourseList))
+    	{
+        	$courseList += $priviCourseList;
+    	}
+    	
     	$currentCourse = array();
     	$currentCourseContent = array();
     	$courseId = isset($_REQUEST['courseid']) ? intval($_REQUEST['courseid']) : 0;
@@ -207,7 +246,8 @@ class TeacherController extends Controller
         //echo "<pre>";var_dump($_REQUEST,$_FILES);exit;
         $course = new Course;
         $courseList = $course->findAll('creator=:creator' , array(':creator' => $this->userid));
-        if(isset($_REQUEST['sub'])) {
+        if(isset($_REQUEST['sub'])) 
+        {
             try {
                 $group = new Group;
                 $group->name = $_REQUEST['name'];
@@ -221,7 +261,7 @@ class TeacherController extends Controller
                 exit;
             }
             // 保存图片
-            if($_FILES['file']['error']==0) {
+            if(!empty($_FILES)&&$_FILES['file']['error']==0) {
                 $imgpath = Yii::app()->params['img_upload_path'];
                 preg_match('|^image/(.*)|',$_FILES['file']['type'],$match);
                 if(empty($match[1])) {
@@ -340,16 +380,26 @@ class TeacherController extends Controller
         $info->save();
 
         // 答应
-        if($responce==1) {
+        if($responce==1) 
+        {
             $mp = MUserPriviledge::model()->find("uid=:id and privilege_tag=:t and content=:cid",
                 array(':id'=>$fromid,':t'=>'courseedit',':cid'=>$courseid));
-            if(empty($mp)) $mp = new MUserPriviledge;
-            else exit;
+            if(empty($mp)) 
+            {
+            	$mp = new MUserPriviledge;
+            }
+            else 
+            {
+            	exit;
+            }
+            
             $mp->uid=$fromid;
             $mp->privilege_tag="courseedit";
             $mp->content=$courseid;
             $mp->save();
-        } else {
+        } 
+        else 
+        {
             MUserPriviledge::model()->deleteAll("uid=:id and privilege_tag=:t and content=:cid",
                 array(':id'=>$fromid,':t'=>'courseedit',':cid'=>$courseid));
         }
@@ -387,13 +437,15 @@ class TeacherController extends Controller
         $courseId = isset($_REQUEST['courseid']) ? intval($_REQUEST['courseid']) : 0;
         if (empty($courseId))
         {
-            $this->render('error' , '课程id必须');
+            $this->render('/site/error',array('errortxt'=>'课程id不能为空'));
+            exit;
         }
 
         $currentObject = Course::model()->find('id=:id', array(':id'=>$courseId));
         if (empty($currentObject))
         {
-            $this->render('error' , '课程信息不存在');
+        	$this->render('/site/error',array('errortxt'=>'课程不存在'));
+            exit();
         }
 
         $currentCourse = $currentObject->getAttributes();  //已选择课程
@@ -406,7 +458,9 @@ class TeacherController extends Controller
             $courseContent =  CourseContent::model()->findByPk($chapterId);
             if (empty($courseContent))
             {
-                $this->jsonResult(-1);
+                //$this->jsonResult(-1);
+                $this->render('/site/error',array('errortxt'=>'要编辑的章节不存在'));
+                exit;
             }
             $courseContent = $courseContent->getAttributes();
 
@@ -446,6 +500,7 @@ class TeacherController extends Controller
         {
             //$this->render('showmsg', '标题，课程id和内容不能为空');
             $this->jsonResult(-1);
+            //$this->render('/site/error',array('errortxt'=>'标题，课程id和内容不能为空'));
         }
 
         $chapterId = isset($_REQUEST['chapterid']) ? trim($_REQUEST['chapterid']) : '';
@@ -464,7 +519,8 @@ class TeacherController extends Controller
             $courseContent =  CourseContent::model()->findByPk($chapterId);
             if (empty($courseContent))
             {
-                $this->jsonResult(-1);
+            	$this->jsonResult(-1);
+                //$this->render('/site/error',array('errortxt'=>'要编辑的内容为空'));
             }
             $courseContent->title = $title;
             $courseContent->courseid = $courseId;

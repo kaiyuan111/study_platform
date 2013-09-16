@@ -15,7 +15,7 @@
                         </span>
                     </li>
                 	<li class="li"><span class="l">小组简介&nbsp;:&nbsp;&nbsp;&nbsp;<font color="#cb0000">*</font></span><span class="r"><textarea name="description" cols="49" rows="10" ></textarea></span></li>
-                	<li class="li mt190"><span class="l">上传图标&nbsp;:&nbsp;&nbsp;&nbsp;<font color="#FFF">*</font></span><span class="r"><input type="text" name="logo" class="input" size="21" /><img src="/images/frame/file.png" /><input type="file" name="file" id="f"  name="f" style="position:absolute; filter:alpha(opacity=0); opacity:0; margin-left:-70px; width:70px; height:30px; "/></span></li>
+                	<!--  <li class="li mt190"><span class="l">上传图标&nbsp;:&nbsp;&nbsp;&nbsp;<font color="#FFF">*</font></span><span class="r"><input type="text" name="logo" class="input" size="21" /><img src="/images/frame/file.png" /><input type="file" name="file" id="f"  name="f" style="position:absolute; filter:alpha(opacity=0); opacity:0; margin-left:-70px; width:70px; height:30px; "/></span></li>-->
                 	<li class="li"><span class="l">小组人数&nbsp;:&nbsp;&nbsp;&nbsp;<font color="#FFF">*</font></span><span class="r f18">12人/组</span></li>
                 	<li class="li"><span class="l">加入方式&nbsp;:&nbsp;&nbsp;&nbsp;<font color="#cb0000">*</font></span><span class="r f14">
                     <label for="radio-01" class="label_radio">      
