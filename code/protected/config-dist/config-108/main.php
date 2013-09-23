@@ -55,7 +55,7 @@ return array(
             // ),
             // uncomment the following to use a MySQL database
             'db'=>array(
-                'connectionString' => 'mysql:host=127.0.0.1:3306;dbname=study_platform',
+                'connectionString' => 'mysql:dbname=study_platform;host=127.0.0.1',
                 'emulatePrepare' => true,
                 'username' => 'root',
                 'password' => 'IRs8Tz0LI',
@@ -98,7 +98,7 @@ return array(
         // using Yii::app()->params['paramName']
         'params'=>array(
             // this is used in contact page
-            'img_upload_path'=>'/home/hucong/img1/',
+            'img_upload_path'=>'/home/img1/',
             'group_member_maxnum'=>12,
             'rid' =>array(
                 'teacher'=>2,
