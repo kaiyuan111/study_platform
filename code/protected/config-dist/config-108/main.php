@@ -55,10 +55,10 @@ return array(
             // ),
             // uncomment the following to use a MySQL database
             'db'=>array(
-                'connectionString' => 'mysql:host=127.0.0.1;dbname=study',
+                'connectionString' => 'mysql:host=127.0.0.1:3306;dbname=study_platform',
                 'emulatePrepare' => true,
                 'username' => 'root',
-                'password' => 'lZrtYEC4',
+                'password' => 'IRs8Tz0LI',
                 'charset' => 'utf8',
             ),
             /*
