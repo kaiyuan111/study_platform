@@ -367,7 +367,7 @@ class TeacherController extends Controller
     // 通知消息 无需回复
     public function actionMessageList()
     {
-        $tinfos = Info::model()->findAll('uid_to=:id group by is_read order by is_read asc,request_time desc',array(':id'=>$this->userid));
+        $tinfos = Info::model()->findAll('uid_to=:id order by is_read asc,request_time desc',array(':id'=>$this->userid));
         //echo "<pre>";var_dump(count($tinfos));exit;
         $infos = array();
         foreach($tinfos as $i) {
