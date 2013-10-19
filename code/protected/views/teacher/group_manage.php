@@ -15,6 +15,7 @@
       </div>
       <div class="cont2">
       	<div class="search_tittle">人员列表</div>
+        <div class="tip">操作说明：“左键单击人名--添加或者移除组员”、“右键单击人名--设置此人为组长”</div>
         <div class="staff_list">
             <div class="t">学员（未分组）</div>
             <ul id='wait_student_list'>

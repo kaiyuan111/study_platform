@@ -155,9 +155,11 @@ CREATE TABLE `m-info` (
   `uid_from` bigint(20) NOT NULL DEFAULT '-1' COMMENT '消息发送者',
   `content` blob NOT NULL COMMENT '消息内容',
   `uid_to` bigint(20) NOT NULL DEFAULT '-1' COMMENT '消息接受者',
+  `is_read` tinyint(4) NOT NULL DEFAULT '0' COMMENT '消息是否被读',
   `is_responce` tinyint(4) NOT NULL DEFAULT '0',
   `responce` blob NOT NULL COMMENT '消息响应',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid_to`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8
+) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=utf8
+
 

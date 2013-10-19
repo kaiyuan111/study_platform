@@ -207,7 +207,8 @@ class TeacherController extends Controller
         //echo "<pre>";var_dump($_REQUEST,$_FILES);exit;
         $course = new Course;
         $courseList = $course->findAll('creator=:creator' , array(':creator' => $this->userid));
-        if(isset($_REQUEST['sub'])) {
+        $tip="";
+        if(!empty($_REQUEST['name'])) {
             try {
                 $group = new Group;
                 $group->name = $_REQUEST['name'];
@@ -217,9 +218,10 @@ class TeacherController extends Controller
                 $group->jointype = $_REQUEST['jointype'];
                 $group->save();
             } catch(Exception $e) {
-                $this->render('/site/error',array('errortxt'=>'创建小组保存错误'));
+                $this->render('group_edit',array('course_list'=>$courseList,'tip'=>"重复组名"));
                 exit;
             }
+            $tip="创建成功";
             // 保存图片
             if($_FILES['file']['error']==0) {
                 $imgpath = Yii::app()->params['img_upload_path'];
@@ -239,7 +241,7 @@ class TeacherController extends Controller
                 $group->save();
             }
         }
-        $this->render('group_edit',array('course_list'=>$courseList));
+        $this->render('group_edit',array('course_list'=>$courseList,'tip'=>$tip));
     }
 
     // 获取小组列表
@@ -330,11 +332,13 @@ class TeacherController extends Controller
     {
         $infoid = isset($_REQUEST['infoid']) ? $_REQUEST['infoid'] : 0;
         $responce = isset($_REQUEST['responce']) ? $_REQUEST['responce'] : 0;
+        // 需要开特权的用户id
         $fromid = isset($_REQUEST['fromid']) ? $_REQUEST['fromid'] : 0;
+        // 可以被编辑的课程id
         $courseid = isset($_REQUEST['courseid']) ? $_REQUEST['courseid'] : 0;
 
         $info = Info::model()->find("id=:id",array(":id"=>$infoid));
-        if($info->is_responce==1) exit;
+        //if($info->is_responce==1) exit;
         $info->is_responce = 1;
         $info->responce = $responce;
         $info->save();
@@ -363,8 +367,8 @@ class TeacherController extends Controller
     // 通知消息 无需回复
     public function actionMessageList()
     {
-        $tinfos = Info::model()->findAll('uid_to=:id and is_responce=0 order by request_time desc',array(':id'=>$this->userid));
-        //echo "<pre>";var_dump($courses);exit;
+        $tinfos = Info::model()->findAll('uid_to=:id group by is_read order by is_read asc,request_time desc',array(':id'=>$this->userid));
+        //echo "<pre>";var_dump(count($tinfos));exit;
         $infos = array();
         foreach($tinfos as $i) {
             if(!empty($i['content']))  {
@@ -379,6 +383,20 @@ class TeacherController extends Controller
             }
         }
         $this->render('message_list', array('infos'=>$infos));
+    }
+
+    // 老师消息标注为已读
+    public function actionMessMarkRead()
+    {
+        if(!isset($_REQUEST['mid'])) exit("1");
+        $mid = $_REQUEST['mid'];
+        $mess = Info::model()->findByPk($mid);
+        if(empty($mess)) exit("1");
+        else {
+            $mess->is_read=1;
+            $mess->save();
+            exit("0");
+        }
     }
 
     //添加内容页面
