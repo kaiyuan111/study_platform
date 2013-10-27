@@ -20,19 +20,22 @@
 				<li id="list<?php echo $c['id']?>">
                     <div>
                         <span class="info_li_1">
+                            <?php if(!$c["is_read"]) {?>
                             <img src="/images/frame/email_no_ico.png" align="absmiddle" />
+                            <?php } else { ?>
+                            <img src="/images/frame/email_ico.png" align="absmiddle" />
+                            <?php } ?>
                         </span>
-                        <span class="info_li_2"><?php echo htmlspecialchars($c['uname_from'])?></span>
-                        <span class="info_li_3">
+                        <span class="info_li_2" ><?php echo htmlspecialchars($c['uname_from'])?></span>
+                        <span class="info_li_3" data-messid="<?php echo $c['id']?>">
                             <a href="#list<?php echo $c['id']?>"><?php echo $c['title']?></a>
                         </span>
                         <span class="info_li_4"><?php echo $c['request_time']?></span>
                         <span class="info_li_5">
-                            <!--
                             <img src="/images/frame/del_ico.png" align="absmiddle" />
-                            -->
                         </span>
                     </div>
+                    <!--老师申请编辑-->
                     <?php if($c['type']=='request_edit_class') {?>
                     <ul>
                         <div class="info_cont"> <b><?php echo htmlspecialchars($c['uname_from'])?></b>
@@ -46,6 +49,7 @@
                             </a>
                         </div>
                     </ul>
+                    <!--通知消息-->
                     <?php } elseif($c['type']=='notify') { ?>
                     <ul>
                         <div class="info_cont"> <b><?php echo htmlspecialchars($c['uname_from'])?></b>
@@ -115,8 +119,20 @@
 </div>
 <script>
 	(function($){
+        $(".info_li_3").on("click",function(e) {
+            // 替换为已读符号
+            $(this).prevAll(".info_li_1").find("img").replaceWith("<img src='/images/frame/email_ico.png' align='absmiddle' />");
+            $.post(
+                "/teacher/messmarkread",
+                {
+                    'mid':$(this).data("messid")
+                },
+                function(data) {
+                    console.log(data);
+                }
+            );
+        });
 		$(".bt_ok").on("click",function(e) {
-			console.log("age");
 			$.post(
 				"/teacher/returnmessage",
 				{

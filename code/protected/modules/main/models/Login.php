@@ -16,8 +16,11 @@ class Login
         $user = explode('_',$_SESSION['user']);
         if(isset($user[0])) 
         {
-            $userInfo = User::model()->find('uid=:id',array(':id'=>$user[0]))->getAttributes();
-            return $userInfo;
+            $u = User::model()->find('uid=:id',array(':id'=>$user[0]));
+            if(!empty($u)) {
+                $userInfo = User::model()->find('uid=:id',array(':id'=>$user[0]))->getAttributes();
+                return $userInfo;
+            } 
         }
         return false;
     }

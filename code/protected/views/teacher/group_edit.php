@@ -2,6 +2,9 @@
 	<div class="top"><img src="/images/frame/cont_home.png" align="absmiddle" class="home" /><span>创建小组</span></div>
     <div class="cont">
     <div class="tittle">新建小组</div>
+    <div id="errorinfo">
+    <span class='tip'> <?php if(!empty($tip)) echo $tip;?> </span>
+    </div>
         <div class="form">
         	<form class="jqtr" action="/teacher/creategroup" method='post' enctype="multipart/form-data" >
             	<ul>
@@ -27,9 +30,7 @@
                     </span></li>
                 </ul>
             	<div class="submit">
-            	<a href="Manage_Class.html">
-            	<input type="submit" name='sub' value="&nbsp;&nbsp;创&nbsp;&nbsp;建&nbsp;&nbsp;" />
-            	 </a>
+            	<button class="create_submit" id="create"  name='create' type="button" />&nbsp;&nbsp;创&nbsp;&nbsp;建&nbsp;&nbsp;</button>
             	</div>
             </form>
 	</div>
@@ -38,6 +39,16 @@
 
 <script>
 (function($) {
+    $("#create").on('click',function() {
+        $("#errorinfo").children().empty();
+        if($("input[name=name]").val().length==0) {
+            $("#errorinfo").append("<span class='tip'>请填写小组名称<span>");
+        } else if($("textarea[name=description]").val().length==0) {
+            $("#errorinfo").append("<span class='tip'>请填写小组简介<span>");
+        } else {
+            $('form').submit();
+        }
+    });
     $('#f').change(function() {
         $v = $(this).val();
         $('input[name=logo]').val($v);

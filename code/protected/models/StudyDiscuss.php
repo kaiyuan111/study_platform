@@ -74,9 +74,11 @@ class StudyDiscuss extends CActiveRecord
             $info = new Info;
             $info->saveNotifyMessage("邀请讨论",$message,$uidFrom,$t['uid']);
         }
-        
+
+        /*
         $info = new Info;
         $info->saveNotifyMessage("邀请讨论",$message,$uidFrom,$courseInfo['creator']);
+         */
         return true;
     }
 }
