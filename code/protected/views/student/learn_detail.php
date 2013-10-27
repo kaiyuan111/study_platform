@@ -114,14 +114,16 @@
         
         </div>
         
-<link href="/css/colorbox.css" rel="stylesheet" media="screen" type="text/css" />
-<script type="text/javascript" src="/js/jquery.colorbox.js" ></script>
 <script >
 (function($) {
+    closeColorbox = function() {
+        // 关闭弹窗刷新当前页面来获取最新内容,后续应该换成ajax来提升体验
+        window.location.reload();
+    }
     // 弹出添加摘要,添加批注，发起讨论
-    $("#add_zhaiyao").colorbox({iframe:true, innerWidth:750, innerHeight:530});
-    $("#add_pizhu").colorbox({iframe:true, innerWidth:750, innerHeight:530});
-    $("#add_taolun").colorbox({iframe:true, innerWidth:740, innerHeight:700});
+    $("#add_zhaiyao").colorbox({iframe:true, innerWidth:732, innerHeight:483, onClosed:closeColorbox, scrolling:false});
+    $("#add_pizhu").colorbox({iframe:true, innerWidth:732, innerHeight:483, onClosed:closeColorbox, scrolling:false});
+    $("#add_taolun").colorbox({iframe:true, innerWidth:732, innerHeight:626, onClosed:closeColorbox, scrolling:false});
 })(jQuery);
 
 $('#homeworksubmit').click(function(){

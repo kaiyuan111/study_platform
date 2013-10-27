@@ -112,7 +112,13 @@ class Course extends CActiveRecord
     	
     	$conn = Yii::app()->db;
         $command = $conn->createCommand($command);
-    	$rows = $command->queryAll();
+    	$rowsT = $command->queryAll();
+    	$rows = array();
+    	
+    	foreach ($rowsT as $key => $value)
+    	{
+    		$rows[$value['id']] = $value;
+    	}
     	
     	return $rows;
     }
@@ -148,6 +154,7 @@ class Course extends CActiveRecord
         if (!empty($priviCourseIds))
         {
         	$tmpIds = implode(',', $priviCourseIds);
+        	//var_dump($tmpIds);exit;
         	$priviCourseList = Course::model()->findAll('id in (:ids)', array(':ids' => $tmpIds));
         }
         

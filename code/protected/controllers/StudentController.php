@@ -58,7 +58,7 @@ class StudentController extends Controller
 				$answer[$value['homeworkid']] = $value;
 			}
     	}
-    	$this->render('/student/homework_list' , 
+    	$this->render('homework_list' , 
     				array('courseList' => $courseList,
     					'homework' => $homework,
     					'answer' => $answer,
@@ -149,11 +149,13 @@ class StudentController extends Controller
 		}
 		
 		//下一页
-		$nextChapter = CourseContent::model()->find('id > :chapterid', 
-													array(':chapterid'=>$chapterid));
+		$nextChapter = CourseContent::model()->find('id > :chapterid and courseid = :courseid', 
+													array(':chapterid'=>$chapterid, 
+													'courseid' => $courseId));
 		//上一页
-		$preChapter = CourseContent::model()->find('id < :chapterid', 
-													array(':chapterid'=>$chapterid));
+		$preChapter = CourseContent::model()->find('id < :chapterid and courseid = :courseid order by id desc', 
+													array(':chapterid'=>$chapterid,
+														'courseid' => $courseId));
 													
 		CourseContent::model()->findByPk($chapterid);
     	$this->render('learn_detail', array('courseContent' => $courseContent,
@@ -250,7 +252,11 @@ class StudentController extends Controller
     		$studyDetail->save();
     		
     		$this->layout = 'application.modules.main.views.layouts.frame_without_leftnav';
-    		$this->render('addstudy_detail' , array('type' => $type, 'chapterid' => $chapterid));
+            $this->render('addstudy_detail' , array(
+                'finish' => 1,
+                'type' => $type, 
+                'chapterid' => $chapterid)
+            );
     		$this->layout = 'application.modules.main.views.layouts.frame_with_leftnav';
     	}
     	else //添加讨论
@@ -288,8 +294,12 @@ class StudentController extends Controller
     		$muser = new MUser();
     		$memberInfo = $muser->getUserInfoByUids($member);
     		$this->layout = 'application.modules.main.views.layouts.frame_without_leftnav';
-    		$this->render('addstudy_detail' , array('type' => $type, 'chapterid' => $chapterid,
-    		'groupMemberInfo' => $memberInfo));
+            $this->render('addstudy_detail' , array(
+                'finish' => 1,
+                'type' => $type, 
+                'chapterid' => $chapterid,
+                'groupMemberInfo' => $memberInfo)
+            );
     		$this->layout = 'application.modules.main.views.layouts.frame_with_leftnav';
     	}
     	
@@ -357,7 +367,16 @@ class StudentController extends Controller
     							'joindDis' => $joinDiscuss));
     }
 
+
     // 邀请老师讨论
+
+    /**
+     * actionInviteTeacherForDiscuss 
+     *
+     * 邀请老师参与讨论
+     * 
+     * @return void
+     */
     public function actionInviteTeacherForDiscuss()
     {
         $ret = StudyDiscuss::model()->notifyTeacherToDiscuss($this->userid,$_REQUEST['courseid'],$_REQUEST['groupid'],$_REQUEST['discussid']);
@@ -485,14 +504,27 @@ class StudentController extends Controller
     	//foreach ()
     	$this->render('excerpt_list', array('courseId' => $courseId, 
     										'courseList' => $courseList,	
-    										'annotationList' => $excerptList));
+    										'excerptList' => $excerptList));
     	//$this->render('excerpt_list');
     }
     
     //小组信息
 	public function actionGroupDetail()
     {
-    	$this->render('group_detail');
+        if(!isset($_REQUEST['id'])) $this->render('/site/error');
+        $groupInfo = Group::model()->findByPk($_REQUEST['id']);
+        $leaderInfo = User::model()->findByPk($groupInfo['leaderid']);
+        $teacher = Course::model()->courseCreatorByCid($groupInfo['courseid']);
+        $assists = MUser::model()->getAssistantByGroup($groupInfo['id'],$teacher['uid']);
+        $groupUsers = Group::model()->getStudentWithinGroup($groupInfo['id']);
+
+        //var_dump($leaderInfo->getAttributes());exit;
+        $this->render('group_detail',array(
+            'groupinfo'=>$groupInfo,
+            'leaderinfo'=>$leaderInfo,
+            'assists'=>$assists,
+            'groupusers'=>$groupUsers,
+        ));
     }
     
 	//小组列表

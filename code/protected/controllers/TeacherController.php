@@ -349,8 +349,8 @@ class TeacherController extends Controller
             $groupInst = new Group;
             $groupmembers = $groupInst->getStudentWithinGroup($_REQUEST['group']);
             $groupleader = $groupInst->getGroupLeader($_REQUEST['group']);
-            // 助教
-            $teachers = $userInst->getTeacherByGroup($_REQUEST['group']);
+            // 助教,过滤课程老师
+            $teachers = $userInst->getTeacherByGroup($_REQUEST['group'],$this->userid);
         }
         $this->render('group_manage', array(
             'courses'=>$courses,

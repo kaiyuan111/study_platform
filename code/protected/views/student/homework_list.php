@@ -18,15 +18,14 @@
     <div class="cont2">
     	<div class="My_tittle">作业列表</div>
         <div class="Discuss_list" id="wrapper">
-        	&nbsp;&nbsp;&nbsp;&nbsp;<a href="/student/learndetail?chapterid=<?php echo $chapterId;?>" target="_blank" style="font-size:200%">重新学习作答</a><br /><br />
 	        <div class="">
                 <div class="Work_input">
                 	<?php $i = 0;foreach ($homework as $key => $value) { $i++;?>
                 	<div class="Work_li"><?php echo $i;?>、<?php echo $value['title'];?><br />
                 	<?php if ($value['type'] == 1 || $value['type'] == 2) {
                         	 	for ($k = 0; $k < 4; $k++ ) {echo $optionMap[$k] . '、';echo $value['option'][$k]; echo '&nbsp;';}}?> <br />
-                            	答：<?php echo $answer[$key]['answer'];?>
-                        <div class="Myreview">点评：<?php echo $answer[$key]['remark'];?></div>
+                            	答：<?php if (isset($answer[$key])){echo $answer[$key]['answer'];}else {echo '暂无回答';}?>
+                        <div class="Myreview">点评：<?php if (!empty($answer[$key]['remark'])){ echo $answer[$key]['remark'];}else {echo '老师暂无点评';}?></div>
                     </div>
                 	<?php }?>
                 </div>                                                                

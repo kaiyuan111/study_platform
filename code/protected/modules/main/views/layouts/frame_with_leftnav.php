@@ -14,6 +14,9 @@
 <script src="/js/jquery-ui.js"></script>
 <link rel="stylesheet" href="/css/jquery-ui.css" type="text/css" />
 
+<link href="/colorbox/colorbox.css" rel="stylesheet" media="screen" type="text/css" />
+<script type="text/javascript" src="/colorbox/jquery.colorbox.js" ></script>
+
 <script type="text/javascript" src="/js/jquery.jqtransform.js" ></script>
 <link rel="stylesheet" href="/css/jqtransform.css" type="text/css" media="all" />
 <!--  <link rel="stylesheet" href="/css/jqtransform_a.css" type="text/css" media="all" />-->

@@ -22,11 +22,13 @@ class Group extends CActiveRecord
      */
     public function getStudentWithinGroup($gid)
     {
+        $params = Yii::app()->getParams();
+        $rid = $params['rid'];
         $sql = "
             select g.id,g.name,u.uid,u.uname from `m-group` as g 
             inner join `m-groupmember` as gm on g.id=gm.groupid 
             inner join `m-user` as u on gm.uid=u.uid 
-            where g.id={$gid} and u.rid=3 and u.uid!=g.leaderid
+            where g.id={$gid} and u.rid={$rid['student']} and u.uid!=g.leaderid
         ";
         $conn = Yii::app()->db;
         $command = $conn->createCommand($sql);

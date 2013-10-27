@@ -1,6 +1,6 @@
 <div class="Add_Class_content">
 	<div class="top"><img src="/images/frame/cont_home.png" align="absmiddle" class="home" /><span>内容管理</span></div>
-        <div class="cont_e">
+        <div class="cont_e" style="background-size:760px 2000px;">
           <div class="tittle_e">编辑内容</div>
           <div class="form_a">
             <div class="biaoti16">课题名称：<?php echo $currentCourse['name'];?></div>
@@ -15,7 +15,9 @@
 				  <input name="courseid" type="hidden" value="<?php echo $courseId;?>"/> 
 				</div>
                 </div>
-               <textarea name="content" id="editorContent"><?php if ($courseContent){echo $courseContent['content'];}?></textarea>
+               <!--  <textarea name="content" id="editorContent"><?php if ($courseContent){echo $courseContent['content'];}?></textarea>-->
+               <div id="editDiv"><textarea name="content"><?php if ($courseContent){echo $courseContent['content'];}?></textarea>
+              </div>
               </div>
             </div>
             </form>
@@ -94,24 +96,36 @@
           <div class="clear"></div>
           
         </div>
-		<div class="newz_k_foot"></div>
+		<!--  <div class="newz_k_foot"></div>-->
       </div>
       <!-- 返回按钮 开始-->
-      <div class="fanhui"><img src="/images/frame/im42.jpg" width="96" height="33" border="0" /></div>
+      <!--  <div class="fanhui"><img src="/images/frame/im42.jpg" width="96" height="33" border="0" /></div>-->
       
 <script type="text/javascript" src="/ueditor/ueditor.config.js"></script>
 <SCRIPT type="text/javascript" src="/ueditor/ueditor.all.js"></SCRIPT> 
-
+<script charset="utf-8" type="text/javascript" src="/kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" type="text/javascript" src="/kindeditor/lang/zh_CN.js"></script>
+<link rel="stylesheet" href="/kindeditor/themes/default/default.css" />
 <SCRIPT type=text/javascript>  
-    var editor = new UE.ui.Editor();  
-    editor.render("editorContent");  
-    //1.2.4以后可以使用一下代码实例化编辑器 
-    //UE.getEditor('myEditor') 
+    //var editor = new UE.ui.Editor();  
+    //editor.render("editorContent");  
+var editor;
+KindEditor.ready(function(K) {
+	editor = K.create('textarea[name="content"]', {
+		allowFileManager : true
+	});
+
+	//$('textarea[name="content"]').css('width','700px');
+	$('div.ke-container.ke-container-default').css('width','600px');
+	$('div.ke-edit').css('height','500px');
+	$('iframe').css('height','500px');
+});
 
     var start = <?php echo $i;?>;
     start++;
     $("#submitcontent").click(function()
     	    {
+    			editor.sync();
 	    		var title = $('input[name="title"]').val();
 	    		var courseid = $('input[name="courseid"]').val();
 	    		var content = $('textarea[name="content"]').val();

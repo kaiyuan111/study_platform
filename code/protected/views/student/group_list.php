@@ -11,7 +11,7 @@
 					<img src="/images/frame/myclass2.png" /></a>
 				</span>
 				<span class="r">
-					<div class="t"><a href="/student/groupdetail?id=<?php echo $value['id'];?>>"><?php echo $value['name'];?></a></div>
+					<div class="t"><a href="/student/groupdetail?id=<?php echo $value['id'];?>"><?php echo $value['name'];?></a></div>
 					<?php echo $value['description'];?>
 				</span>
 				</li>
