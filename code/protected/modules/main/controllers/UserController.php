@@ -126,7 +126,7 @@ class UserController extends Controller
     public function actionRegister()
     {
     	$account = isset($_POST['name']) ? trim($_POST['name']) : '';
-    	var_dump($account);//exit;
+    	//var_dump($account);//exit;
     	if (!$this->validateAccount($account))
     	{
     		$this->render('error', '用户名只能包括英文字符汉字和数字，并且不能以数字开头'); 
