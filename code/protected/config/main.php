@@ -55,10 +55,10 @@ return array(
             // ),
             // uncomment the following to use a MySQL database
             'db'=>array(
-                'connectionString' => 'mysql:host=127.0.0.1:3306;dbname=study_platform',
+                'connectionString' => 'mysql:host=127.0.0.1;dbname=study_platform',
                 'emulatePrepare' => true,
                 'username' => 'root',
-                'password' => '',
+                'password' => 'locate',
                 'charset' => 'utf8',
             ),
             /*
@@ -100,5 +100,10 @@ return array(
             // this is used in contact page
             'img_upload_path'=>'E:\kadinwang\repository\upload_image',
             'group_member_maxnum'=>12,
+            'rid' =>array(
+                'teacher'=>2,
+                'student'=>3,
+                'admin'=>4,
+            ),
         ),
     );
