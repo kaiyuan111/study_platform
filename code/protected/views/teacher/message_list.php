@@ -31,7 +31,7 @@
                             <a href="#list<?php echo $c['id']?>"><?php echo $c['title']?></a>
                         </span>
                         <span class="info_li_4"><?php echo $c['request_time']?></span>
-                        <span class="info_li_5">
+                        <span class="info_li_5" data-messid="<?php echo $c['id']?>" style='cursor:pointer;'>
                             <img src="/images/frame/del_ico.png" align="absmiddle" />
                         </span>
                     </div>
@@ -119,6 +119,18 @@
 </div>
 <script>
 	(function($){
+        $(".info_li_5").on("click",function(e) {
+			$("#list"+$(this).data("messid")).empty();
+            $.post(
+                "/teacher/deletemessage",
+                {
+                    'infoid':$(this).data("messid")
+                },
+                function(data) {
+                    console.log(data);
+                }
+            );
+		});
         $(".info_li_3").on("click",function(e) {
             // 替换为已读符号
             $(this).prevAll(".info_li_1").find("img").replaceWith("<img src='/images/frame/email_ico.png' align='absmiddle' />");

@@ -95,7 +95,7 @@ CREATE TABLE `m-groupmember` (
 CREATE TABLE `m-discuss` (
  `id` bigint(20) unsigned not null auto_increment comment '讨论id',
  `title` varchar(255) not null comment '讨论主题',
- `courseid` int unsigned not null comment '课程id',
+ `chapterid` int unsigned not null comment '章节id',
  `content` BLOB  NOT NULL COMMENT '讨论内容',
  `tags` varchar(255) not null comment '讨论标签',
  PRIMARY KEY (`contentid`),

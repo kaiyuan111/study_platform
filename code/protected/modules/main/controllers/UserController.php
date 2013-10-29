@@ -139,6 +139,8 @@ class UserController extends Controller
     	}
     	$email = isset($_POST['email']) ? trim($_POST['email']) : '';
     	
+	
+
     	$user = new User();
     	$user->uname = $account;
         $user->email = $email;

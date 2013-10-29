@@ -406,7 +406,8 @@ class StudentController extends Controller
     	}
 
         // 获取章节信息
-        $chapter = CourseContent::model()->find('courseid=:id',array(':id'=>$discussId));
+        $chapter = CourseContent::model()->find('id=:id',array(':id'=>$discussInfo['chapterid']));
+		//echo "<pre>";var_dump($discussInfo->getAttributes());exit;
         // 获取当前讨论组的所属小组
         $temp = GroupMember::model()->find('uid=:id',array(':id'=>$discussInfo['uid']));
         if(empty($temp)) {
