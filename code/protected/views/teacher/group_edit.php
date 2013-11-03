@@ -3,7 +3,7 @@
     <div class="cont">
     <div class="tittle">新建小组</div>
     <div id="errorinfo">
-    <span class='tip'> <?php if(!empty($tip)) echo $tip;?> </span>
+    <span class='tip'>  </span>
     </div>
         <div class="form">
         	<form class="jqtr" action="/teacher/creategroup" method='post' enctype="multipart/form-data" >
@@ -39,6 +39,10 @@
 
 <script>
 (function($) {
+	tip = '<?php if(!empty($tip)) echo $tip;?>';
+	if(tip != '') {
+		alert(tip)
+	}
     $("#create").on('click',function() {
         $("#errorinfo").children().empty();
         if($("input[name=name]").val().length==0) {
