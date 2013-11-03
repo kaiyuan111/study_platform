@@ -4,7 +4,7 @@ class UserController extends Controller
 {
     public $layout = '/layouts/frame_with_leftnav';
 	
-	const ACCOUNT_PATTERN = '/^[A-Za-z\x{4e00}-\x{9fa5}][A-Za-z0-9\x{4e00}-\x{9fa5}_-]{2,20}$/u';
+	const ACCOUNT_PATTERN = '/^[A-Za-z\x{4e00}-\x{9fa5}][A-Za-z0-9\x{4e00}-\x{9fa5}_-]{3,20}$/u';
 	//const ACCOUNT_PATTERN = '/^[A-Za-z\x{4e00-\x{9fa5}}][A-Za-z0-9\x{4e00-\x{9fa5}_-}{2-20}]$/u';
     public function actionInitSystem()
     {
@@ -126,21 +126,31 @@ class UserController extends Controller
     public function actionRegister()
     {
     	$account = isset($_POST['name']) ? trim($_POST['name']) : '';
+    	$pwd = isset($_POST['pwd']) ? trim($_POST['pwd']) : '';
+    	$pwdConfirm = isset($_POST['pwdconfirm']) ? trim($_POST['pwdconfirm']) : '';
+    	
     	//var_dump($account);//exit;
     	if (!$this->validateAccount($account))
     	{
-    		$this->render('error', '用户名只能包括英文字符汉字和数字，并且不能以数字开头'); 
+    		//$this->render('/site/error',array('errortxt'=>$descError));
+    		$errorDesc = '用户名只能包括英文字符汉字和数字，并且不能以数字开头,长度4-20个字符';
+    		$this->render('/site/error', array('errortxt' => $errorDesc)); 
+    		exit();
     	}
-    	$pwd = isset($_POST['pwd']) ? trim($_POST['pwd']) : '';
-    	$pwdConfirm = isset($_POST['pwdconfirm']) ? trim($_POST['pwdconfirm']) : '';
+    	
     	if (empty($pwd) || $pwd != $pwdConfirm) 
     	{
-    		$this->render('error', '两次密码不一致');;
+    		$this->render('/site/error', array('errortxt' => '两次密码不一致'));
+    		exit();
     	}
-    	$email = isset($_POST['email']) ? trim($_POST['email']) : '';
     	
-	
-
+    	$email = isset($_POST['email']) ? trim($_POST['email']) : '';
+    	if (empty($email))
+    	{
+    		$this->render('/site/error', array('errortxt' => '邮箱不能为空'));
+    		exit();
+    	}
+    	
     	$user = new User();
     	$user->uname = $account;
         $user->email = $email;
@@ -167,7 +177,7 @@ class UserController extends Controller
     {
     	//echo "11111";exit;
     	//echo $account;
-    	$result = preg_match(self::ACCOUNT_PATTERN, $account, $match);
+    	//$result = preg_match(self::ACCOUNT_PATTERN, $account, $match);
     	//var_dump(self::ACCOUNT_PATTERN, $account,$result,$match);exit;
     	 if (preg_match(self::ACCOUNT_PATTERN, $account, $match))
     	 {
