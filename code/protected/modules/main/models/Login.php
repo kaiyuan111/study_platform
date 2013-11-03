@@ -34,15 +34,17 @@ class Login
      * @param mixed $pwd 
      * @return bool
      */
-    static public function logins($name, $pwd)
+    static public function logins($name, $pwd, $type='notmingwen')
     {
         session_start();
+		if($type!='mingwen')
+			$pwd = self::pwdEncry($pwd);
         
        	$user = User::model()->find('uname=:name and pwd=:pwd',array(':name'=>$name, ':pwd'=> $pwd));
        	if (!empty($user))
        	{
        		$userInfo = $user->getAttributes();
-       		$_SESSION['user'] = $userInfo['uid'].'_'.md5($_REQUEST['name'].$_REQUEST['pwd']);
+       		$_SESSION['user'] = $userInfo['uid'].'_'.md5($name.$pwd);
            	return $userInfo;
        	}
         
@@ -62,6 +64,11 @@ class Login
 
         session_destroy();
     }
+
+	static public function pwdEncry($pwd)
+	{
+		return substr(md5($pwd),0,20);
+	}
 
 }
 

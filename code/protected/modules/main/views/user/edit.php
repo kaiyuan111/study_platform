@@ -33,7 +33,7 @@
           </li>
           <li class="li">
             <span class="k" style="height:42px">
-              <span>密码：</span><input name="pwd" type="text" class="input" value="<?php echo !empty($entity['pwd']) ? htmlspecialchars($entity['pwd']):'';?>" size="31"/></span>
+              <span>密码：</span><input name="pwd" type="text" class="input" value="" size="31"/></span>
           </li>
           <li class="li">
             <span class="k" style="height:42px">

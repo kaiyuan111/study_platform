@@ -19,8 +19,8 @@
                  	<input type="text" name="name" class="input" size="29"/></span>
                  	</li>
                  	<li class="o_none"><span class="h">所属科目&nbsp;：<font color="#cb0000">*&nbsp;&nbsp;</font></span>
-                 		<span class="k_a">
-                             <select name="classid" style="width:150px">
+                 		<span class="k_a" id="courseclass">
+                             <select name="classid" id="classid" style="width:150px">
                                  <option value="0">选择你想要的科目&nbsp;</option>
                                  <?php foreach ($couseClass as $key => $value){?>
                                  <option value="<?php echo $value['id'];?>"><?php echo $value['name'];?>&nbsp;</option>
@@ -35,7 +35,7 @@
                  	<textarea name="desc" cols="49" rows="10" ></textarea>
                  	</span></li>
                  </ul>
-             <div class="submit"><input type="submit" value="&nbsp;&nbsp;确&nbsp;&nbsp;定&nbsp;&nbsp;" /></div>
+             	 <div class="submit"><input type="submit" value="&nbsp;&nbsp;确&nbsp;&nbsp;定&nbsp;&nbsp;" /></div>
              </form>         	
          </div>
          <div id="editDiv" style="display:none;position: absolute;width:680px; height:100px; left: 30px;top: 140px;z-index:10"><p style="color:red">请输入科目：</p>
@@ -71,7 +71,23 @@ $("#inputButton").click(function(){
 				{
 					if(data.retCode == 0)
 					{
-						alert("添加成功");window.location.reload();
+						var editDom = $('#editDiv');
+						editDom.css('display','none');
+						var retInfo = data.info;
+						$('#classid').append('<option value="' +retInfo.id + '">' + retInfo.name + '</option>');
+						var tmpHtml = $('#classid').html();
+						tmpHtml = '<select name="classid" id="classid" style="width:150px">' + tmpHtml + '</select>';
+						$('#courseclass').html(tmpHtml);
+						
+						$('form.jqtr').attr('class', 'jqtr');
+						//$('#classid').attr('class','');
+						$('form.jqtr').jqTransform({imgPath:'/images/frame/'});
+						alert("添加成功");
+						//window.location.reload();
+					}
+					else
+					{
+						alert(data.msg);
 					}
 				}
 			});

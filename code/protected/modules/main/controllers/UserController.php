@@ -65,7 +65,7 @@ class UserController extends Controller
                 $usr->updateByPk($_REQUEST['id'],array(
                     'uname'=>$_REQUEST['name'],
                     'email'=>$_REQUEST['email'],
-                    'pwd'=>$_REQUEST['pwd'],
+                    'pwd'=>Login::pwdEncry($_REQUEST['pwd']),
                     'rid'=>$_REQUEST['rid'],
                 ));
                 $this->redirect('/main/user/list');
@@ -80,7 +80,7 @@ class UserController extends Controller
             if(isset($_REQUEST['modify'])) {
                 $usr->uname = $_REQUEST['name'];
                 $usr->email = $_REQUEST['email'];
-                $usr->pwd = $_REQUEST['pwd'];
+                $usr->pwd = Login::pwdEncry($_REQUEST['pwd']);
                 $usr->rid = $_REQUEST['rid'];
                 $usr->save();
                 $this->redirect('/main/user/list');
@@ -97,8 +97,10 @@ class UserController extends Controller
         $url = isset($_REQUEST['url']) ? $_REQUEST['url'] : '';
         if(isset($_POST['login_sub'])&&!empty($_POST['name'])&&!empty($_POST['pwd'])) 
         {
-            // 创建超极管理员
-            $loginUserInfo = Login::logins($_REQUEST['name'],$_REQUEST['pwd']);
+            $loginUserInfo = Login::logins($_REQUEST['name'],$_REQUEST['pwd'],'notmingwen');
+			// 兼容老的情况
+			if(empty($loginUserInfo))
+            	$loginUserInfo = Login::logins($_REQUEST['name'],$_REQUEST['pwd'],'mingwen');
             if (!empty($loginUserInfo))
             {
                 if (!empty($url) && $url != '/')
@@ -151,14 +153,19 @@ class UserController extends Controller
     		exit();
     	}
     	
+		$params = Yii::app()->getParams();
+		$rid = $params['rid'];
     	$user = new User();
     	$user->uname = $account;
         $user->email = $email;
-        $user->pwd = $pwd;
-        $user->rid = 3;   //学生
+        $user->pwd = Login::pwdEncry($pwd);
+        $user->rid = $rid['student'];   //学生
         $user->save();
         
-        Login::logins($account,$pwd);
+        $ret = Login::logins($account,$pwd,'notmingwen');
+		if(empty($ret)) {
+        	Login::logins($account,$pwd,'mingwen');
+		}
         $this->redirect('/student/courselist');
     }
     public function actionLogout()
