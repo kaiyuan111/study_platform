@@ -12,15 +12,17 @@ class SiteController extends Controller
     {
         $userInfo = Login::getLoginInfo();
         $roleInfo = Role::model()->find('rid=:id',array(':id'=>$userInfo['rid']));
-        if ($roleInfo['rid'] == 1||$roleInfo['rid'] == 4) //如果是管理员
+        $params = Yii::app()->getParams();
+        $rid = $params['rid'];
+        if ($roleInfo['rid'] == 1||$roleInfo['rid'] == $rid['admin']) //如果是管理员
         {
             $this->redirect('/main/user/list');
         }
-        elseif ($roleInfo['rid'] == 2)   //老师
+        elseif ($roleInfo['rid'] == $rid['teacher'])   //老师
         {
             $this->redirect('/teacher/courselist');  
         }
-        elseif ($roleInfo['rid'] == 3)   //学生
+        elseif ($roleInfo['rid'] == $rid['student'])   //学生
         {
             $this->redirect('/student/courselist');
         }
