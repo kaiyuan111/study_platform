@@ -44,7 +44,8 @@ class Controller extends CController
             || preg_match('|^/main/user/login|',$_SERVER['REQUEST_URI']) 
             || preg_match('|^/main/user/register|',$_SERVER['REQUEST_URI'])
             || $requestUrl=='/site/index'
-            || $requestUrl=='/main/user/initsystem'
+            || $requestUrl=='/site/error'
+            //|| $requestUrl=='/main/user/initsystem'
             ) 
         {
             return true;

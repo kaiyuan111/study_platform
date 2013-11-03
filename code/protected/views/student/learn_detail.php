@@ -34,22 +34,22 @@
     			<div class="practise_tittle">&nbsp;&nbsp;<?php echo $i . '.';?><?php echo $value['title'];?></div>
     			<div class="practise_answer">
 	            <span>
-	                <label for="radio-01" class="label_radio">      
+	                <label for="radio-01" class="">      
 	                    <input type="radio" <?php if (isset($answer[$value['id']]) && $answer[$value['id']]['answer'] == 'A'){?> checked="true" <?php }?> value="A" id="radio-01" name="answer_<?php echo $i;?>" /> A、 <?php echo $value['option'][0];?>     
 	                </label>  
 	            </span>
 	            <span>
-	                <label for="radio-02" class="label_radio">      
+	                <label for="radio-02" class="">      
 	                    <input type="radio" <?php if (isset($answer[$value['id']]) && $answer[$value['id']]['answer'] == 'B'){?> checked="true" <?php }?> value="B" id="radio-02" name="answer_<?php echo $i;?>" /> B、  <?php echo $value['option'][1];?>   
 	                </label>  
 	            </span>        
 	            <span>
-	                <label for="radio-03" class="label_radio">      
+	                <label for="radio-03" class="">      
 	                    <input type="radio" <?php if (isset($answer[$value['id']]) && $answer[$value['id']]['answer'] == 'C'){?> checked="true" <?php }?> value="C" id="radio-03" name="answer_<?php echo $i;?>" /> C、  <?php echo $value['option'][2];?>        
 	                </label>  
 	            </span>
 	            <span>
-	                <label for="radio-04" class="label_radio">      
+	                <label for="radio-04" class="">      
 	                    <input type="radio" <?php if (isset($answer[$value['id']]) && $answer[$value['id']]['answer'] == 'D'){?> checked="true" <?php }?> value="D" id="radio-04" name="answer_<?php echo $i;?>" /> D、  <?php echo $value['option'][3];?>  
 	                </label>  
 	            </span> 
