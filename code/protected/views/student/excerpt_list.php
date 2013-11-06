@@ -25,7 +25,7 @@
                               <b>批注：<?php echo $eachContent;?></b><br />
                               <?php }?>
 	                              <div class="link">
-	                              <a href="/student/learndetail?chapterid=<?php echo $key;?>">详情请见原文<i></i></a>
+	                              <a target="_blank" href="/student/learndetail?chapterid=<?php echo $key;?>">详情请见原文<i></i></a>
 	                              </div>
                             </div>
                          </div>                                                                

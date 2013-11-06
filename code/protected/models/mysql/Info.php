@@ -23,6 +23,7 @@ class Info extends CActiveRecord
         return '`m-info`';
     }
 
+	/*
     public function saveNotifyMessage($title,$message,$uidFrom,$uidTo)
     {
         $this->type='notify';
@@ -33,6 +34,7 @@ class Info extends CActiveRecord
         $this->uid_to=$uidTo;
         $this->save();
     }
+	 */
 
 
 }

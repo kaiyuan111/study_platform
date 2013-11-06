@@ -17,6 +17,7 @@ return array(
         'application.models.*',
         'application.models.mysql.*',
         'application.models.business.*',
+        'application.models.message.*',
         'application.components.*',
         'application.modules.main.models.*',
         'application.modules.main.models.user.*',

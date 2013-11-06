@@ -1,6 +1,6 @@
 <div class="Add_Class_content">
 	<div class="top"><img src="/images/frame/cont_home.png" align="absmiddle" class="home" /><span>内容管理</span></div>
-        <div class="cont_e" style="background-size:760px 2000px;">
+        <div class="cont_e">
           <div class="tittle_e">编辑内容</div>
           <div class="form_a">
             <div class="biaoti16">课题名称：<?php echo $currentCourse['name'];?></div>

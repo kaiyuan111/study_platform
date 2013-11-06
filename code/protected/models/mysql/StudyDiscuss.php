@@ -59,6 +59,7 @@ class StudyDiscuss extends CActiveRecord
      * @param mixed $discussid 当前讨论组的id
      * @return void
      */
+	/*
     public function notifyTeacherToDiscuss($uidFrom,$courseid,$groupid,$discussid)
     {
         $discussInfo = StudyDiscuss::model()->findByPk($discussid);
@@ -75,10 +76,7 @@ class StudyDiscuss extends CActiveRecord
             $info->saveNotifyMessage("邀请讨论",$message,$uidFrom,$t['uid']);
         }
 
-        /*
-        $info = new Info;
-        $info->saveNotifyMessage("邀请讨论",$message,$uidFrom,$courseInfo['creator']);
-         */
         return true;
     }
+	 */
 }

@@ -379,7 +379,11 @@ class StudentController extends Controller
      */
     public function actionInviteTeacherForDiscuss()
     {
+		/*
         $ret = StudyDiscuss::model()->notifyTeacherToDiscuss($this->userid,$_REQUEST['courseid'],$_REQUEST['groupid'],$_REQUEST['discussid']);
+		 */
+		$mess = new MessInviteTeacher;
+		$ret = $mess->send($this->userid,$_REQUEST['courseid'],$_REQUEST['groupid'],$_REQUEST['discussid']);
         if($ret) 
         {
         	echo "邀请成功";
@@ -539,7 +543,9 @@ class StudentController extends Controller
 	//消息列表
 	public function actionMessageList()
     {
-    	$this->render('message_list');
+		$mess = new MessCourseEdit;
+		$infos = $mess->findall($this->userid);
+        $this->render('/teacher/message_list', array('infos'=>$infos));
     }
     
 	public function jsonResult($retCode = 0, $info = array())

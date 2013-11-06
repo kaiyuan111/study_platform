@@ -58,22 +58,22 @@
     		<div class="practise_tittle">&nbsp;&nbsp;<?php echo $i . '.';?><?php echo $value['title'];?>（多选）</div>
     		<div class="practise_answer">
             <span>
-                <label for="checkbox-01" class="label_check">       
+                <label for="checkbox-01" class="">       
                 	<input type="checkbox" <?php if (isset($answer[$value['id']]) && strpos($answer[$value['id']]['answer'], 'A') !== false){?> checked="true" <?php }?> value="A" id="checkbox-01" name="answer_<?php echo $i;?>" />A、 <?php echo $value['option'][0];?>      
                 </label>  
             </span>
             <span>
-                <label for="checkbox-02" class="label_check">       
+                <label for="checkbox-02" class="">       
                 	<input type="checkbox" <?php if (isset($answer[$value['id']]) && strpos($answer[$value['id']]['answer'], 'B') !== false){?> checked="true" <?php }?> value="B" id="checkbox-02" name="answer_<?php echo $i;?>" />B、  <?php echo $value['option'][1];?>     
                 </label>     
             </span>        
             <span>
-                <label for="checkbox-03" class="label_check">       
+                <label for="checkbox-03" class="">       
                 	<input type="checkbox" <?php if (isset($answer[$value['id']]) && strpos($answer[$value['id']]['answer'], 'C') !== false){?> checked="true" <?php }?> value="C" id="checkbox-03" name="answer_<?php echo $i;?>" />C、  <?php echo $value['option'][2];?>
                 </label>     
             </span>
             <span>
-                <label for="checkbox-04" class="label_check">       
+                <label for="checkbox-04" class="">       
                 	<input type="checkbox" <?php if (isset($answer[$value['id']]) && strpos($answer[$value['id']]['answer'], 'D') !== false){?> checked="true" <?php }?> value="D" id="checkbox-04" name="answer_<?php echo $i;?>" />D、  <?php echo $value['option'][3];?>
                 </label>     
             </span> 

@@ -7,7 +7,7 @@
                 <h2>我发起的讨论</h2>
                     <ul>
                         <?php foreach ($originalDis as $key => $value) {?>
-                        	<li ><a href="/student/discussdetail?id=<?php echo $value['id'];?>"><?php echo $value['title'];?> </a></li>
+                        	<li ><a target="_blank" href="/student/discussdetail?id=<?php echo $value['id'];?>"><?php echo $value['title'];?> </a></li>
                         <?php }?>
                     </ul>
                 </div>
@@ -17,7 +17,7 @@
                 <h2>我参与的讨论</h2>
                     <ul>
                         <?php foreach ($joindDis as $key => $value) {?>
-                        	<li ><a href="/student/discussdetail?id=<?php echo $value['id'];?>"><?php echo $value['title'];?> </a></li>
+                        	<li ><a target="_blank" href="/student/discussdetail?id=<?php echo $value['id'];?>"><?php echo $value['title'];?> </a></li>
                         <?php }?>
                     </ul>
                 </div>

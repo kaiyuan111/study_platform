@@ -136,29 +136,11 @@ class TeacherController extends Controller
     {
         $courseId = !empty($_REQUEST['courseid']) ? $_REQUEST['courseid'] : "";
         $course = Course::model()->find('id=:id',array(':id'=>$courseId));
-        if(!empty($course)) 
-        {
-            $info = Info::model()->find('uid_from=:fid and content=:c and is_responce=0',
-                array(
-                    ':c'=>$courseId,
-                    ':fid'=>$this->userid,
-                )
-            );
-            if(empty($info)) 
-            {
-                $info = new Info;
-            }
-            $info->type='request_edit_class';
-            $info->title='申请编辑课程';
-            $info->uid_from=$this->userid;
-            $info->request_time=date("Y-m-d");
-            $info->content=$courseId;
-            $info->uid_to=$course['creator'];
-            $info->save();
+        if(!empty($course)) {
+			$mess = new MessCourseEdit;
+			$mess->send($this->userid,$course['creator'],$courseId);
             echo "申请成功";
-        } 
-        else 
-        {
+        } else {
             echo "申请错误";
         }
     }
@@ -388,35 +370,12 @@ class TeacherController extends Controller
         // 可以被编辑的课程id
         $courseid = isset($_REQUEST['courseid']) ? $_REQUEST['courseid'] : 0;
 
-        $info = Info::model()->find("id=:id",array(":id"=>$infoid));
-        //if($info->is_responce==1) exit;
-        $info->is_responce = 1;
-        $info->responce = $responce;
-        $info->save();
-
         // 答应
-        if($responce==1) 
-        {
-            $mp = MUserPriviledge::model()->find("uid=:id and privilege_tag=:t and content=:cid",
-                array(':id'=>$fromid,':t'=>'courseedit',':cid'=>$courseid));
-            if(empty($mp)) 
-            {
-            	$mp = new MUserPriviledge;
-            }
-            else 
-            {
-            	exit;
-            }
-            
-            $mp->uid=$fromid;
-            $mp->privilege_tag="courseedit";
-            $mp->content=$courseid;
-            $mp->save();
-        } 
-        else 
-        {
-            MUserPriviledge::model()->deleteAll("uid=:id and privilege_tag=:t and content=:cid",
-                array(':id'=>$fromid,':t'=>'courseedit',':cid'=>$courseid));
+		$mess = new MessCourseEdit;
+        if($responce==1) {
+			$mess->accept($infoid);
+        } else {
+			$mess->refuse($infoid);
         }
     }
 
@@ -428,21 +387,8 @@ class TeacherController extends Controller
     // 通知消息 无需回复
     public function actionMessageList()
     {
-        $tinfos = Info::model()->findAll('uid_to=:id order by is_read asc,request_time desc',array(':id'=>$this->userid));
-        //echo "<pre>";var_dump(count($tinfos));exit;
-        $infos = array();
-        foreach($tinfos as $i) {
-            if(!empty($i['content']))  {
-                $course = Course::model()->find('id=:id',array(':id'=>$i['content']));
-                $r = $i->getAttributes();
-                $r['courseid'] = $course['id'];
-                $r['coursename'] = $course['name'];
-                $user = User::model()->find('uid=:id',array(':id'=>$i['uid_from']));
-                $r['uname_from'] = $user['uname'];
-                $r['request_time'] = date("Y-m-d",strtotime($r['request_time']));
-                $infos[] = $r;
-            }
-        }
+		$mess = new MessCourseEdit;
+		$infos = $mess->findall($this->userid);
         $this->render('message_list', array('infos'=>$infos));
     }
 
