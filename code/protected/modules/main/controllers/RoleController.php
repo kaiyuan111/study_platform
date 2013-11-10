@@ -50,7 +50,7 @@ class RoleController extends Controller
         }
         // action 列表 展现
         $action = new Action;
-        $actionList = $action->findAll();
+        $actionList = $action->findAll('1=1 order by is_menu desc, route desc');
         if(isset($_REQUEST['id'])&&$_REQUEST['id']!='') {
             // 修改
             $roleInfo = $role->findRole($_REQUEST['id']);

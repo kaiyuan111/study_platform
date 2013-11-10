@@ -32,7 +32,7 @@ class UserController extends Controller
         $usr = new User;
         $usrInfos = array();
         if(!empty($_REQUEST['name'])) {
-            $usrInfos = $usr->getUserWithRole('uname=:name',array(':name'=>$_REQUEST['name']));
+            $usrInfos = $usr->getUserWithRole("uname like '%{$_REQUEST['name']}%'");
         } else {
             $usrInfos = $usr->getUserWithRole();
         }

@@ -1,5 +1,6 @@
 <?php
 
+// 邀请老师参加讨论组
 class MessInviteTeacher extends MessCommon
 {
 	public $MESS_TYPE = 'notify';

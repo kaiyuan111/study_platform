@@ -2,6 +2,7 @@
 <hr>
 <form method="post" action="/main/action/list">
 路由名:<input type="text" name="name"/>
+路由信息:<input type="text" name="route"/>
 <input type="submit" name="query" value="查询"/>
 <input type="submit" name="all" value="查询所有"/>
 </form>

@@ -2,25 +2,12 @@
 
 class MessNotify extends MessCommon
 {
+	public $MESS_TYPE = 'notify';
 	// 发送消息
-    protected function sendM($type, $title, $message, $uidFrom, $uidTo)
+    public function send($title, $message, $uidFrom, $uidTo)
     {
-		$info = new Info;
-        $info->type=$type;
-        $info->title=$title;
-        $info->uid_from=$uidFrom;
-        $info->request_time=date("Y-m-d");
-        $info->content=$message;
-        $info->uid_to=$uidTo;
-        $info->save();
+		$this->sendM($this->MESS_TYPE, $title, $message, $uidFrom, $uidTo);
     }
 
-	protected function acceptM()
-	{
-	}
-
-	protected function refuseM()
-	{
-	}
 }
 

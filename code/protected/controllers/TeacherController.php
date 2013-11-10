@@ -308,6 +308,12 @@ class TeacherController extends Controller
                 array( 'leaderid'=>$_REQUEST['leaderid'] )
             );
             $groupMInst = new GroupMember;
+
+			// 发送小组通知消息
+			$courseInfo = Group::model()->getCourseInfo($_REQUEST['groupid']);
+			$groupInfo = Group::model()->find('id=:id', array(':id'=>$_REQUEST['groupid']));
+			$message = "您已被分配到课程<{$courseInfo['name']}>的<{$groupInfo['name']}>小组！";
+			$mess = new MessNotify;
             // 保存组员(助教，组员，组长)
             $groupMInst->deleteAll("groupid=:gid",array(":gid"=>$_REQUEST['groupid']));
             $uids = explode(',',$_REQUEST['uids']);
@@ -317,6 +323,7 @@ class TeacherController extends Controller
                     $groupMInst->groupid = $_REQUEST['groupid'];
                     $groupMInst->uid = $id;
                     $groupMInst->save();
+					$mess->send('加入小组',$message,$this->userid,$id);
                 }
             }
             echo "保存成功";
@@ -405,6 +412,13 @@ class TeacherController extends Controller
             exit("0");
         }
     }
+
+	// 老师删除消息
+	public function actionDeleteMessage()
+	{
+		$infoid = isset($_REQUEST['infoid']) ? $_REQUEST['infoid'] : 0;
+		Info::model()->deleteAll("id=:id", array(":id"=>$infoid));
+	}
 
     //添加内容页面
     public function actionAddContent()
@@ -529,18 +543,92 @@ class TeacherController extends Controller
     	}
     	
     	$discussList = array();
+        $discussModel = new StudyDiscuss();
     	$groupId = isset($_REQUEST['groupid']) ? intval($_REQUEST['groupid']) : 0;
     	if (!empty($groupId)) 
     	{
     		//获取这个组下的讨论
-    		$discussModel = new StudyDiscuss();
-    		$discussList = $discussModel->getDiscussList($groupId);
+			$discussList = $discussModel->getDiscussList($groupId);
+			//var_dump($discussList);exit;
     	}
     	
-    	$this->render('discuss_list', array('discussList' => $discussList,
+
+	//获取讨论的答案
+		$discussIds = array();
+		$createUids = array();
+		foreach($discussList as $value)
+		{
+	    	$discussIds[] = $value['id'];
+	        $createUids[] = $value['uid'];
+		}
+        
+		$replyModel = new DiscussReply();
+		$discussReplysT = array();
+		if(!empty($discussIds))
+		{
+			$discussReplysT = $replyModel->getDiscussReplyByDiscussIds($discussIds);
+		}	
+		$discussReplys = array();
+		$uidArray = array();
+		foreach($discussReplysT as $values)
+		{
+			$discussReplys[$values['discussid']][] = $values;
+			$uidArray[] = $values['uid'];
+		}
+
+		$replyUserInfoT = array();
+		if (!empty($uidArray))
+		{
+			$muser = new MUser();
+			$replyUserInfoT = $muser->getUserInfoByUids($uidArray);
+		}
+
+		$replyUserInfo = array();
+		foreach ($replyUserInfoT as $key=> $value)
+		{
+			$replyUserInfo[$value['uid']] = $value;
+		}
+
+
+		$createUserInfoT = array();
+		if (!empty($createUids))
+		{   
+			$muser = new MUser();
+			$createUserInfoT = $muser->getUserInfoByUids($createUids);
+		}   
+
+		$createUserInfo = array();
+		foreach ($createUserInfoT as $key=> $value)
+		{   
+			$createUserInfo[$value['uid']] = $value;
+		}   
+		$this->render('discuss_list', array('discussList' => $discussList,
+									'discussReplys' => $discussReplys,
+									'replyUserInfo' => $replyUserInfo,
+									'createUserInfo' => $createUserInfo,
     								'allCourse' => $allCourse));
     }
-    
+
+	public function actionAddDiscussReply()
+	{
+		$discussId = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+		$content = isset($_REQUEST['content']) ? trim($_REQUEST['content']) : '';
+
+		if (empty($content))
+		{
+			$this->jsonResult(-1);
+		}
+
+		$discussReply = new DiscussReply();
+		$discussReply->uid = $this->userid;
+		$discussReply->time = time();
+		$discussReply->comment = $content;
+		$discussReply->discussid = $discussId;
+		$discussReply->save();
+
+		$this->jsonResult(0);
+	}
+
 	//查看作业list
     public function actionHomeWorkAnswerList()
     {
@@ -583,7 +671,7 @@ class TeacherController extends Controller
     			$groupMemIds[] = $value['uid'];
     		}
 			//获取这章的作业
-			$homeworkT = Homework::model()->findAll('chapterid=:chapterid', array(':chapterid'=>$chapterId));
+		$homeworkT = Homework::model()->findAll('chapterid=:chapterid', array(':chapterid'=>$chapterId));
 	    	//var_dump($homework);exit;
 	    	$homework = array();
 	    	$homeworkIds = array();

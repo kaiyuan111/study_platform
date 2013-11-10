@@ -13,9 +13,9 @@
         <?php if ($type == 3){?>
         <div class="checkbox">
            	<div class="t">选择讨论组的成员</div>
-            <!--  <div class="all"><label for="checkbox-01">
+              <div class="all"><label for="checkbox-01">
                                              全选<input type="checkbox"  value="1" id="checkbox-01" name="sample-checkbox-01" /></label>
-            </div>-->        
+            </div>        
            	<ul>
            		<?php foreach ($groupMemberInfo as $key => $value){ if ($value['uid'] != $this->userid){?>
                	<li>
@@ -44,6 +44,7 @@
         // 关闭弹窗
         window.parent.$.colorbox.close();
     }
+
 })(jQuery)
 	var editor;
 	KindEditor.ready(function(K) {
@@ -51,4 +52,18 @@
 		allowFileManager : true
 	});
 });
+$(document).ready(function(){
+$('#checkbox-01').click(function(){
+    if($(this).val() == 1)
+    {
+        $("ul li input").attr("checked", true);
+        $(this).attr('value',2);
+    }
+    else    
+    {
+        $("ul li input").attr("checked", false); 
+        $(this).attr('value',1);
+    }
+});
+})
 </script>

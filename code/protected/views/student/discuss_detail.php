@@ -85,7 +85,7 @@ $(".submit_blue").click(function()
 				{
 					if(data.retCode == 0)
 					{
-						alert("添加成功");
+					//	alert("添加成功");
 						window.location.reload();
 					}
 					else

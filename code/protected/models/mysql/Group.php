@@ -12,6 +12,15 @@ class Group extends CActiveRecord
         return '`m-group`';
     }
 
+	public function getCourseInfo($groupid)
+	{
+		$groupinfo = $this->find('id=:id', array(':id'=>$groupid));
+		$course = new Course;
+		$courseinfo = $course->find('id=:id', array(':id'=>$groupinfo['courseid']));
+		return $courseinfo->getAttributes();
+			
+	}
+
     /**
      * getStudentWithinGroup 
      *

@@ -14,9 +14,11 @@ class ActionController extends Controller
         $action = new Action;
         $actionInfos = array();
         if(!empty($_REQUEST['name'])&&!empty($_REQUEST['query'])) {
-            $actionInfos = $action->findAll('aname=:name',array(':name'=>$_REQUEST['name']));
+            $actionInfos = $action->findAll("aname like '%{$_REQUEST['name']}%'");
+		} else if(!empty($_REQUEST['route'])&&!empty($_REQUEST['query'])) {
+            $actionInfos = $action->findAll("route like '%{$_REQUEST['route']}%'");
         } else {
-            $actionInfos = $action->findAll();
+            $actionInfos = $action->findAll('1=1 order by is_menu desc, route desc');
         }
 
         $this->render('list',array('entitys'=>$actionInfos));

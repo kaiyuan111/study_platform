@@ -1,3 +1,4 @@
+<div class='Add_Class_content'>
 <?php if($label=='has_role') { ?>
 <div class='tip'>已经有此角色</div>
 <?php } ?>
@@ -8,7 +9,7 @@
 <p>权限列表：</p>
 <?php foreach($action_list as $key=>$action) { ?>
     <?php $check = !empty($entity['actions'])&&isset($entity['actions'][$action['aid']]) ? 'checked' : '';?>
-    <input type='checkbox' name='actions[<?php echo $key;?>]' value='<?php echo $action['aid']; ?>' <?php echo $check;?> /><?php echo $action['aname']; ?>
+    <input type='checkbox' name='actions[<?php echo $key;?>]' value='<?php echo $action['aid']; ?>' <?php echo $check;?> /><?php echo $action['aname']; ?> <?php echo $action['route']; ?>
     <?php if($action['is_menu']) {?>
         <?php if(isset($entity['actions'][$action['aid']])) {?>
         <div id="position_<?php echo $action['aid']; ?>">
@@ -24,6 +25,7 @@
 <?php } ?>
 <input type='submit' name='modify' value="提交">
 </form>
+</div>
 
 <script type='text/javascript'>
 (function($) {

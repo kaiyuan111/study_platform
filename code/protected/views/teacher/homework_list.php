@@ -147,7 +147,6 @@ function groupcontent()
 
 $(document).ready(function(){ 
 	$('button[type="button"]').click(function(){
-		//alert('hello,world');
 		var id = $(this).parent().children().eq(0).val();
 		var remark = $(this).parent().find('input[type="text"]').val();
 		remark = $.trim(remark);
@@ -158,7 +157,6 @@ $(document).ready(function(){
 			return false;
 		}
 		
-		//保存点评
 		var data = 'id=' + id + '&remark=' + remark;
 		$.ajax({
 			type : 'post',

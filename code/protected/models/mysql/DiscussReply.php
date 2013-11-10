@@ -12,5 +12,15 @@ class DiscussReply extends CActiveRecord
         return '`m-discussreply`';
     }
     
-    
+    //获取一批讨论的回复
+		public function getDiscussReplyByDiscussIds($discussIds)
+		{
+			$ids = implode(',', $discussIds);
+			$command = "select * from `m-discussreply` where discussid in ({$ids})";
+			$conn = Yii::app()->db;
+			$command = $conn->createCommand($command);
+			$rows = $command->queryAll();
+
+			return $rows;
+		}
 }

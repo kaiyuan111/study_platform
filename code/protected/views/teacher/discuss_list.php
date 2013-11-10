@@ -20,24 +20,27 @@
         <div class="Discuss_list" id="wrapper">
         	<ul class="menu">
         		<?php foreach ($discussList as $key => $value) {?>
-            	<li class="item1" id="list1"><a href="/student/discussdetail?id=<?php echo $value['id'];?>"><?php echo $value['title'];?> </a>
-		         <!--     <ul>
+				<li class="item1" id="list<?php echo $key;?>"><a href="#list<?php echo $key;?>"><?php echo $value['title'];?> </a>
+					     <ul>
 						<div class="list_top"></div>
 			            <div class="list_cont">
-			            	<div class="t">关于<i>如何做好网页设计</i>这个主题（20130619）<p>由<i>某某</i>发表于2013-06-19  星期三  13:34</p></div>
-			            	<ul>
-			                    <li><a href="#">学员</a><span>2013-06-19 13:34</span><br />需要长期的经验累计</li>
-			                    <li><a href="#">学员</a><span>2013-06-19 13:34</span><br />需要长期的经验累计</li>
-			                    <li><a href="#">学员</a><span>2013-06-19 13:34</span><br />需要长期的经验累计</li>
-			                </ul>
+						<div class="t">关于<i><?php echo $value['title'];?></i>这个主题（20130619）<p>由<i><?php echo $createUserInfo[$value['uid']]['uname'];?></i>发表</p></div>
+						<?php if(!empty($discussReplys[$value['id']])) {?>
+							<ul>
+								<?php foreach($discussReplys[$value['id']] as $eachReplys) {?>
+								<li><a ><?php echo $replyUserInfo[$eachReplys['uid']]['uname'];?></a><span> <?php echo date('Y-m-d G:i:s',$eachReplys['time']);?></span><br /><?php echo $eachReplys['comment'];?></li>
+								<?php }?>
+							</ul>
+                            <?php }?>
 			                <div class="Discuss_input">
-			                	<form action="">
-			                    	<input name="text" type="text" size="48" onfocus="if (value =='写下你的评论'){value =''}" onblur="if (value ==''){value='写下你的评论'}" value="写下你的评论"/><input type="submit" value="&nbsp;发&nbsp;表&nbsp;" />
+								<form action="" class="jqtr">
+									<input type="hidden" value="<?php echo $value['id'];?>" />
+			                    	<input name="text" type="text" size="48" onfocus="if (value =='写下你的评论'){value =''}" onblur="if (value ==''){value='写下你的评论'}" value="写下你的评论"/><input type="button" value="&nbsp;发&nbsp;表&nbsp;" />
 			                    </form>
 			                </div>
 			           </div>
 					   <div class="list_bottom"></div>
-		           </ul>-->
+				   </ul>
                 </li>
                 <?php }?>
            </ul>
@@ -93,4 +96,37 @@
 		}
 	});
 }
+
+$(document).ready(function(){ 
+	$('button[type="button"]').click(function(){
+		var id = $(this).parent().children().eq(0).val();
+		var remark = $(this).parent().find('input[type="text"]').val();
+		remark = $.trim(remark);
+
+		if(remark == "")
+		{       
+			alert("请填写点评"); 
+			return false;
+		}       
+
+		var data = 'id=' + id + '&content=' + remark; 
+		$.ajax({
+			type : 'post', 
+				data : data, 
+				dataType : 'json', 
+				url : '/teacher/adddiscussreply',
+				success: function(data)
+		{       
+			if(data.retCode == 0)
+			{
+				window.location.reload();
+			}
+			else
+			{
+				alert(data.msg);
+			}
+		}       
+		});     
+	})      
+}); 
 </script>
