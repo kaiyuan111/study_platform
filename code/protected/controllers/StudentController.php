@@ -157,7 +157,8 @@ class StudentController extends Controller
 													array(':chapterid'=>$chapterid,
 														'courseid' => $courseId));
 													
-		CourseContent::model()->findByPk($chapterid);
+		//CourseContent::model()->findByPk($chapterid);
+//var_dump($this->userInfo);exit;
     	$this->render('learn_detail', array('courseContent' => $courseContent,
     										'courseCreator' => $courseCreator,
     										'studyDetail' => $studyDetail,
@@ -166,7 +167,8 @@ class StudentController extends Controller
     										'homework' => $homework,
     										'nextChapter' => $nextChapter,
     										'preChapter' => $preChapter,
-    										'answer' => $answer,));
+											'answer' => $answer,
+											'userInfo' => $this->userInfo,));
     	
     	$this->layout = 'application.modules.main.views.layouts.frame_with_leftnav';
     }

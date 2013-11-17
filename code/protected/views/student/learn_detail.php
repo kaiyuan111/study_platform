@@ -8,7 +8,7 @@
     <div class="workcont_page">
    		<ul>
 	       	<?php if (!empty($preChapter)) {?><li><a href="/student/learndetail?chapterid=<?php echo $preChapter['id'];?>">[上一页]</a></li><?php }?>
-	       	<li><a href="/student/cataloguelist?courseid=<?php echo $courseContent['courseid'];?>">[回目录]</a></li>
+			<li><a href="<?php if($userInfo['rid'] == 3){?>/student/cataloguelist?courseid=<?php echo $courseContent['courseid'];?><?php }else{?>/teacher/managecourse?courseid=<?php echo $courseContent['courseid'];?><?php }?>">[回目录]</a></li>
 	       	<?php if (!empty($nextChapter)) {?><li><a href="/student/learndetail?chapterid=<?php echo $nextChapter['id'];?>">[下一页]</a></li><?php }?>
         </ul>
     </div>
@@ -20,7 +20,7 @@
             <LI class="active" id="tab1"><A onmouseover=javascript:slay(1) href="javascript:slay(1)">&nbsp;练&nbsp;&nbsp;&nbsp;&nbsp;习&nbsp;</A></LI>
             <LI id="tab2"><A id='add_zhaiyao' onmouseover=javascript:slay(2) href="/student/studydetailpage?type=1&chapterid=<?php echo $courseContent['id'];?>" >添加摘抄</A></LI>
             <LI id="tab3"><A id='add_pizhu' onmouseover=javascript:slay(3) href="/student/studydetailpage?type=2&chapterid=<?php echo $courseContent['id'];?>">添加批注</A></LI>
-            <LI id="tab4"><A id='add_taolun' onmouseover=javascript:slay(4) href="/student/studydetailpage?type=3&chapterid=<?php echo $courseContent['id'];?>" >发起讨论</A></LI>
+			<LI id="tab4"><A id='add_taolun' onmouseover=javascript:slay(4) href="/student/studydetailpage?type=3&chapterid=<?php echo $courseContent['id'];?>" >发起讨论</A></LI>
         </ul>
     </div>
     

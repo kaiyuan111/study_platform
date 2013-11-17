@@ -4,7 +4,7 @@
 		<div class="blue3">
 		<div class="blue3_kc"><span style="color:#888787">课程名称</span></div>
 		<div class="right_sous3">
-    		<form class="jqtr" id="form" name="form" method="post" action="/teacher/managecourse">
+    		<form class="jqtr" id="form" name="form" method="get" action="/teacher/managecourse">
     			<div id="uboxstyle" >
 	  			<select name="courseid" id="language" style="width:120px">
 	    			<option value="0">请选择</option>

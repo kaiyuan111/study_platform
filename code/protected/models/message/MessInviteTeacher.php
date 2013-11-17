@@ -21,8 +21,7 @@ class MessInviteTeacher extends MessCommon
             //$info->saveNotifyMessage("邀请讨论",$message,$uidFrom,$t['uid']);
 			$this->sendM($this->MESS_TYPE, '邀请讨论', $message, $uidFrom, $t['uid']);
 			//var_dump($t['email']);exit;
-			$ret = $mail->send($t['email'],'test','test');
-			var_dump($ret);exit;
+			//$ret = $mail->send($t['email'],'test','test');
         }
         /*
         $info = new Info;
