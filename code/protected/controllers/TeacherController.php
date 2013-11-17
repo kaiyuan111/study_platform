@@ -61,7 +61,15 @@ class TeacherController extends Controller
     public function actionCreateCourse()
     {
     	$courseClass = CourseClass::model()->findAll();
-    	$this->render('createcourse' , array('couseClass' => $courseClass));
+        $editCourse = array();
+		$courseId = isset($_REQUEST['courseid']) ? intval($_REQUEST['courseid']) : 0;
+		if(!empty($courseId))
+		{
+			$editCourse = Course::model()->findByPk($courseId);
+		}
+		
+    	$this->render('createcourse' , array('couseClass' => $courseClass, 'editCourse' => $editCourse));
+        
     }
     
     public function actionSaveCourseclass()
@@ -110,7 +118,7 @@ class TeacherController extends Controller
     		$this->render('/site/error',array('errortxt'=>$classError));
     	}
     	
-    	$courseDesc = isset($_POST['desc']) ? intval($_POST['desc']) : 0;
+    	$courseDesc = isset($_POST['desc']) ? trim($_POST['desc']) : 0;
     	if (empty($courseClass)) 
     	{
     		//$this->render('error', );
@@ -118,8 +126,16 @@ class TeacherController extends Controller
     		//$this->render('createcourse', array('desc' => $descError));
     		$this->render('/site/error',array('errortxt'=>$descError));
     	}
-    	
-    	$newCourse = new Course();
+
+		$courseId = isset($_POST['courseid']) ? intval($_POST['courseid']) : 0;
+		if(!empty($courseId))
+		{
+ 			$newCourse = Course::model()->findByPk($courseId);
+		}
+		else
+		{
+			$newCourse = new Course();
+		}
     	$newCourse->name = $courseName;
     	$newCourse->desc = $courseDesc;
     	$newCourse->classid = $courseClass;

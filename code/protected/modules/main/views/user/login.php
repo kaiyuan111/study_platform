@@ -40,8 +40,8 @@ function slay2(num)
 	<div class="register_logo"><img src="/images/frame/register_logo.png" /></div>
     <DIV class="register">
         <UL>
-            <LI class="active" id="logintab1"><A onmouseover=javascript:slay2(1) href="javascript:slay2(1)"><img src="/images/frame/register_logo_1.png" /></A></LI>
-            <LI id="logintab2"><A onmouseover=javascript:slay2(2) href="javascript:slay2(2)"><img src="/images/frame/register_logo_2.png" /></A></LI>
+            <LI class="active" id="logintab1"><A onclick=javascript:slay2(1) href="javascript:slay2(1)"><img src="/images/frame/register_logo_1.png" /></A></LI>
+            <LI id="logintab2"><A onclick=javascript:slay2(2) href="javascript:slay2(2)"><img src="/images/frame/register_logo_2.png" /></A></LI>
         </UL>
     </DIV>
     <DIV id="logintabcont1">

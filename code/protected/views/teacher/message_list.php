@@ -53,8 +53,8 @@
                     <!--通知消息-->
                     <?php } elseif($c['type']=='notify') { ?>
                     <ul>
-                        <div class="info_cont"> <b><?php echo htmlspecialchars($c['uname_from'])?></b>
-                            <?php echo htmlspecialchars($c['content'])?>
+                        <div class="info_cont"> <b></b>
+                            <?php echo $c['content']?>
                             <br />
                         </div>
                     </ul>

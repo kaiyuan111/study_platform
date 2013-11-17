@@ -99,7 +99,7 @@
 		<!--  <div class="newz_k_foot"></div>-->
       </div>
       <!-- 返回按钮 开始-->
-      <!--  <div class="fanhui"><img src="/images/frame/im42.jpg" width="96" height="33" border="0" /></div>-->
+        <div class="fanhui"><img src="/images/frame/im42.jpg" width="96" height="33" border="0" onclick="javascript:history.back();"/></div>
       
 <script type="text/javascript" src="/ueditor/ueditor.config.js"></script>
 <SCRIPT type="text/javascript" src="/ueditor/ueditor.all.js"></SCRIPT> 

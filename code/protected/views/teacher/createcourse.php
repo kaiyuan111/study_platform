@@ -14,16 +14,17 @@
      	<div class="tittle_a">创建课程</div>
          <div class="form">
          	<form class='jqtr' action="/teacher/savecourse" method="post">
-             	<ul>
+				<ul>
+				<li style="display:none"><input type="hidden" name="courseid" value="<?php if(!empty($editCourse)){echo $editCourse['id'];}else{echo 0;}?>"/></li>
                  	<li class="li"><span class="h">课程名称&nbsp;：<font color="#cb0000">*&nbsp;&nbsp;</font></span><span class="k">
-                 	<input type="text" name="name" class="input" size="29"/></span>
+					<input type="text" name="name" class="input" size="29" <?php if(!empty($editCourse)){ echo "value=".$editCourse['name']; }?> /></span>
                  	</li>
                  	<li class="o_none"><span class="h">所属科目&nbsp;：<font color="#cb0000">*&nbsp;&nbsp;</font></span>
                  		<span class="k_a" id="courseclass">
                              <select name="classid" id="classid" style="width:150px">
                                  <option value="0">选择你想要的科目&nbsp;</option>
                                  <?php foreach ($couseClass as $key => $value){?>
-                                 <option value="<?php echo $value['id'];?>"><?php echo $value['name'];?>&nbsp;</option>
+								 <option value="<?php echo $value['id'];?>" <?php if(!empty($editCourse) && $editCourse['classid'] == $value['id']){echo 'selected="selected"';}?>><?php echo $value['name'];?>&nbsp;</option>
                                  <?php }?>
                              </select>
                          </span>
@@ -32,7 +33,7 @@
                     	</div>
                     </li>
                  	<li class="li"><span class="h">课程简介&nbsp;：<font color="#cb0000">*&nbsp;&nbsp;</font></span><span >
-                 	<textarea name="desc" cols="49" rows="10" ></textarea>
+					<textarea name="desc" cols="49" rows="10" ><?php if(!empty($editCourse)) echo $editCourse['desc'];?></textarea>
                  	</span></li>
                  </ul>
              	 <div class="submit"><input type="submit" value="&nbsp;&nbsp;确&nbsp;&nbsp;定&nbsp;&nbsp;" /></div>

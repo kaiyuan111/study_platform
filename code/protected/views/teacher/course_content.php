@@ -44,12 +44,12 @@
 			
 			<li>
 				<span>
-				<a href="/teacher/addcontent?chapterid=<?php echo $value['id']?>&courseid=<?php echo $currentCourse['id'];?>">
+				<a href="/teacher/addcontent?chapterid=<?php echo $value['id'];?>&courseid=<?php echo $currentCourse['id'];?>">
 				<img src="/images/frame/im21.jpg" width="36" height="24" border="0" />
 				</a>
 				<a href="javascript: void(0)" onclick="return deleteItem(<?php echo $value['id'];?>);">
 				<img src="/images/frame/im22.jpg" width="30" height="24" border="0" />
-				</a></span><?php echo $value['title'];?>
+				</a></span><a href="/student/learndetail?chapterid=<?php echo $value['id'];?>"><?php echo $value['title'];?></a>
 			</li>
 		</ul>
 		</div>
