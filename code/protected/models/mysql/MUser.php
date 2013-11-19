@@ -114,7 +114,7 @@ class MUser extends CActiveRecord
     		return array();
     	}
     	$memberIdStr = implode(',',$uidArray);
-		$sql = "select uid,uname from `m-user` where uid in ({$memberIdStr})";
+		$sql = "select uid,uname,email from `m-user` where uid in ({$memberIdStr})";
 		$conn = Yii::app()->db;
 		$command = $conn->createCommand($sql);
        

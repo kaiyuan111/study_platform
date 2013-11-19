@@ -77,7 +77,7 @@ $(".submit_blue").click(function()
     		var content = $('textarea[name="content"]').val();
     		
     		$.ajax({
-				type : 'post',
+				type : 'get',
 				data : 'content=' + content + '&id=' + discussid,
 				dataType : 'json',
 				url : '/student/adddiscussreply',

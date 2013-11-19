@@ -282,7 +282,6 @@ class StudentController extends Controller
     		
     		if (!empty($member))
     		{
-    			
     			foreach ($member as $eachUid)
     			{
     				$discussMember = new DiscussMember();
@@ -290,7 +289,10 @@ class StudentController extends Controller
     				$discussMember->uid = $eachUid;
     				$discussMember->save();
     			}
-    			
+
+				// 消息 邮件
+				$mess = new MessDiscussCreate;
+				$mess->send($studyDetail,$member);
     		}
     		
     		$muser = new MUser();
@@ -384,7 +386,7 @@ class StudentController extends Controller
 		/*
         $ret = StudyDiscuss::model()->notifyTeacherToDiscuss($this->userid,$_REQUEST['courseid'],$_REQUEST['groupid'],$_REQUEST['discussid']);
 		 */
-		$mess = new MessInviteTeacher;
+		$mess = new MessDiscussInviteTeacher;
 		$ret = $mess->send($this->userid,$_REQUEST['courseid'],$_REQUEST['groupid'],$_REQUEST['discussid']);
         if($ret) 
         {
@@ -479,6 +481,9 @@ class StudentController extends Controller
    		$discussReply->comment = $content;
    		$discussReply->discussid = $discussId;
    		$discussReply->save();
+
+		$mess = new MessDiscussReply;
+		$mess->send($this->userid,$discussId,$content);
    		
    		$this->jsonResult(0);
     }
