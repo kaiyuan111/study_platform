@@ -61,6 +61,7 @@ tr,td {border: 0px; padding: 0px; margin: 0px;}
         <tr> <td><h2>4d系统学习平台</h2><hr> <br></td> </tr>
         <tr> <td style='font-weight:bold;'>尊敬的 <span style='color:rgb(55, 112, 165)'>{$toname}</span>, 您好！</td> </tr>
         <tr> <td style='width:600px;background-color:#fffff;margin-left:auto;margin-right:auto;padding:20px;'> {$message}</td> </tr>
+		<tr> <td align='right'>非常感谢!</td> </tr>
         <tr> <td align='right'>{$fromname}</td> </tr>
         <tr> <td align='right'>{$now}</td> </tr>
         </table>
