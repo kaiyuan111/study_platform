@@ -60,7 +60,7 @@ class MUser extends CActiveRecord
     /**
      * getTeacherByGroup 
      *
-     * 获取助教列表(区分是否是当前组的助教)
+     * 获取所有助教列表(区分是否是当前组的助教)
      * 
      * @param mixed $gid  当前组
      * @param mixed $courseuid  当前组所属的课程的老师，输入则过滤当前课程老师

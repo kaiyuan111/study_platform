@@ -112,7 +112,8 @@
 var editor;
 KindEditor.ready(function(K) {
 	editor = K.create('textarea[name="content"]', {
-		allowFileManager : true
+		allowFileManager : true,
+			filterMode : false
 	});
 
 	//$('textarea[name="content"]').css('width','700px');
@@ -128,7 +129,8 @@ KindEditor.ready(function(K) {
     			editor.sync();
 	    		var title = $('input[name="title"]').val();
 	    		var courseid = $('input[name="courseid"]').val();
-	    		var content = $('textarea[name="content"]').val();
+				var content = $('textarea[name="content"]').val();
+				content=content.replace(/&nbsp;/ig, ' ');
 	    		var chapterid = $('input[name="chapterid"]').val();
 	    		$.ajax({
 					type : 'post',
@@ -192,11 +194,12 @@ KindEditor.ready(function(K) {
 					{
 						if(data.retCode == 0)
 						{
+							$('input[name="homeworkid"]').attr('value', 0);
 							if(data.info.id)  //添加内容
 							{
 								//$('input[name="homeworkid"]').attr('value', data.info.id);
 								//将添加的内容放置到前面
-								$('input[name="homeworkid"]').attr('value', 0);
+								//$('input[name="homeworkid"]').attr('value', 0);
 								if(type == 1 || type == 2)
 								{
 									var domTmp = '<div id="xuanxiang_x"><div class="xuanxiang"><span>' + start + '</span> . <span id="homeindex_' + data.info.id + '">' + title + '</span></div><div class="xuanxiang_im edit" homeworkid=' + data.info.id + '><a href="javascript:void(0)"><img src="/images/frame/im40.jpg" width="18" height="18" /></a></div><div class="xuanxiang_im delete" homeworkid=' + data.info.id + '><a href="javascript:void(0)"><img src="/images/frame/im41.jpg" width="18" height="18" /></a></div></div>';
@@ -233,7 +236,8 @@ KindEditor.ready(function(K) {
 					}
 				});
 	    	})
-	    	
+
+		var selectTmp = '<select name="questiontype" style="width:150px" id="questiontype" onchange="toggleXuanzeti()"><option value="1"> 单选题</option><option value="2">多选题</option><option value="3">问答题</option></select>';	
 	    function edit()
 	    {
 			var homeworkid = $(this).attr('homeworkid');
@@ -248,13 +252,26 @@ KindEditor.ready(function(K) {
 				dataType : 'json',
 				url : '/teacher/gethomework',
 				success: function(data)
-				{
+			{
+	//			alert("hello,world");return;
+					$('.blue4_bjxt').empty();
+					$('.blue4_bjxt').html(selectTmp);
+					//alert('.blue4_bjxt option[value="' + data.info.type +'"]');return;
+					$('.blue4_bjxt option[value="' + data.info.type + '"]').attr('selected', true);
 					$('input[name="questiontitle"]').attr('value', data.info.title);
-					$('input[name="optiona"]').attr('value', data.info.option[0]);
-					$('input[name="optionb"]').attr('value', data.info.option[1]);
-					$('input[name="optionc"]').attr('value', data.info.option[2]);
-					$('input[name="optiond"]').attr('value', data.info.option[3]);
+					if(data.info.type == 3)
+					{
+					}
+					else
+					{
+						$('input[name="optiona"]').attr('value', data.info.option[0]);
+						$('input[name="optionb"]').attr('value', data.info.option[1]);
+						$('input[name="optionc"]').attr('value', data.info.option[2]);
+						$('input[name="optiond"]').attr('value', data.info.option[3]);
+					}
 					$('input[name="homeworkid"]').attr('value', homeworkid);
+					$('form.jqtr').attr('class', 'jqtr');
+					$('form.jqtr').jqTransform({imgPath:'/images/frame/'});
 				}
 			}); 
 		}

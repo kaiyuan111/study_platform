@@ -22,7 +22,7 @@
                     	<div class="Mypostil_cont">
                           	<div class="Mypostil_cont_li">
                           	  <?php foreach ($value['content'] as $eachContent) {?>
-                              <b>批注：<?php echo $eachContent;?></b><br />
+                              <b>摘抄：<?php echo $eachContent;?></b><br />
                               <?php }?>
 	                              <div class="link">
 	                              <a target="_blank" href="/student/learndetail?chapterid=<?php echo $key;?>">详情请见原文<i></i></a>

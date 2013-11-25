@@ -42,4 +42,9 @@ class SiteController extends Controller
         }
     }
 
+	public function actionVideo()
+	{
+		$this->render("video");
+	}
+
 }

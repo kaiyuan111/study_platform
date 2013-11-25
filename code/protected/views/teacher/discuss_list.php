@@ -24,7 +24,7 @@
 					     <ul>
 						<div class="list_top"></div>
 			            <div class="list_cont">
-						<div class="t">关于<i><?php echo $value['title'];?></i>这个主题（20130619）<p>由<i><?php echo $createUserInfo[$value['uid']]['uname'];?></i>发表</p></div>
+						<div class="t">关于<i><a target="_blank" href="/student/discussdetail?id=<?php echo $value['id'];?>"><?php echo $value['title'];?></a></i>这个主题（20130619）<p>由<i><?php echo $createUserInfo[$value['uid']]['uname'];?></i>发表</p><p>主题内容：<?php echo $value['content'];?></p></div>
 						<?php if(!empty($discussReplys[$value['id']])) {?>
 							<ul>
 								<?php foreach($discussReplys[$value['id']] as $eachReplys) {?>

@@ -15,8 +15,10 @@ class MessCourseEdit extends MessCommon
 		$mail->isHtml();
 		$userfrom = User::model()->findByPk($uidFrom);
 		$userto = User::model()->findByPk($uidTo);
+		$courseInfo = Course::model()->findByPk($courseid);
 		$url = "http://{$_SERVER['HTTP_HOST']}/teacher/messagelist";
 		$message = "申请编辑课程，请访问<a href='{$url}'>消息列表</a>进行回复";
+		$title = "[4D系统学习平台]-{$userfrom['uname']}申请对课程《{$courseInfo['name']}》进行编辑";
 		$mailmess = $mail->commonTemple($userto['uname'],$message,$userfrom['uname']);
 		$ret = $mail->send($userto['email'],$title,$mailmess);
 	}

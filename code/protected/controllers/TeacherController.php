@@ -339,7 +339,7 @@ class TeacherController extends Controller
                     $groupMInst->groupid = $_REQUEST['groupid'];
                     $groupMInst->uid = $id;
                     $groupMInst->save();
-					$mess->send('加入小组',$message,$this->userid,$id);
+					$mess->send('[4D系统学习平台]-加入小组',$message,$this->userid,$id);
                 }
             }
             echo "保存成功";

@@ -279,6 +279,7 @@ class StudentController extends Controller
     		$studyDetail->save();
     		
     		$member = isset($_REQUEST['discussmember']) ? ($_REQUEST['discussmember']) : '';
+			$member[] = $this->userid;
     		
     		if (!empty($member))
     		{
