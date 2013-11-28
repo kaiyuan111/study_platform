@@ -1,0 +1,29 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+<video id="local" autoplay="autoplay"></video>
+<video id="remote" autoplay="autoplay"></video>
+
+<script src="/webrtc.io.js"></script>
+<script>
+
+  // note: make sure hostname available to all connecting clients
+  // (ie. probably not `localhost`)
+  rtc.connect('ws://yourserveraddress:8001');
+
+  rtc.createStream({"video": true, "audio":false}, function(stream){
+    // get local stream for manipulation
+    rtc.attachStream(stream, 'local');
+  });
+
+  rtc.on('add remote stream', function(stream){
+    // show the remote video
+    rtc.attachStream(stream, 'remote');
+  });
+
+  // more rtc callbacks are available
+</script>
+</body>
+</html>
